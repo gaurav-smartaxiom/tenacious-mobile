@@ -1,7 +1,10 @@
 // DeviceDetailPage.dart
 import 'package:flutter/material.dart';
 import 'BluetoothDeviceModel.dart';
-import 'package:bbbb/controller/blue.dart';
+//import 'package:bbbb/controller/blue.dart';
+import 'package:mobileapp/controller/blue.dart';
+import 'package:mobileapp/DFUUpdateScreen.dart';
+//import 'package:bbbb/DFUUpdateScreen.dart';
 
 class DeviceDetailPage extends StatefulWidget {
   final BluetoothDeviceModel device;
@@ -52,21 +55,31 @@ class _DeviceDetailPageState extends State<DeviceDetailPage> {
             SizedBox(height: 20),
             // Add the "Start DFU Update" button here
             ElevatedButton(
-              onPressed: () {
-                if (widget.device.isConnected) {
-                 startDFUUpdate();
-                } else {
-                  // Handle case where the device is not connected
-                  print('Device not connected');
-                }
-              },
-              child: Text('Start DFU Update'),
+             onPressed: _handleDFUUpdate,
+              child: Text('Start DFUUpdate'),
             ),
           ],
         ),
       ),
     );
   }
+void _handleDFUUpdate() {
+  if (widget.device.isConnected) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DFUUpdateScreen(deviceId: widget.device.id),
+      ),
+    );
+  } else {
+    // Handle the case where the device is not connected
+    print('Device not connected');
+  }
+}
+
+
+
+
 
   void _handleConnection() async {
     print("device");
@@ -86,48 +99,48 @@ class _DeviceDetailPageState extends State<DeviceDetailPage> {
     }
   }
 
-void startDFUUpdate() async 
-{
-  print("sssssssssssss");
+// void startDFUUpdate() async 
+// {
+//   print("sssssssssssss");
 
-  try {
-    // Call the method to start DFU update from BluetoothController
-    bool dfuUpdateStarted = await BluetoothController.startDFUUpdate(widget.device);
+//   try {
+//     // Call the method to start DFU update from BluetoothController
+//     bool dfuUpdateStarted = await BluetoothController.startDFUUpdate(widget.device);
 
-    if (dfuUpdateStarted) {
-      // Update UI or show a message that DFU update has started
-      print('DFU Update Started for device ID: ${widget.device.id}');
+//     if (dfuUpdateStarted) {
+//       // Update UI or show a message that DFU update has started
+//       print('DFU Update Started for device ID: ${widget.device.id}');
       
-      // Check if DFU update is completed
-      bool dfuUpdateCompleted = await showDialog(
-        context: context, // Assuming this method is part of a widget class
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('DFU Update Completed'),
-            content: Text('DFU update for device ID ${widget.device.id} completed successfully.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true); // Return true if DFU update is completed
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+//       // Check if DFU update is completed
+//       bool dfuUpdateCompleted = await showDialog(
+//         context: context, // Assuming this method is part of a widget class
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             title: Text('DFU Update Completed'),
+//             content: Text('DFU update for device ID ${widget.device.id} completed successfully.'),
+//             actions: [
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.of(context).pop(true); // Return true if DFU update is completed
+//                 },
+//                 child: Text('OK'),
+//               ),
+//             ],
+//           );
+//         },
+//       );
 
-      if (dfuUpdateCompleted == true) {
-        // Do any additional actions after DFU update is completed
-        print('DFU Update Completed Message Shown');
-      }
-    } else {
-      // Handle the case where DFU update couldn't be started
-      print('Error starting DFU Update for device ID: ${widget.device.id}');
-    }
-  } catch (e) {
-    print('Error during DFU update: $e');
-  }
-}
+//       if (dfuUpdateCompleted == true) {
+//         // Do any additional actions after DFU update is completed
+//         print('DFU Update Completed Message Shown');
+//       }
+//     } else {
+//       // Handle the case where DFU update couldn't be started
+//       print('Error starting DFU Update for device ID: ${widget.device.id}');
+//     }
+//   } catch (e) {
+//     print('Error during DFU update: $e');
+//   }
+// }
 
 }

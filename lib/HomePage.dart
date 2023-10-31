@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:bbbb/controller/blue.dart';
+//import 'package:bbbb/controller/blue.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/state_manager.dart';
 import 'DeviceDetailPage.dart';
 import 'BluetoothDeviceModel.dart';
+import 'package:mobileapp/controller/blue.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,17 +31,19 @@ class HomePage extends StatelessWidget {
   ),
 ),
 
-                const SizedBox(height: 20,),
+                const SizedBox(height: 10,),
                 Center(
-                  child: ElevatedButton(
-                    onPressed: () {
+  child: Container(
+    width: 200, // Set your desired width here
+    child: ElevatedButton(
+      onPressed: () {
+        controller.scanDevice();
+      },
+      child: Text("Scan", style: TextStyle(color: Colors.yellow)),
+    ),
+  ),
+),
 
-                  controller.scanDevice();
-
-                    },
-                    child: Text("Scan", style: TextStyle(color: Colors.yellow)),
-                  ),
-                ),
                 SizedBox(height: 20,),
                 StreamBuilder<List<ScanResult>>(
                   stream: controller.scanResultStream,
