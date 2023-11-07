@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mobileapp/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mobileapp/login and signup/loginpage.dart';
+import 'package:mobileapp/Dashboard/Setting/UserAvatar.dart';
+import 'package:mobileapp/Dashboard/Setting/DailyReportSwitch.dart';
+import 'package:mobileapp/Dashboard/Setting/AlertsSwitch.dart';
+import 'package:mobileapp/Dashboard/Setting/SwitchListItem.dart';
+import 'package:mobileapp/Dashboard/Setting/firmware.dart';
+import 'package:mobileapp/Dashboard/Setting/LogoutListItem.dart';
+import 'package:mobileapp/Dashboard/Setting/scan_device.dart';
+
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -13,55 +22,51 @@ Future<String?> loadSessionData() async {
   final email = sharedPreferences.getString('email');
   final password = sharedPreferences.getString('password');
   String? token = sharedPreferences.getString('token');
-  Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {};
+  Map<String, dynamic> decodedToken =
+      token != null ? JwtDecoder.decode(token) : {};
   return decodedToken['email'];
 }
-
-
 
 class _UserProfilePageState extends State<UserProfilePage> {
   bool dailyReportEnabled = true;
   bool alertsEnabled = true;
   bool smsEnabled = true;
-   String? officialEmail;
-   String?  userEmail   ;
-   bool isHovered = false;
-
-@override
-void initState() {
-  super.initState();
-  loadSessionData();
-}
-Future<void> loadSessionData() async {
-  final sharedPreferences = await SharedPreferences.getInstance();
-  final email = sharedPreferences.getString('email');
-  final password = sharedPreferences.getString('password');
-  String? token = sharedPreferences.getString('token');
-Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {};
-    String? officialEmail;
-print(decodedToken.containsKey('officialEmail'));
-if (decodedToken.containsKey('officialEmail')) {
-    officialEmail = decodedToken['officialEmail'];
-
-    setState(() {
-      userEmail = officialEmail;
-    });
+  String? officialEmail;
+  String? userEmail;
+  @override
+  void initState() {
+    super.initState();
+    loadSessionData();
   }
 
-print("Official Email: $officialEmail");
-      print("email");
+  Future<void> loadSessionData() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final email = sharedPreferences.getString('email');
+    final password = sharedPreferences.getString('password');
+    String? token = sharedPreferences.getString('token');
+    Map<String, dynamic> decodedToken =
+        token != null ? JwtDecoder.decode(token) : {};
+    String? officialEmail;
+    print(decodedToken.containsKey('officialEmail'));
+    if (decodedToken.containsKey('officialEmail')) {
+      officialEmail = decodedToken['officialEmail'];
+
+      setState(() {
+        userEmail = officialEmail;
+      });
+    }
+    print("Official Email: $officialEmail");
+    print("email");
 // if (decodedToken.containsKey('email')) {
 //       setState(() {
 //         userEmail = decodedToken['email'];
 //         print("useremail,$userEmail");
 //       });
- //   }
-  print('Stored Email: $email');
-  print('Stored Password: $password');
-  print("token: $token");
- 
-}
-
+    //   }
+    print('Stored Email: $email');
+    print('Stored Password: $password');
+    print("token: $token");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,104 +76,75 @@ print("Official Email: $officialEmail");
       ),
       body: ListView(
         children: [
-          buildUserAvatar(),
+          UserAvatarCard(userEmail: userEmail),
+         //  buildListItem("Email", ""),
+           //Divider(),
           Row(
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 11.0),
                 child: Text(
                   "Email",
-                  style: TextStyle(fontSize: 18, ),
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ],
           ),
-          buildGrayDailyReport(),
-          buildGrayAlerts(),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: buildGrayDailyReport(),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(height: 1),
-          // // Row(
-          // //   children: [
-          // //     Expanded(
-          // //       child: buildGrayAlerts(),
-          // //     ),
-          // //   ],
-          // // ),
-          buildListItemWithSwitch("SMS", smsEnabled, (newValue) {
-            setState(() {
-              smsEnabled = newValue;
-            });
-          }),
+          //  Divider(),
+          DailyReportSwitch(initialValue: dailyReportEnabled),
+         //  Divider(),
+          AlertsSwitch(initialValue: alertsEnabled),
+           Divider(),
+          SmsSwitchListItem(
+            label: "SMS",
+            switchValue: smsEnabled,
+            onChanged: (newValue) {
+              // Handle onChanged logic here
+              setState(() {
+                smsEnabled = newValue;
+              });
+            },
+          ),
+          Divider(),
+           FirmwareArrowListItem(
+            label: "Firmware",
+            subtitle: "firmware_Update",
+            onTap: () {
+              // Execute your navigation logic here, for example:
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),   
+           Divider(),      
+
           //buildListItem("Firmware", "1.0.0"),
-          buildListItemWithArrow("Firmware", "firmware_Update", context),
-          buildListItem("Add Device", "Add a New Device"),
-          buildListItem("Access Policy", "Manage Access Policy"),
-          buildListItem("About Us", "Learn About Us"),
-          buildListItem("Terms and Conditions", "Read Our Terms"),
-          buildListItem("Logout", "Log Out"),
-        ],
-      ),
-    );
-  }
-
-  Widget buildUserAvatar() {
-  return Card(
-    child: ListTile(
-      contentPadding: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Colors.white,
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(40),
-      ),
-      leading: CircleAvatar(
-        backgroundImage: AssetImage('assets/User_icon.png'),
-        radius: 35,
-        // child: Text(
-        //  userEmail ?? 'User Email', // Display user email or a default value
-        //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
-        // ),
-      ),
-      title: Text(userEmail ?? 'User Email'),
-      subtitle: Text("Admin"),
-    ),
+          //buildListItemWithArrow("Firmware", "firmware_Update", context),
+ buildListItem1("Add Device", "Add a New Device and scan",(){
+ Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => ScanDevicePage()),
   );
-}
 
+ }),
 
-  Widget buildGrayDailyReport() {
-    return ListTile(
-      title: Text("Enable Daily Report"),
-      tileColor: Colors.grey,
-      trailing: Switch(
-        value: dailyReportEnabled,
-        onChanged: (newValue) {
-          setState(() {
-            dailyReportEnabled = newValue;
-          });
-        },
-      ),
-    );
-  }
+            Divider(),      
 
-  Widget buildGrayAlerts() {
-    return ListTile(
-      title: Text("Enable Alerts"),
-     // tileColor: Colors.grey,
-      trailing: Switch(
-        value: alertsEnabled,
-        onChanged: (newValue) {
-          setState(() {
-            alertsEnabled = newValue;
-          });
-        },
+          
+
+          buildListItem("Access Policy", "Manage Access Policy"),
+            Divider(),      
+
+          buildListItem("About Us", "Learn About Us"),
+            Divider(),      
+
+          buildListItem("Terms and Conditions", "Read Our Terms"),
+            Divider(),      
+
+          LogoutListItem(label: "Logout", value: "Log Out"),
+Divider(),
+        ],
       ),
     );
   }
@@ -179,48 +155,15 @@ print("Official Email: $officialEmail");
       subtitle: Text(value),
     );
   }
-
-  Widget buildListItemWithSwitch(String label, bool switchValue, Function(bool) onChanged) {
-    return ListTile(
-      title: Text("SMS",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-      subtitle: Text('Enable',style:  TextStyle(fontSize: 15),),
-      trailing: Switch(
-        value: switchValue,
-        onChanged: onChanged,
-      ),
-    );
-  }
 }
-
-//  Widget buildListItemWithArrow(String label, Function onTap, BuildContext context) {
-//   return ListTile(
-//     title: Text('Firmware'),
-//     subtitle: Text('firmware_UpDate'),
-//     trailing: Icon(Icons.arrow_forward), // You can customize the icon
-//     onTap: () {
-//       print('dddddddddddddd');
-//       // Execute your navigation logic here
-//       Navigator.of(context).push(
-//         MaterialPageRoute(builder: (context) => HomePage()),
-//       );
-//     },
-//   );
-// }
-
-
-Widget buildListItemWithArrow(String label, String subtitle, BuildContext context) {
+Widget buildListItem1(String label, String value, void Function() onTap) {
   return ListTile(
     title: Text(label),
-    subtitle: Text(subtitle),
-    onTap: () {
-      print('$label item tapped');
-      // Execute your navigation logic here
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    },
+    subtitle: Text(value),
+    onTap: onTap,
   );
 }
+
 
 
 
@@ -228,3 +171,7 @@ Widget buildListItemWithArrow(String label, String subtitle, BuildContext contex
 void main() {
   runApp(MaterialApp(home: UserProfilePage()));
 }
+
+
+
+     

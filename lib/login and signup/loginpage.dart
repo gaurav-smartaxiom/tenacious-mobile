@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobileapp/HomePage.dart';
 //import 'package:bbbb/login and signup/signup.dart';
 import 'dart:convert';
 //import 'package:bbbb/api_endPoint/api_endpoints.dart';
@@ -10,6 +11,9 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobileapp/Dashboard/Dashboard.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobileapp/Dashboard/Setting/firmware.dart';
+import 'package:mobileapp/Dashboard/Setting/scan_device.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -26,82 +30,93 @@ class _LoginPageState extends State<LoginPage> {
    String successMessage = '';
    String errorMessage = '';
 // user login process------------------
-  Future<void> Loginuser() async {
-    print("login");
+
+Future<void>looo()async{
+
+Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => ScanDevicePage()),
+  );
+
+
+}
+
+//   Future<void> Loginuser() async {
+//     print("login");
     
-  // final String apiUrl = 'http://10.0.2.2:4000/api/v1/login';
-    final String apiUrl = loginApiUrl;
-    print("apiUrl: $apiUrl");
-    final Map<String, String> requestBody = {
-      'email': _usernameController.text,
-      'password': _passwordController.text,
-    };
+//   // final String apiUrl = 'http://10.0.2.2:4000/api/v1/login';
+//     final String apiUrl = loginApiUrl;
+//     //print("apiUrl: $apiUrl");
+//     final Map<String, String> requestBody = {
+//       'email': _usernameController.text,
+//       'password': _passwordController.text,
+//     };
 
-    try {
-      print("try");
-      final response = await http.post(Uri.parse(apiUrl), body: requestBody);
-      print("res----------------------,$response");
-      final responseBody = response.body;
-      final token = response.body;
-       Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-       print("decodeToken---------->,$decodedToken");
-      // print("responseBody-----------------,$responseBody");
-      if (response.statusCode == 201) {
-        print("user login successfully");
-        //apply session-----------
-      final sharedPreferences = await SharedPreferences.getInstance();
-      print("session----------,$sharedPreferences");
-     sharedPreferences.setString('token', token);
-     sharedPreferences.setString('email', _usernameController.text);
-     sharedPreferences.setString('password', _passwordController.text);
-        setState(() {
-          successMessage = "User login successful";
-          errorMessage = ''; 
-        });
-          ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(successMessage),
-          ),
-        );
-      //  _usernameController.clear();
-      // _passwordController.clear();
+//     try {
+//       print("try");
+      
+//       final response = await http.post(Uri.parse(apiUrl), body: requestBody);
+//       print("res----------------------,$response");
+//       final responseBody = response.body;
+//       final token = response.body;
+//        Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+//        print("decodeToken---------->,$decodedToken");
+//       // print("responseBody-----------------,$responseBody");
+//       if (response.statusCode == 201) {
+//         print("user login successfully");
+//         //apply session-----------
+//       final sharedPreferences = await SharedPreferences.getInstance();
+//       print("session----------,$sharedPreferences");
+//      sharedPreferences.setString('token', token);
+//      sharedPreferences.setString('email', _usernameController.text);
+//      sharedPreferences.setString('password', _passwordController.text);
+//         setState(() {
+//           successMessage = "User login successful";
+//           errorMessage = ''; 
+//         });
+//           ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text(successMessage),
+//           ),
+//         );
+//       //  _usernameController.clear();
+//       // _passwordController.clear();
 
-       //  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
-      //      Decode the JSON response to get the token
-  Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(
-    builder: (context) => DashboardPage(decodedToken: decodedToken),
-  ),
-  (route) => false, // This predicate will always return false
-);
+//        //  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+//       //      Decode the JSON response to get the token
+//   Navigator.pushAndRemoveUntil(
+//   context,
+//   MaterialPageRoute(
+//     builder: (context) => DashboardPage(decodedToken: decodedToken),
+//   ),
+//   (route) => false, // This predicate will always return false
+// );
 
-       } else {
-        setState(() {
-          errorMessage = "Login failed. Please check your credentials.";
-          successMessage = ''; 
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(successMessage != '' ? successMessage : errorMessage),
-          ),
-        );
-        print("Login failed. Status code: ${response.statusCode}");
-      }
-    } catch (error) {
-      setState(() {
-        errorMessage = "An error occurred. Please try again later.";
-        successMessage = ''; 
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(successMessage != '' ? successMessage : errorMessage),
-        ),
-      );
+//        } else {
+//         setState(() {
+//           errorMessage = "Login failed. Please check your credentials.";
+//           successMessage = ''; 
+//         });
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text(successMessage != '' ? successMessage : errorMessage),
+//           ),
+//         );
+//         print("Login failed. Status code: ${response.statusCode}");
+//       }
+//     } catch (error) {
+//       setState(() {
+//         errorMessage = "An error occurred. Please try again later.";
+//         successMessage = ''; 
+//       });
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//           content: Text(successMessage != '' ? successMessage : errorMessage),
+//         ),
+//       );
 
-      print("An error occurred: $error");
-    }
-  }
+//       print("An error occurred: $error");
+//     }
+//   }
 
 Future<void>forgotpassword() async
 
@@ -210,7 +225,9 @@ Row(
                           var password = _passwordController.text.toString();
                           print("USERNAME: $username");
                           print("PASSWORD: $password");
-                           Loginuser();
+                           //Loginuser();
+                           looo();
+                          
                           
                         },
                         child: Text('Sign in'),

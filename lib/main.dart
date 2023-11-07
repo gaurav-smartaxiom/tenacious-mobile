@@ -38,7 +38,7 @@ class _AppLoaderState extends State<AppLoader> {
     super.initState();
     
     // Delay the transition to the home page after 5 seconds
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 10), () {
       // Navigator.of(context).pushReplacement(
       //   MaterialPageRoute(builder: (context) => LoginPage()),
       // );
@@ -46,7 +46,6 @@ class _AppLoaderState extends State<AppLoader> {
     });
     
   }
-
   void checkLoginStatus() async {
     final sharedPreferences = await SharedPreferences.getInstance();
    // final  token = sharedPreferences.getString('token');
@@ -54,7 +53,6 @@ class _AppLoaderState extends State<AppLoader> {
     final password = sharedPreferences.getString('password');
  String? token = sharedPreferences.getString('token');
 Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {};
-
     print("decodeToken---------->,$decodedToken");
     if (token != null && email != null && password != null) {
       // User is already logged in, navigate to the dashboard page.
@@ -77,7 +75,3 @@ Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {
     return  LoadingScreen();
   }
 }
-// {
-//   "email": "suraj.subramoniam@honeywell.com",
-//   "password": "suraj1@honeywell"
-// }suraj.subramoniam@honeywell.com

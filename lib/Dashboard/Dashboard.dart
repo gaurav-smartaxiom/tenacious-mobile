@@ -4,6 +4,7 @@ import 'package:mobileapp/Dashboard/WindowPage.dart';
 import 'package:mobileapp/Dashboard/shipmentpage.dart';
 import 'package:mobileapp/Dashboard/NotificationPage.dart';
 import 'package:mobileapp/Dashboard/userprofile.dart';
+import 'package:mobileapp/Dashboard/AddDevicePage.dart';
 import 'package:mobileapp/Dashboard/DashboardBox.dart';
 //import 'package:mobileapp/HomePage.dart';
 // import 'package:bbbb/Dashboard/shipmentpage.dart';
@@ -30,12 +31,18 @@ if (index == 0) {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
       } else if (index == 1) {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
-      } else if (index == 3) {
+      } else if (index == 4) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-      } else if (index == 2) {
+      } else if (index == 3) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
+      }
+      else if(index==2)
+      
+      {
+Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddDevicePage()));
+
       }
     });
   }
@@ -157,6 +164,10 @@ return Scaffold(
     BottomNavigationBarItem(
       icon: Icon(Icons.local_shipping),
       label: 'Shipment',
+    ),
+     BottomNavigationBarItem(
+      icon: Icon(Icons.devices_other),
+      label: 'Add_Devices',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications),
