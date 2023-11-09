@@ -1,7 +1,10 @@
 
 
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 class UserDetailsPage extends StatefulWidget {
   @override
   _UserDetailsPageState createState() => _UserDetailsPageState();
@@ -20,31 +23,87 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   Map<String, bool> shipmentCheckboxes = {};
 String filter = '';
 Map<String, bool> selectedShipments = {};
-String? selectedShipment;
-
+Shipment? selectedShipment;
+ List<Shipment> allShipments = [];
+  List<Shipment> filteredShipments = [];
 List<String> roleOptions = ['Admin', 'User'];
 String selectedUserRole = 'User';
-  List<String> shipments = [
-    'Shipment 1',
-    'Shipment 2',
-    'Shipment 3',
-    'Shipment 4',
-    'Shipment 5',
-    'Shipment 6',
-    'Shipment 7',
-    'Shipment 8',
-    'Shipment 9',
-    'Shipment 10',
-    'Shipment 11',
-    'Shipment 12',
-    'Shipment 13',
-    'Shipment 14',
-  ]; // Replace this with your shipment data
+  List<String> shipments = []; // Replace this with your shipment data
 List<String> getFilteredShipments(String query) {
   return shipments.where((shipment) {
     return shipment.toLowerCase().contains(query.toLowerCase());
   }).toList();
 }
+  @override
+  void initState() {
+    super.initState();
+    // Fetch shipments from the API when the widget is initialized
+    fetchShipmentsFromAPI();
+  }
+
+Future<void> fetchShipmentsFromAPI() async {
+  final String shipmentId = '6232ce73b5b181a9e9d93643';
+  final String backendUrl = 'http://192.168.29.43:4000/api/v1/shipments';
+  final sharedPreferences = await SharedPreferences.getInstance();
+ final String? token = sharedPreferences.getString('token'); // Use String? instead of String
+
+
+
+
+print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
+
+  if (token != null) {
+    try {
+      final response = await http.get(
+        Uri.parse(backendUrl),
+        headers: {
+           'Authorization': 'Bearer ', // Use the token directly
+        // 'Authorization': 'Bearer $token',
+
+        }
+      );
+
+      print('response, $response');
+      print("Response Body: ${response.body}");
+      print(response.statusCode == 200);
+
+      if (response.statusCode == 200) {
+        try {
+          final Map<String, dynamic> responseBody = json.decode(response.body);
+          final List<dynamic> apiShipments = responseBody['items'];
+
+          final List<Shipment> shipments = apiShipments
+              .map((shipmentData) => Shipment.fromJson(shipmentData))
+              .toList();
+
+          setState(() {
+            allShipments = shipments;
+            filteredShipments = List.from(allShipments);
+          });
+          print(",qqqqqqqqqqqqqqqqqqqqqqqqqqqq,$filteredShipments");
+        } catch (e) {
+          // Handle any exceptions or errors that occur during JSON parsing
+          print('Error parsing JSON: $e');
+        }
+      } else {
+        print("Error");
+        // Handle the case where the server returns an error status code
+        // You can add error handling logic here
+      }
+    } catch (e) {
+      // Handle any exceptions or errors that occur during the HTTP request
+      print('Error fetching shipments: $e');
+    }
+  } else {
+    // Handle the case where the token is null
+    print('Token is null');
+  }
+}
+
+
+
+
+
 
 
 void _registerUser() {
@@ -55,7 +114,7 @@ void _registerUser() {
   final String password = _passwordController.text;
   final String confirmPassword = _ConfrompasswordController.text;
   final String organization = _OrgnazationController.text;
- final MyShipnets =selectedShipment;
+  final String? MyShipnets = selectedShipment?.shipmentName;
 final bool enableDailyReports = _isDailyEnabledReports;
 final bool enableAlerts = _isAlertsEnabled;
   print(enableDailyReports);
@@ -333,38 +392,40 @@ void _showConfirmationDialogg() {
 ),
 
                  
-                    Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: shipments.length,
-                        itemBuilder: (context, index) {
-                          final shipment = shipments[index];
-                          if (shipment.toLowerCase().contains(filter.toLowerCase())) {
-                            return CheckboxListTile(
-                              title: Text(shipment),
-                              value: selectedShipment == shipment,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  print(value);
-                                  if (value == true) {
-                                    // A new shipment is selected, unselect the previously selected one
-                                    selectedShipment = shipment;
-                                    print(shipment);
-                                    _onShipmentSelected(shipment);
-                                    
-                                  } else {
-                                    // The selected shipment is unselected
-                                    selectedShipment = null;
-                                  }
-                                });
-                              },
-                            );
-                          } else {
-                            return Container();
-                          }
-                        },
-                      ),
-                    ),
+                   Expanded(
+  child: ListView.builder(
+    shrinkWrap: true,
+    itemCount: filteredShipments.length,
+    itemBuilder: (context, index) {
+      final shipment = filteredShipments[index];
+
+      // Access the properties of Shipment and convert them to lowercase
+      final shipmentName = shipment.shipmentName.toLowerCase();
+      final shipmentDesc = shipment.shipmentDesc.toLowerCase();
+
+      if (shipmentName.contains(filter.toLowerCase()) || shipmentDesc.contains(filter.toLowerCase())) {
+        return CheckboxListTile(
+          title: Text(shipment.shipmentName),
+          subtitle: Text(shipment.shipmentDesc),
+          value: selectedShipment == shipment,
+          onChanged: (bool? value) {
+            setState(() {
+              if (value == true) {
+                selectedShipment = shipment;
+                //_onShipmentSelected(shipment);
+              } else {
+                selectedShipment = null;
+              }
+            });
+          },
+        );
+      } else {
+        return Container();
+      }
+    },
+  ),
+),
+
                     ],
                   ),
                 ),
@@ -423,6 +484,29 @@ void _showConfirmationDialogg() {
           ),
         ),
       ), 
+    );
+    
+  }
+
+
+  
+}
+class Shipment {
+  final String id;
+  final String shipmentName;
+  final String shipmentDesc;
+
+  Shipment({
+    required this.id,
+    required this.shipmentName,
+    required this.shipmentDesc,
+  });
+
+  factory Shipment.fromJson(Map<String, dynamic> json) {
+    return Shipment(
+      id: json['id'],
+      shipmentName: json['shipmentName'],
+      shipmentDesc: json['shipmentDesc'],
     );
   }
 }
