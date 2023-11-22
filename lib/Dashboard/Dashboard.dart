@@ -21,6 +21,7 @@ class DashboardPage extends StatefulWidget {
 }
 class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
+  String  deviceUuid  = '' ;
  TextEditingController searchController = TextEditingController(); 
  String searchResult = ""; 
   void _onItemTapped(int index) {
@@ -41,7 +42,12 @@ if (index == 0) {
       else if(index==2)
       
       {
-Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddDevicePage()));
+Navigator.of(context).push(MaterialPageRoute(
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+));
+ // Pass the device UUID
+
+
 
       }
     });

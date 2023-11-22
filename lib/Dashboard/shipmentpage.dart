@@ -47,7 +47,7 @@ Future<String?> loadSessionData() async {
 
   Future<void> fetchShipmentsFromAPI( String ?token) async {
   final String shipmentId = '6232ce73b5b181a9e9d93643';
-  final String backendUrl = 'http://192.168.29.43:4000/api/v1/shipments';
+  final String backendUrl = 'http://192.168.29.11:4000/api/v1/shipments?page=1&limit=1';
 //   final sharedPreferences = await SharedPreferences.getInstance();
 //  final String? token = sharedPreferences.getString('token'); // Use String? instead of String
 
@@ -56,18 +56,20 @@ Future<String?> loadSessionData() async {
 print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
 
   if (token != null) {
+  
     try {
-      final response = await http.get(
+    
+       final response = await http.get(
         Uri.parse(backendUrl),
-        headers: {
-            'Authorization': 'Bearer ', // Use the token directly
-         //'Authorization': 'Bearer $token',
+         headers: {
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDA2NTg0NzUsImV4cCI6MTcwMDc0NDg3NX0.Ov2c1nq_4NsEg5q53zmjbkFnQv86fqay2dKzgj4o5U0', // Use the token directly
+       // 'Authorization': 'Bearer $token',
 
-        }
+         }
       );
 
       print('response, $response');
-      print("Response Body: ${response.body}");
+      // print("Response Body: ${response.body}");
       print(response.statusCode == 200);
 
       if (response.statusCode == 200) {
@@ -78,11 +80,14 @@ print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
           final List<Shipment> shipments = apiShipments
               .map((shipmentData) => Shipment.fromJson(shipmentData))
               .toList();
+            print("Response shipments 83: ${shipments}");
 
           setState(() {
             allShipments = shipments;
             filteredShipments = List.from(allShipments);
+            print("Response Body 88: ${filteredShipments}");
           });
+
         } catch (e) {
           // Handle any exceptions or errors that occur during JSON parsing
           print('Error parsing JSON: $e');
@@ -185,7 +190,7 @@ void showShipmentDetails(Shipment shipment) {
           padding: const EdgeInsets.all(8.0),
           child: TextField(
   decoration: InputDecoration(
-    hintText: 'Search shipments...',  // Make sure the hint text fits within the TextField width
+    hintText: 'Search...',  // Make sure the hint text fits within the TextField width
     prefixIcon: Icon(Icons.search),
     // Adjust the contentPadding to create more space
     contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),  // You can tweak these values
@@ -264,13 +269,16 @@ factory Shipment.fromJson(Map<String, dynamic> json) {
       id: id,
       shipmentName: shipmentName,
       shipmentDesc: shipmentDesc,
-      shipmentType: shipmentType,
+      shipmentType: json['shipmentType'] as String? ?? '',
       status: status,
       pickupLocation: pickupLocation,
       pickupDate: pickupDate,
       destinationLocation: destinationLocation,
       deliveryDate: deliveryDate,
-      trackers: [], // Provide an empty list as the default value
+      // trackers: (json['trackers'] as List<dynamic>?)
+      //           ?.map((trackerData) => Tracker.fromJson(trackerData))
+      //           .toList() ??
+       trackers:     [], // Provide an empty list as the default value
     );
   } catch (e) {
     throw FormatException("Error parsing JSON: $e");
@@ -314,6 +322,7 @@ class TrackerData {
   final String swVer;
   final String bootRomVer;
   final String firmware;
+  final String? deviceUuid;
 
   TrackerData({
     required this.clientId,
@@ -324,9 +333,11 @@ class TrackerData {
     required this.swVer,
     required this.bootRomVer,
     required this.firmware,
+    required this.deviceUuid,
   });
 
   factory TrackerData.fromJson(Map<String, dynamic> json) {
+    print('Tracker object: \n:  $Map');
     return TrackerData(
       clientId: json['client_id'],
       macAddr: json['mac_addr'],
@@ -336,6 +347,7 @@ class TrackerData {
       swVer: json['sw_ver'],
       bootRomVer: json['boot_rom_ver'],
       firmware: json['firmware'],
+      deviceUuid: json['devcieiid']
     );
   }
 }
@@ -347,19 +359,20 @@ class ShipmentInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: ListTile(
-        leading: Icon(Icons.directions_car),
-        title: Text(shipment.shipmentName),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Pickup Location: ${shipment.pickupLocation}'),
-            Text('Delivery Date: ${shipment.deliveryDate}'),
-          ],
-        ),
-      ),
-    );
+  return Card(
+  margin: EdgeInsets.all(8),
+  child: ListTile(
+    leading: Icon(Icons.directions_car),
+    title: Text('${shipment.shipmentName}.....${shipment.shipmentType}'),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Device ID: ${shipment.trackers.isNotEmpty ? shipment.trackers.last.data.deviceUuid : 'N/A'}'),
+        Text('Last Connected: ${shipment.trackers.isNotEmpty ? DateTime.fromMillisecondsSinceEpoch(shipment.trackers.last.timestamp * 1000).toString() : 'N/A'}'),
+      ],
+    ),
+  ),
+);
+
   }
 }

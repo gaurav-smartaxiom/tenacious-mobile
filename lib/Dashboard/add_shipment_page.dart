@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-
-class AddShipmentPage extends StatelessWidget {
+import 'package:intl/intl.dart';
+class AddShipmentPage extends StatefulWidget {
   final String shipmentName;
 
   const AddShipmentPage({Key? key, required this.shipmentName}) : super(key: key);
 
+  @override
+  _AddShipmentPageState createState() => _AddShipmentPageState();
+}
+
+class _AddShipmentPageState extends State<AddShipmentPage> {
+  TextEditingController _dateController = TextEditingController();
+TextEditingController _descriptionController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +29,10 @@ class AddShipmentPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text('Selected Shipment: $shipmentName',style: TextStyle(color: Colors.blue),),
+                Text(
+                  'Selected Shipment: ${widget.shipmentName}',
+                  style: TextStyle(color: Colors.blue),
+                ),
                 SizedBox(height: 150),
                 Row(
                   children: <Widget>[
@@ -49,6 +59,19 @@ class AddShipmentPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                  SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          labelText: "Location",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(labelText: 'Select Type'),
                   value: null,
@@ -64,6 +87,7 @@ class AddShipmentPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  controller: _dateController, // Use the TextEditingController
                   onTap: () async {
                     DateTime? selectedDate = await showDatePicker(
                       context: context,
@@ -75,6 +99,11 @@ class AddShipmentPage extends StatelessWidget {
                     if (selectedDate != null) {
                       // Handle the selected date
                       print('Selected Date: $selectedDate');
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate); 
+                         setState(() {
+                          _dateController.text = formattedDate; // Update the text
+                        });
+                         // Update the text
                     }
                   },
                   readOnly: true,
@@ -83,11 +112,42 @@ class AddShipmentPage extends StatelessWidget {
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
                 ),
+                 SizedBox(height: 50),
+
+  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 240,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          print("hello");
+                        
+                       
+                       
+                         
+                          
+                          
+                        },
+                        child: Text('Create'),
+                      ),
+                    ),
+                  ],
+                ),
+
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+     _descriptionController.dispose();
+    _dateController.dispose(); // Dispose the controller when the widget is disposed
+    super.dispose();
   }
 }

@@ -43,7 +43,7 @@ List<String> getFilteredShipments(String query) {
 
 Future<void> fetchShipmentsFromAPI() async {
   final String shipmentId = '6232ce73b5b181a9e9d93643';
-  final String backendUrl = 'http://192.168.29.43:4000/api/v1/shipments';
+  final String backendUrl = 'http://192.168.29.11:4000/api/v1/shipments';
   final sharedPreferences = await SharedPreferences.getInstance();
  final String? token = sharedPreferences.getString('token'); // Use String? instead of String
 
@@ -57,7 +57,7 @@ print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
       final response = await http.get(
         Uri.parse(backendUrl),
         headers: {
-           'Authorization': 'Bearer ', // Use the token directly
+           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoic3VyYWouc3VicmFtb25pYW1AaG9uZXl3ZWxsLmNvbSIsImlkIjoiNjIyNzAyM2IzMDE3NDhmZTk4YTk1NGYwIiwidGVuYW50TmFtZSI6IkhvbmV5d2VsbEludGVybmF0aW9uYWwoSW5kaWEpUHZ0THRkIiwiaWF0IjoxNzAwNDgyMjMxLCJleHAiOjE3MDA1Njg2MzF9.WhcWJuxvTkcx5TOaR9BpgPPbeJKcSEHNKpgAoSRkg_E', // Use the token directly
         // 'Authorization': 'Bearer $token',
 
         }
