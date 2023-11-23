@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mdi/mdi.dart';
+
 class AddDevicePage extends StatefulWidget {
   final String deviceUuid;
   AddDevicePage({required this.deviceUuid});
@@ -12,15 +14,57 @@ class AddDevicePage extends StatefulWidget {
   _AddDevicePageState createState() => _AddDevicePageState();
 }
 
+enum BatteryLevel {
+  low,
+  mediumLow,
+  medium,
+  mediumHigh,
+  high,
+}
+
+BatteryLevel getBatteryLevel(int percentage) {
+  if (percentage <= 20) {
+    return BatteryLevel.low;
+  } else if (percentage <= 50) {
+    return BatteryLevel.mediumLow;
+  } else if (percentage <= 75) {
+    return BatteryLevel.medium;
+  } else if (percentage <= 95) {
+    return BatteryLevel.mediumHigh;
+  } else {
+    return BatteryLevel.high;
+  }
+}
+
+Icon getBatteryIcon(int percentage) {
+  Color iconColor;
+
+  switch (getBatteryLevel(percentage)) {
+    case BatteryLevel.low:
+      iconColor = Colors.red;
+      return Icon(MdiIcons.batteryAlert, color: iconColor);
+    case BatteryLevel.mediumLow:
+      iconColor = Colors.green;
+      return Icon(MdiIcons.battery20, color: iconColor);
+    case BatteryLevel.medium:
+      iconColor = Colors.yellow;
+      return Icon(MdiIcons.battery50, color: iconColor);
+    case BatteryLevel.mediumHigh:
+      iconColor = Colors.yellow;
+      return Icon(MdiIcons.battery80, color: iconColor);
+    case BatteryLevel.high:
+      iconColor = Colors.blue;
+      return Icon(MdiIcons.battery, color: iconColor);
+  }
+}
+
 class _AddDevicePageState extends State<AddDevicePage> {
   int percentage = 20;
    String selectedSensor = '';
   bool isActive = false;
-  List<bool> sensorSwitches =
-
-      List.generate(14, (index) => true);
-      
-      
+  bool isSensor=false;
+  List<String> sensorNames = [];
+  List<bool> sensorStates = [];    
        @override
   void initState() {
     super.initState();
@@ -29,6 +73,11 @@ class _AddDevicePageState extends State<AddDevicePage> {
    fetchData(token);
   });
 }
+ void updatePercentage(int newPercentage) {
+    setState(() {
+      percentage = newPercentage;
+    });
+  }
   
 Future<String?> loadSessionData() async {
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -48,7 +97,7 @@ Future<void> fetchData(String ?token) async {
  final response = await http.get(
         Uri.parse(backendUrl),
          headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDA2NTg0NzUsImV4cCI6MTcwMDc0NDg3NX0.Ov2c1nq_4NsEg5q53zmjbkFnQv86fqay2dKzgj4o5U0', // Use the token directly
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDA3MTc4MzEsImV4cCI6MTcwMDgwNDIzMX0.7hrIZ52s3zP0gzRGen4dFKrPA16pki8HR4bpXWWQO_c', // Use the token directly
        // 'Authorization': 'Bearer $token',
 
          }
@@ -57,19 +106,33 @@ Future<void> fetchData(String ?token) async {
       print('response, $response');
       print("Response Body: ${response.body}");
        print(response.statusCode == 200);
-//     // Replace with your API endpoint
-//     // if (response.statusCode == 200) {
-//     //   final List<dynamic> data = json.decode(response.body);
-//     //   // Update your sensorSwitches list with the data received from the API
-//     //   setState(() {
-//     //     // Assuming your API response is a list of booleans
-//     //     sensorSwitches = List.generate(data.length, (index) => data[index]);
-//     //   });
-//     // } else {
-//     //   throw Exception('Failed to load data');
-//     // }
+   
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+     
+      List<String> names = data.map((sensor) => sensor['sensorName']).cast<String>().toList();
+
+  
+    setState(() {
+      //sensorSwitches = List.generate(data.length, (index) => data[index]['assign']);
+      sensorNames = names;
+       sensorStates = List.generate(sensorNames.length, (index) => false);
+    });
+
+    
+    } else {
+      throw Exception('Failed to load data');
+    }
    }
 
+void ResetDeviceInfo(int index, String sensorName, bool switchValue, bool isActive) {
+  print('Index: $index, Sensor Name: $sensorName, Switch Value: $switchValue, isActive: $isActive');
+}
+
+
+void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isActive) {
+  print('Index: $index, Sensor Name: $sensorName, Switch Value: $switchValue, isActive: $isActive');
+}
 
   @override
   Widget build(BuildContext context) {
@@ -107,82 +170,30 @@ Future<void> fetchData(String ?token) async {
               _buildSensorHeading(),
               SizedBox(height: 20), // Sensor heading row
               _buildManualSection(),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildActionButton("Reset Device", () {
-                      print("Reset Device button pressed");
-                      // Implement the logic for Reset Device button
-                      // You can perform actions like calling the API or resetting the device here
-                    }),
-                  ),
-                  SizedBox(width: 15.0), // Add spacing between buttons
-                  Expanded(
-                    child: _buildActionButton("Update Firmware", () {
-                      print("Update Firmware button pressed");
-                      // Implement the logic for Update Firmware button
-                      // You can perform actions like calling the API or updating firmware here
-                    }),
-                  ),
-                ],
-              ), // Manual section with sensor tags and switches
+             Row(
+  children: [
+    Expanded(
+      child: _buildActionButton("Reset Device", (int index, String sensorName, bool switchValue,bool isActive) {
+        // Your logic for the "Reset Device" button
+
+      }),
+    ),
+    SizedBox(width: 15.0), // Add spacing between buttons
+    Expanded(
+      child: _buildActionButton("Update Firmware", (int index, String sensorName, bool switchValue ,bool isActive) {
+        // Your logic for the "Update Firmware" button
+        //printUpdateFirmwareInfo(index, sensorName, switchValue);
+      }),
+    ),
+  ],
+)
+// Manual section with sensor tags and switches
             ],
           ),
         ),
       ),
     );
   }
-
-
-
-
-void _handleSensorSelection(String sensorName) {
-  int selectedSensorIndex = int.parse(sensorName.split(' ')[1]) - 1; // Extract the sensor index
-  bool currentSwitchValue = sensorSwitches[selectedSensorIndex];
-print(sensorName);
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Sensor: $sensorName"),
-        content: Row(
-          children: [
-            Text("Switch "),
-            Switch(
-              value: currentSwitchValue,
-              onChanged: (value) {
-                setState(() {
-                  // Update the switch value based on user interaction
-                  sensorSwitches[selectedSensorIndex] = value;
-                  print( sensorSwitches[selectedSensorIndex] );
-                });
-              },
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text("Cancel"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            child: Text("Save"),
-            onPressed: () {
-              // Perform any additional actions if needed
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-
-
-
 
 
 
@@ -217,7 +228,39 @@ print(sensorName);
     },
   );
 }
-
+Future<void> _showSwitchSensorConfirmationDialog(String label, bool newValue, Function(bool) onChanged) async {
+  print(newValue);
+  print("qqqqqqqqqqqqqqqqqqqqqq");
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(newValue ? "Enable $label?" : "Disable $label?"),
+        content: Text(newValue
+            ? "Do you want to enable the switch?"
+            : "Do you want to disable the switch?"),
+        actions: <Widget>[
+          TextButton(
+            child: Text("No"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text("Yes"),
+            onPressed: () {
+              onChanged(newValue);
+              print(onChanged);
+              print("rrrrrrrrrrrrrrrrrrr");
+              Navigator.of(context).pop();
+              print("on chanagerdddd,$onChanged");
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 Widget _buildSwitch(String label, bool value) {
   return Row(
     children: [
@@ -231,42 +274,50 @@ Widget _buildSwitch(String label, bool value) {
     ],
   );
 }
-Widget _buildSwitchSensor(String label, bool value) {
+Widget _buildSwitchSensor(String label, bool value, Function(bool) onChanged) {
+  print(label);
+  print(onChanged);
+  print(value);
+  print("eeeeeeeeeeeeeeeeeeeeeeeeee");
   return Row(
     children: [
       Text(label),
       Switch(
         value: value,
-        onChanged: (value) {
-         // _showSwitchStateDialog(value);
+        onChanged: (newValue) {
+          _showSwitchSensorConfirmationDialog(label, newValue, onChanged);
         },
       ),
     ],
   );
 }
-  Widget _buildProgressIndicator() {
-    return Column(
-      children: <Widget>[
-        // Single Row
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          textBaseline: TextBaseline.alphabetic,
-          children: [
-            _buildDeviceInfoRow1('Device UUID: ', widget.deviceUuid),
-            Row(
-              children: [
-                _buildNetworkWidget(),
-                if (percentage == 20) Center(child: Icon(MdiIcons.battery)),
-                SizedBox(width: 8.0), // Adjust the width as needed
-                Text('$percentage%', style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+
+
+
+ Widget _buildProgressIndicator() {
+  return Column(
+    children: <Widget>[
+      // Single Row
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Assuming _buildDeviceInfoRow1 is a function you've defined elsewhere
+          _buildDeviceInfoRow1('Device UUID: ', widget.deviceUuid),
+          Row(
+            children: [
+              _buildNetworkWidget(),
+              getBatteryIcon(percentage),
+              SizedBox(width: 5.0),
+              Text('$percentage%', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 
   Widget _buildDeviceInfoRow1(String label, dynamic trailing) {
     return Padding(
@@ -330,48 +381,66 @@ Widget _buildSwitchSensor(String label, bool value) {
     );
   }
 
-  Widget _buildManualSection() {
-    return SingleChildScrollView(
-      child: Container(
-        width: 500,
-        height: 250,
-        child: ListView.builder(
-          itemCount: sensorSwitches.length + 1, // +1 for the Divider
-          itemBuilder: (BuildContext context, int index) {
-            if (index == sensorSwitches.length) {
-              return Divider(); // Divider after the last sensor
-            } else {
-              return _buildManualItem('Sensor ${index + 1}', sensorSwitches[index]);
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton(String label, VoidCallback onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      child: Text(label, style: TextStyle(fontSize: 18.0)), // Customize the text style
-    );
-  }
-
-  Widget _buildManualItem(String sensorTag, bool switchValue) {
-    return GestureDetector(
-      onTap: () {
-        _handleSensorSelection(sensorTag);
+Widget _buildManualSection() {
+  return Container(
+    width: 500,
+    height: 250,
+    child: ListView.builder(
+      itemCount: sensorNames.length,
+      itemBuilder: (BuildContext context, int index) {
+        return _buildManualItem(index, sensorNames[index], sensorStates[index]);
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(sensorTag),
-            _buildSwitchSensor('', switchValue),
-          ],
+    ),
+  );
+}
+Widget _buildActionButton(String label, void Function(int, String, bool, bool) onPressed) {
+  return ElevatedButton(
+    onPressed: () {
+      // Get the index of the sensor you want to reset (you can replace 0 with the desired index)
+      int indexToReset = 0;
+      // Call your logic here
+      onPressed(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
+      // Print index, sensor name, switch value, and isActive
+      ResetDeviceInfo(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
+      onPressed(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
+      UpdateFirmwareInfo(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
+    },
+    child: Text(label, style: TextStyle(fontSize: 18.0)),
+  );
+}
+
+
+
+
+Widget _buildManualItem(int index, String sensorTag, bool isSensorActive) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: GestureDetector(
+            onTap: () {
+           //  handleSensorClick(index, sensorTag, isSensorActive);
+            },
+            child: Text(
+              sensorTag,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ),
-      ),
-    );
-  }
+        _buildSwitchSensor('', isSensorActive, (newValue) {
+          // Update the switch state in the list when it changes
+          setState(() {
+            sensorStates[index] = newValue;
+          });
+        //  handleSensorClick(index, sensorTag, newValue);
+        }),
+        // You can add additional widgets here if needed
+      ],
+    ),
+  );
+}
 
 }

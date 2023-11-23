@@ -85,7 +85,6 @@ print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
           setState(() {
             allShipments = shipments;
             filteredShipments = List.from(allShipments);
-            print("Response Body 88: ${filteredShipments}");
           });
 
         } catch (e) {

@@ -78,18 +78,24 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 12,
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    prefixIcon: Icon(Icons.search),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (value) {},
                 ),
               ),
-              onChanged: (value) {},
             ),
           ),
           // Add your ListView.builder here
@@ -126,4 +132,10 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: NotificationPage(),
+  ));
 }
