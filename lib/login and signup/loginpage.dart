@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
     print("login");
 
     // final String apiUrl = 'http://10.0.2.2:4000/api/v1/login';
-    final String apiUrl = loginApiUrl;
+    final String apiUrl = login;
     //print("apiUrl: $apiUrl");
     final Map<String, String> requestBody = {
       'email': _usernameController.text,

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +71,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
   }
 
   Future<void> fetchShipmentsFromAPI(String? token) async {
-    final String backendUrl = 'http://192.168.29.6:4000/api/v1/shipments';
+    final String backendUrl = shipment;
 
     print('Token iiiiiiiiiiiiiiiiiiiiii: $token');
 
