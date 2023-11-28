@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mdi/mdi.dart';
+import 'package:mobileapp/Dashboard/Setting/ResetDevice.dart';
 
 class AddDevicePage extends StatefulWidget {
   final String deviceUuid;
@@ -97,7 +99,7 @@ Future<void> fetchData(String ?token) async {
  final response = await http.get(
         Uri.parse(backendUrl),
          headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDA3MTc4MzEsImV4cCI6MTcwMDgwNDIzMX0.7hrIZ52s3zP0gzRGen4dFKrPA16pki8HR4bpXWWQO_c', // Use the token directly
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDEwNjM0MDgsImV4cCI6MTcwMTE0OTgwOH0.XuQS6VK25Bxjk4tisoP-HtXrF928bcTiuSfsvlRf7Gs', // Use the token directly
        // 'Authorization': 'Bearer $token',
 
          }
@@ -117,7 +119,7 @@ Future<void> fetchData(String ?token) async {
       //sensorSwitches = List.generate(data.length, (index) => data[index]['assign']);
       sensorNames = names;
        sensorStates = List.generate(sensorNames.length, (index) => false);
-    });
+    }); 
 
     
     } else {
@@ -125,14 +127,46 @@ Future<void> fetchData(String ?token) async {
     }
    }
 
-void ResetDeviceInfo(int index, String sensorName, bool switchValue, bool isActive) {
-  print('Index: $index, Sensor Name: $sensorName, Switch Value: $switchValue, isActive: $isActive');
+void ResetDeviceInfo(int index, String sensorName, bool isSensorActive, bool isActive) {
+  print("Sensor clicked: $sensorName, SensorState: $isSensorActive, State: $isActive");
+
+  print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+
+  // Uncomment the Navigator code when you want to navigate to the ResetDevice screen
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ResetDevice(
+        indexToReset: index,
+        sensorName: sensorName,
+        sensorState: isSensorActive,
+        isActive1: isActive,
+      ),
+    ),
+  );
 }
 
 
 void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isActive) {
-  print('Index: $index, Sensor Name: $sensorName, Switch Value: $switchValue, isActive: $isActive');
+  print('Update Firmware clicked. Sensor Name: $sensorName, Switch Value: $switchValue, IsActive: $isActive');
+
+  // Add your logic for updating firmware here
+  // You can use the parameters (index, sensorName, switchValue, isActive) to perform the necessary actions
+
+  // For example, uncomment and modify the following code when you want to navigate to the UpdateFirmware screen
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(
+  //     builder: (context) => UpdateFirmware(
+  //       indexToUpdate: index,
+  //       sensorName: sensorName,
+  //       switchValue: switchValue,
+  //       isActive: isActive,
+  //     ),
+  //   ),
+  // );
 }
+
 
   @override
   Widget build(BuildContext context) {
@@ -172,12 +206,20 @@ void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isA
               _buildManualSection(),
              Row(
   children: [
-    Expanded(
-      child: _buildActionButton("Reset Device", (int index, String sensorName, bool switchValue,bool isActive) {
-        // Your logic for the "Reset Device" button
+  Expanded(
+  child: _buildActionButton("Reset Device", (int index, String sensorName, bool isSensorActive, bool isActive)
+  
+   {
+    // Your logic for the "Reset Device" button
+    print("Index: $index, SensorName: $sensorName, IsSensorActive: $isSensorActive, IsActive: $isActive");
 
-      }),
-    ),
+    // Call your ResetDeviceInfo function or any other logic with these values
+    
+
+    print(sensorName);
+  }),
+),
+
     SizedBox(width: 15.0), // Add spacing between buttons
     Expanded(
       child: _buildActionButton("Update Firmware", (int index, String sensorName, bool switchValue ,bool isActive) {
@@ -192,6 +234,41 @@ void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isA
           ),
         ),
       ),
+
+   bottomNavigationBar: BottomNavigationBar(
+  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
+  showSelectedLabels: false, // Selected label ko hide karein
+  showUnselectedLabels: false, // Unselected labels ko hide karein
+  items: const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.window),
+      label: 'Window',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.local_shipping),
+      label: 'Shipment',
+    ),
+     BottomNavigationBarItem(
+      icon: Icon(Icons.devices_other),
+      label: 'Add_Devices',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.notifications),
+      label: 'Notifications',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'User Profile',
+    ),
+  ],
+ // onTap: _onItemTapped,
+),
+
+
+
+
+
+
     );
   }
 
@@ -261,6 +338,26 @@ Future<void> _showSwitchSensorConfirmationDialog(String label, bool newValue, Fu
     },
   );
 }
+Widget _buildActionButton(String label, void Function(int, String, bool, bool) onPressed) {
+  return ElevatedButton(
+    onPressed: () {
+      int index = sensorNames.indexOf(selectedSensor);
+      String sensorName = selectedSensor;
+      bool isSensorActive = sensorStates[index];
+      onPressed(index, sensorName, isSensorActive, isActive);
+      if (label == "Reset Device") {
+        ResetDeviceInfo(index, sensorName, isSensorActive, isActive);
+      } else if (label == "Update Firmware") {
+        UpdateFirmwareInfo(index, sensorName, isSensorActive, isActive);
+      }
+    },
+    child: Text(label, style: TextStyle(fontSize: 18.0)),
+  );
+}
+
+
+
+
 Widget _buildSwitch(String label, bool value) {
   return Row(
     children: [
@@ -380,7 +477,6 @@ Widget _buildSwitchSensor(String label, bool value, Function(bool) onChanged) {
       ),
     );
   }
-
 Widget _buildManualSection() {
   return Container(
     width: 500,
@@ -388,59 +484,79 @@ Widget _buildManualSection() {
     child: ListView.builder(
       itemCount: sensorNames.length,
       itemBuilder: (BuildContext context, int index) {
-        return _buildManualItem(index, sensorNames[index], sensorStates[index]);
+        print("connnnnnnnnnnnnnnnnnnnn,$context");
+        print(sensorNames[index]);
+        print(sensorStates[index]);
+        print(sensorNames[index]);
+        return _buildManualItem(index, sensorNames[index], sensorStates[index], sensorNames[index]);
       },
     ),
   );
 }
-Widget _buildActionButton(String label, void Function(int, String, bool, bool) onPressed) {
-  return ElevatedButton(
-    onPressed: () {
-      // Get the index of the sensor you want to reset (you can replace 0 with the desired index)
-      int indexToReset = 0;
-      // Call your logic here
-      onPressed(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
-      // Print index, sensor name, switch value, and isActive
-      ResetDeviceInfo(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
-      onPressed(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
-      UpdateFirmwareInfo(indexToReset, sensorNames[indexToReset], sensorStates[indexToReset], isActive);
+
+
+Widget _buildManualItem1(int index, String sensorName, bool sensorState) {
+  return ListTile(
+    title: Text(sensorName),
+    subtitle: Text('State: $sensorState'),
+    onTap: () {
+      // Handle the click event for the sensor
+   //   _onSensorClick(index, sensorName, sensorState);
+      
     },
-    child: Text(label, style: TextStyle(fontSize: 18.0)),
   );
 }
 
 
-
-
-Widget _buildManualItem(int index, String sensorTag, bool isSensorActive) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: GestureDetector(
-            onTap: () {
-           //  handleSensorClick(index, sensorTag, isSensorActive);
-            },
+Widget _buildManualItem(int index, String sensorTag, bool isSensorActive, String sensorName) {
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        selectedSensor = sensorName; // Set the selected sensor
+      });
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 2,
             child: Text(
               sensorTag,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-        ),
-        _buildSwitchSensor('', isSensorActive, (newValue) {
-          // Update the switch state in the list when it changes
-          setState(() {
-            sensorStates[index] = newValue;
-          });
-        //  handleSensorClick(index, sensorTag, newValue);
-        }),
-        // You can add additional widgets here if needed
-      ],
+          _buildSwitchSensor('', isSensorActive, (newValue) {
+            setState(() {
+              sensorStates[index] = newValue;
+            });
+          }),
+        ],
+      ),
     ),
   );
 }
+
+
+// void _onSensorClick(int index, String sensorName, bool sensorState,    bool isActive) {
+//   print("Sensor clicked: $sensorName, SensorState: $sensorState,  State:$isActive");
+
+
+
+
+//   // Navigate to ResetDevice screen
+//   Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => ResetDevice(
+//         indexToReset: index,
+//         sensorName: sensorName,
+//         // Pass additional parameters if needed
+//       ),
+//     ),
+//   );
+// }
+
 
 }

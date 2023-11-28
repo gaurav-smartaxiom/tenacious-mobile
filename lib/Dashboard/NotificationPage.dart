@@ -95,7 +95,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   ),
                   onChanged: (value) {},
                 ),
-              ),
+              ),  
             ),
           ),
           // Add your ListView.builder here
