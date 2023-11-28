@@ -1,5 +1,7 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
   List<Shipment> allShipments = [];
   List<Shipment> filteredShipments = [];
    int _selectedIndex = 0;
+  
  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -80,7 +83,7 @@ Navigator.of(context).push(MaterialPageRoute(
         final response = await http.get(
           Uri.parse(backendUrl),
           headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDEwNjM0MDgsImV4cCI6MTcwMTE0OTgwOH0.XuQS6VK25Bxjk4tisoP-HtXrF928bcTiuSfsvlRf7Gs',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoic3VyYWouc3VicmFtb25pYW1AaG9uZXl3ZWxsLmNvbSIsImlkIjoiNjIyNzAyM2IzMDE3NDhmZTk4YTk1NGYwIiwidGVuYW50TmFtZSI6IkhvbmV5d2VsbEludGVybmF0aW9uYWwoSW5kaWEpUHZ0THRkIiwiaWF0IjoxNzAxMTYxNzg5LCJleHAiOjE3MDEyNDgxODl9.jXQC02IYQwvQ92b8_eMazfp0saoS4u4g_iCZ51JTlvc',
           },
         );
 
@@ -233,20 +236,23 @@ Navigator.of(context).push(MaterialPageRoute(
 ),
 
 
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final shipment = filteredShipments[index];
-                return GestureDetector(
-                  onTap: () {
-                    showShipmentDetails(shipment);
-                  },
-                  child: ShipmentInfo(shipment: shipment),
-                );
-              },
-              childCount: filteredShipments.length,
-            ),
-          ),
+   SliverList(
+  delegate: SliverChildBuilderDelegate(
+    (BuildContext context, int index) {
+      final shipment = filteredShipments[index];
+      final NewShipmentType = shipment.shipmentType; // Corrected line
+      return GestureDetector(
+        onTap: () {
+          showShipmentDetails(shipment);
+        },
+        child: ShipmentInfo(shipment: shipment, shipmentType: NewShipmentType),
+      );
+    },
+    childCount: filteredShipments.length,
+  ),
+),
+
+
 
 
 
@@ -318,7 +324,11 @@ class Shipment {
   final String deliveryDate;
   final double length;
   final List<Tracker> trackers;
-
+final bool isMovable;
+  
+  
+  
+  
   Shipment({
     required this.id,
     required this.shipmentName,
@@ -331,6 +341,7 @@ class Shipment {
     required this.deliveryDate,
     required this.trackers,
     required this.length,
+    required this.isMovable,
   });
 
   factory Shipment.fromJson(Map<String, dynamic> json) {
@@ -345,6 +356,7 @@ class Shipment {
       final String destinationLocation = json['destinationLocation'] as String? ?? '';
       final String deliveryDate = json['deliveryDate'] as String? ?? '';
       final double length = (json['length'] as num?)?.toDouble() ?? 0;
+       final bool isMovable = json['isMovable'] as bool? ?? false; 
       final List<dynamic>? trackersData = json['trackers'] as List<dynamic>?;
 
       if (id.isEmpty || shipmentName.isEmpty || shipmentDesc.isEmpty || shipmentType.isEmpty || status.isEmpty) {
@@ -352,6 +364,7 @@ class Shipment {
       }
 
       List<Tracker> trackers = [];
+     print("shipmenTyep----------------------------------------,$shipmentType");
 
       if (trackersData != null) {
         List<String> deviceUUIDs = [];
@@ -389,6 +402,7 @@ class Shipment {
         deliveryDate: deliveryDate,
         trackers: trackers,
         length: length,
+        isMovable: isMovable
       );
     } catch (e) {
       throw FormatException("Error parsing JSON: $e");
@@ -509,66 +523,88 @@ Map<String, dynamic> trackerToJson(Tracker tracker) {
     'deviceUUID': tracker.deviceUUID,
   };
 }
-
 class ShipmentInfo extends StatelessWidget {
   final Shipment shipment;
+  final String shipmentType; // Corrected line
 
-  ShipmentInfo({required this.shipment});
+  ShipmentInfo({required this.shipment, required this.shipmentType});
 
   @override
   Widget build(BuildContext context) {
-return Card(
-  margin: EdgeInsets.all(1),
-  child: ListTile(
-    leading: Image.asset(
-      'assets/shipment_icon.png',
-      width: 45,
-      height: 45,
-    ), 
-    
-    
-    // Replace with your custom icon
-    title: Row(
-      children: [
-        Expanded(
-          child: Text('${shipment.shipmentName}', style: TextStyle(fontSize: 20),),
-        ),
-        Text('${shipment.shipmentType}'),
-        
-      ],
-    ),
-    subtitle: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return Card(
+      margin: EdgeInsets.all(1),
+      child: ListTile(
+        title: Row(
           children: [
-            Text("DeviceUUID: ", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('${shipment.trackers.isNotEmpty ? shipment.trackers.last.deviceUUID ?? 'N/A' : 'N/A'}'),
+ Icon(
+  (() {
+    print("shipmentType----------------------------------------, $shipmentType");
+
+    if (shipmentType == 'Movable') {
+      print("if");
+      // Your logic for shipmentType being 'Movable'
+      return Icons.local_shipping;
+    } else {
+      print("else");
+      // Your logic for shipmentType not being 'Movable'
+      return Icons.location_on;
+    }
+  })(),
+  size: 30,
+),
+
+            SizedBox(width: 8, height: 20),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  '${shipment.shipmentName}',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ),
+            Text('${shipment.shipmentType}'),
           ],
         ),
-        Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Last Connected: ", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(
-              '${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}',
-             // textAlign: TextAlign.left,
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text("DeviceUUID:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text(
+                    '${shipment.trackers.isNotEmpty ? shipment.trackers.last.deviceUUID ?? 'N/A' : 'N/A'}',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text("Last Connected:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(width: 3),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text(
+                    '${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        
-      ],
-    ),
-  ),
-);
-
-
-
-
-
-
-
-
-
+      ),
+    );
   }
 }
+
+
