@@ -25,35 +25,34 @@ class ShipmentPage extends StatefulWidget {
 class _ShipmentPageState extends State<ShipmentPage> {
   List<Shipment> allShipments = [];
   List<Shipment> filteredShipments = [];
-   int _selectedIndex = 0;
- void _onItemTapped(int index) {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-if (index == 0) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
+      if (index == 0) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => WindowPage()));
       } else if (index == 1) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ShipmentPage()));
       } else if (index == 4) {
         // Navigate to UserProfilePage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
-      }
-      else if(index==2)
-      
-      {
-Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
-));
- // Pass the device UUID
-
-
-
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => NotificationPage()));
+      } else if (index == 2) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+        ));
+        // Pass the device UUID
       }
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -71,24 +70,28 @@ Navigator.of(context).push(MaterialPageRoute(
   }
 
   Future<void> fetchShipmentsFromAPI(String? token) async {
-    final String backendUrl = 'http://192.168.29.11:4000/api/v1/shipments';
+    final String backendUrl = 'http://192.168.29.6:4000/api/v1/shipments';
 
-    print('Token: "$token"');
+    print('Token iiiiiiiiiiiiiiiiiiiiii: $token');
 
     if (token != null) {
       try {
         final response = await http.get(
           Uri.parse(backendUrl),
           headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDEwNjM0MDgsImV4cCI6MTcwMTE0OTgwOH0.XuQS6VK25Bxjk4tisoP-HtXrF928bcTiuSfsvlRf7Gs',
+            'Authorization': 'Bearer $token',
           },
         );
 
         print('response: $response');
-
+        print('response status');
+        print(response.statusCode);
+        print('response status');
+        // return;
         if (response.statusCode == 200) {
           try {
-            final Map<String, dynamic> responseBody = json.decode(response.body);
+            final Map<String, dynamic> responseBody =
+                json.decode(response.body);
             final List<dynamic> apiShipments = responseBody['items'];
 
             final List<Shipment> shipments = apiShipments
@@ -136,8 +139,9 @@ Navigator.of(context).push(MaterialPageRoute(
         filteredShipments = List.from(allShipments);
       } else {
         filteredShipments = allShipments
-            .where((shipment) =>
-                shipment.shipmentName.toLowerCase().contains(query.toLowerCase()))
+            .where((shipment) => shipment.shipmentName
+                .toLowerCase()
+                .contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -145,12 +149,13 @@ Navigator.of(context).push(MaterialPageRoute(
 
   void selectShipment(Shipment shipment) {
     print('Selected Shipment Name: ${shipment.shipmentName}');
-      Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AddShipmentPage(shipmentName: shipment.shipmentName),
-    ),
-  );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AddShipmentPage(shipmentName: shipment.shipmentName),
+      ),
+    );
   }
 
   void showShipmentDetails(Shipment shipment) {
@@ -195,44 +200,44 @@ Navigator.of(context).push(MaterialPageRoute(
       ),
       body: CustomScrollView(
         slivers: <Widget>[
-         SliverAppBar(
-  pinned: true,
-  centerTitle: true,
-  floating: false,
-  flexibleSpace: Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-    ),
-    child: Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0), // Adjust the value as needed
-            border: Border.all(color: Colors.white), // Border color
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'SearchShipment..',
-                prefixIcon: Icon(Icons.search),
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                border: InputBorder.none, // Remove the default border
+          SliverAppBar(
+            pinned: true,
+            centerTitle: true,
+            floating: false,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
               ),
-              onChanged: (value) {
-                performSearch(value);
-              },
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          20.0), // Adjust the value as needed
+                      border: Border.all(color: Colors.white), // Border color
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'SearchShipment..',
+                          prefixIcon: Icon(Icons.search),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 12),
+                          border: InputBorder.none, // Remove the default border
+                        ),
+                        onChanged: (value) {
+                          performSearch(value);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    ),
-  ),
-),
-
-
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
@@ -247,50 +252,45 @@ Navigator.of(context).push(MaterialPageRoute(
               childCount: filteredShipments.length,
             ),
           ),
-
-
-
-
-
-
-          
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-  showSelectedLabels: false, // Selected label ko hide karein
-  showUnselectedLabels: false, // Unselected labels ko hide karein
-  items: const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.window),
-      label: 'Window',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.local_shipping),
-      label: 'Shipment',
-    ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.devices_other),
-      label: 'Add_Devices',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'User Profile',
-    ),
-  ],
-  currentIndex: _selectedIndex,
-  selectedItemColor: Colors.blue,
-  onTap: _onItemTapped,
-),
+        type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
+        showSelectedLabels: false, // Selected label ko hide karein
+        showUnselectedLabels: false, // Unselected labels ko hide karein
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.window),
+            label: 'Window',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_shipping),
+            label: 'Shipment',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.devices_other),
+            label: 'Add_Devices',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'User Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
+
 String _formatLastConnected(int timestamp) {
-  DateTime lastConnected = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  DateTime lastConnected =
+      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
   Duration difference = DateTime.now().difference(lastConnected);
 
   if (difference.inDays > 365) {
@@ -300,11 +300,10 @@ String _formatLastConnected(int timestamp) {
     int months = difference.inDays ~/ 30;
     return '$months ${months > 1 ? 'months' : 'month'} ago';
   } else {
-    return timeago.format(lastConnected); // Use the timeago package for a human-readable format
+    return timeago.format(
+        lastConnected); // Use the timeago package for a human-readable format
   }
 }
-
-
 
 class Shipment {
   final String id;
@@ -342,12 +341,17 @@ class Shipment {
       final String status = json['status'] as String? ?? '';
       final String pickupLocation = json['pickupLocation'] as String? ?? '';
       final String pickupDate = json['pickupDate'] as String? ?? '';
-      final String destinationLocation = json['destinationLocation'] as String? ?? '';
+      final String destinationLocation =
+          json['destinationLocation'] as String? ?? '';
       final String deliveryDate = json['deliveryDate'] as String? ?? '';
       final double length = (json['length'] as num?)?.toDouble() ?? 0;
       final List<dynamic>? trackersData = json['trackers'] as List<dynamic>?;
 
-      if (id.isEmpty || shipmentName.isEmpty || shipmentDesc.isEmpty || shipmentType.isEmpty || status.isEmpty) {
+      if (id.isEmpty ||
+          shipmentName.isEmpty ||
+          shipmentDesc.isEmpty ||
+          shipmentType.isEmpty ||
+          status.isEmpty) {
         throw FormatException("Invalid data in JSON");
       }
 
@@ -373,7 +377,7 @@ class Shipment {
             print('DeviceUUID is null for tracker: ${tracker.id}');
           }
           tracker.deviceUUID = deviceUUID; // Assign device UUID to the tracker
-    trackers.add(tracker);
+          trackers.add(tracker);
         }
       }
 
@@ -517,58 +521,52 @@ class ShipmentInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-return Card(
-  margin: EdgeInsets.all(1),
-  child: ListTile(
-    leading: Image.asset(
-      'assets/shipment_icon.png',
-      width: 45,
-      height: 45,
-    ), 
-    
-    
-    // Replace with your custom icon
-    title: Row(
-      children: [
-        Expanded(
-          child: Text('${shipment.shipmentName}', style: TextStyle(fontSize: 20),),
+    return Card(
+      margin: EdgeInsets.all(1),
+      child: ListTile(
+        leading: Image.asset(
+          'assets/shipment_icon.png',
+          width: 45,
+          height: 45,
         ),
-        Text('${shipment.shipmentType}'),
-        
-      ],
-    ),
-    subtitle: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+
+        // Replace with your custom icon
+        title: Row(
           children: [
-            Text("DeviceUUID: ", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('${shipment.trackers.isNotEmpty ? shipment.trackers.last.deviceUUID ?? 'N/A' : 'N/A'}'),
+            Expanded(
+              child: Text(
+                '${shipment.shipmentName}',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            Text('${shipment.shipmentType}'),
           ],
         ),
-        Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Last Connected: ", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(
-              '${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}',
-             // textAlign: TextAlign.left,
+            Row(
+              children: [
+                Text("DeviceUUID: ",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                    '${shipment.trackers.isNotEmpty ? shipment.trackers.last.deviceUUID ?? 'N/A' : 'N/A'}'),
+              ],
+            ),
+            Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Last Connected: ",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  '${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}',
+                  // textAlign: TextAlign.left,
+                ),
+              ],
             ),
           ],
         ),
-        
-      ],
-    ),
-  ),
-);
-
-
-
-
-
-
-
-
-
+      ),
+    );
   }
 }
