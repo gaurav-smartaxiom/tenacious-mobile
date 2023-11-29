@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mdi/mdi.dart';
 import 'package:mobileapp/Dashboard/Setting/ResetDevice.dart';
+import 'package:mobileapp/Dashboard/Setting/shipmentss.dart';
 
 class AddDevicePage extends StatefulWidget {
   final String deviceUuid;
@@ -95,13 +96,10 @@ Future<String?> loadSessionData() async {
 
 Future<void> fetchData(String ?token) async {
   final String backendUrl = 'http://192.168.29.11:4000/api/v1/sensors';
- print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
- final response = await http.get(
+  final response = await http.get(
         Uri.parse(backendUrl),
          headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDEwNjM0MDgsImV4cCI6MTcwMTE0OTgwOH0.XuQS6VK25Bxjk4tisoP-HtXrF928bcTiuSfsvlRf7Gs', // Use the token directly
-       // 'Authorization': 'Bearer $token',
-
+           'Authorization': 'Bearer $token',
          }
       );
 
@@ -154,17 +152,14 @@ void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isA
   // You can use the parameters (index, sensorName, switchValue, isActive) to perform the necessary actions
 
   // For example, uncomment and modify the following code when you want to navigate to the UpdateFirmware screen
-  // Navigator.push(
-  //   context,
-  //   MaterialPageRoute(
-  //     builder: (context) => UpdateFirmware(
-  //       indexToUpdate: index,
-  //       sensorName: sensorName,
-  //       switchValue: switchValue,
-  //       isActive: isActive,
-  //     ),
-  //   ),
-  // );
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ShipmentDetailsPage(
+      
+      ),
+    ),
+  );
 }
 
 
@@ -389,9 +384,7 @@ Widget _buildSwitchSensor(String label, bool value, Function(bool) onChanged) {
   );
 }
 
-
-
- Widget _buildProgressIndicator() {
+Widget _buildProgressIndicator() {
   return Column(
     children: <Widget>[
       // Single Row
@@ -404,7 +397,11 @@ Widget _buildSwitchSensor(String label, bool value, Function(bool) onChanged) {
           Row(
             children: [
               _buildNetworkWidget(),
-              getBatteryIcon(percentage),
+              SizedBox(width: 5.0),
+              Transform.rotate(
+                angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
+                child: getBatteryIcon(percentage),
+              ),
               SizedBox(width: 5.0),
               Text('$percentage%', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ],
@@ -414,6 +411,11 @@ Widget _buildSwitchSensor(String label, bool value, Function(bool) onChanged) {
     ],
   );
 }
+
+
+
+
+
 
 
   Widget _buildDeviceInfoRow1(String label, dynamic trailing) {

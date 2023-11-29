@@ -1,5 +1,7 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
@@ -26,34 +28,36 @@ class ShipmentPage extends StatefulWidget {
 class _ShipmentPageState extends State<ShipmentPage> {
   List<Shipment> allShipments = [];
   List<Shipment> filteredShipments = [];
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
+   int _selectedIndex = 0;
+  
+ void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-      if (index == 0) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => WindowPage()));
+if (index == 0) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
       } else if (index == 1) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ShipmentPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
       } else if (index == 4) {
         // Navigate to UserProfilePage
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => NotificationPage()));
-      } else if (index == 2) {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
-        ));
-        // Pass the device UUID
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
+      }
+      else if(index==2)
+      
+      {
+Navigator.of(context).push(MaterialPageRoute(
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+));
+ // Pass the device UUID
+
+
+
       }
     });
   }
-
   @override
   void initState() {
     super.initState();
@@ -72,8 +76,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
 
   Future<void> fetchShipmentsFromAPI(String? token) async {
     final String backendUrl = shipment;
-
-    print('Token iiiiiiiiiiiiiiiiiiiiii: $token');
+    print('Token: "$token"');
 
     if (token != null) {
       try {
@@ -85,14 +88,10 @@ class _ShipmentPageState extends State<ShipmentPage> {
         );
 
         print('response: $response');
-        print('response status');
-        print(response.statusCode);
-        print('response status');
-        // return;
+
         if (response.statusCode == 200) {
           try {
-            final Map<String, dynamic> responseBody =
-                json.decode(response.body);
+            final Map<String, dynamic> responseBody = json.decode(response.body);
             final List<dynamic> apiShipments = responseBody['items'];
 
             final List<Shipment> shipments = apiShipments
@@ -140,9 +139,8 @@ class _ShipmentPageState extends State<ShipmentPage> {
         filteredShipments = List.from(allShipments);
       } else {
         filteredShipments = allShipments
-            .where((shipment) => shipment.shipmentName
-                .toLowerCase()
-                .contains(query.toLowerCase()))
+            .where((shipment) =>
+                shipment.shipmentName.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -150,13 +148,12 @@ class _ShipmentPageState extends State<ShipmentPage> {
 
   void selectShipment(Shipment shipment) {
     print('Selected Shipment Name: ${shipment.shipmentName}');
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            AddShipmentPage(shipmentName: shipment.shipmentName),
-      ),
-    );
+      Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => AddShipmentPage(shipmentName: shipment.shipmentName),
+    ),
+  );
   }
 
   void showShipmentDetails(Shipment shipment) {
@@ -201,97 +198,105 @@ class _ShipmentPageState extends State<ShipmentPage> {
       ),
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            centerTitle: true,
-            floating: false,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          20.0), // Adjust the value as needed
-                      border: Border.all(color: Colors.white), // Border color
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'SearchShipment..',
-                          prefixIcon: Icon(Icons.search),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 12),
-                          border: InputBorder.none, // Remove the default border
-                        ),
-                        onChanged: (value) {
-                          performSearch(value);
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+         SliverAppBar(
+  pinned: true,
+  centerTitle: true,
+  floating: false,
+  flexibleSpace: Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+    ),
+    child: Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0), // Adjust the value as needed
+            border: Border.all(color: Colors.white), // Border color
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final shipment = filteredShipments[index];
-                return GestureDetector(
-                  onTap: () {
-                    showShipmentDetails(shipment);
-                  },
-                  child: ShipmentInfo(shipment: shipment),
-                );
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'SearchShipment..',
+                prefixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                border: InputBorder.none, // Remove the default border
+              ),
+              onChanged: (value) {
+                performSearch(value);
               },
-              childCount: filteredShipments.length,
             ),
           ),
+        ),
+      ),
+    ),
+  ),
+),
+
+
+   SliverList(
+  delegate: SliverChildBuilderDelegate(
+    (BuildContext context, int index) {
+      final shipment = filteredShipments[index];
+      final NewShipmentType = shipment.shipmentType; // Corrected line
+      return GestureDetector(
+        onTap: () {
+          showShipmentDetails(shipment);
+        },
+        child: ShipmentInfo(shipment: shipment, shipmentType: NewShipmentType),
+      );
+    },
+    childCount: filteredShipments.length,
+  ),
+),
+
+
+
+
+
+
+
+
+          
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-        showSelectedLabels: false, // Selected label ko hide karein
-        showUnselectedLabels: false, // Unselected labels ko hide karein
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.window),
-            label: 'Window',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_shipping),
-            label: 'Shipment',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.devices_other),
-            label: 'Add_Devices',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'User Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
-      ),
+  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
+  showSelectedLabels: false, // Selected label ko hide karein
+  showUnselectedLabels: false, // Unselected labels ko hide karein
+  items: const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.window),
+      label: 'Window',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.local_shipping),
+      label: 'Shipment',
+    ),
+     BottomNavigationBarItem(
+      icon: Icon(Icons.devices_other),
+      label: 'Add_Devices',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.notifications),
+      label: 'Notifications',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'User Profile',
+    ),
+  ],
+  currentIndex: _selectedIndex,
+  selectedItemColor: Colors.blue,
+  onTap: _onItemTapped,
+),
     );
   }
 }
-
 String _formatLastConnected(int timestamp) {
-  DateTime lastConnected =
-      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  DateTime lastConnected = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
   Duration difference = DateTime.now().difference(lastConnected);
 
   if (difference.inDays > 365) {
@@ -301,10 +306,11 @@ String _formatLastConnected(int timestamp) {
     int months = difference.inDays ~/ 30;
     return '$months ${months > 1 ? 'months' : 'month'} ago';
   } else {
-    return timeago.format(
-        lastConnected); // Use the timeago package for a human-readable format
+    return timeago.format(lastConnected); // Use the timeago package for a human-readable format
   }
 }
+
+
 
 class Shipment {
   final String id;
@@ -318,7 +324,11 @@ class Shipment {
   final String deliveryDate;
   final double length;
   final List<Tracker> trackers;
-
+final bool isMovable;
+  
+  
+  
+  
   Shipment({
     required this.id,
     required this.shipmentName,
@@ -331,6 +341,7 @@ class Shipment {
     required this.deliveryDate,
     required this.trackers,
     required this.length,
+    required this.isMovable,
   });
 
   factory Shipment.fromJson(Map<String, dynamic> json) {
@@ -342,21 +353,18 @@ class Shipment {
       final String status = json['status'] as String? ?? '';
       final String pickupLocation = json['pickupLocation'] as String? ?? '';
       final String pickupDate = json['pickupDate'] as String? ?? '';
-      final String destinationLocation =
-          json['destinationLocation'] as String? ?? '';
+      final String destinationLocation = json['destinationLocation'] as String? ?? '';
       final String deliveryDate = json['deliveryDate'] as String? ?? '';
       final double length = (json['length'] as num?)?.toDouble() ?? 0;
+       final bool isMovable = json['isMovable'] as bool? ?? false; 
       final List<dynamic>? trackersData = json['trackers'] as List<dynamic>?;
 
-      if (id.isEmpty ||
-          shipmentName.isEmpty ||
-          shipmentDesc.isEmpty ||
-          shipmentType.isEmpty ||
-          status.isEmpty) {
+      if (id.isEmpty || shipmentName.isEmpty || shipmentDesc.isEmpty || shipmentType.isEmpty || status.isEmpty) {
         throw FormatException("Invalid data in JSON");
       }
 
       List<Tracker> trackers = [];
+     print("shipmenTyep----------------------------------------,$shipmentType");
 
       if (trackersData != null) {
         List<String> deviceUUIDs = [];
@@ -378,7 +386,7 @@ class Shipment {
             print('DeviceUUID is null for tracker: ${tracker.id}');
           }
           tracker.deviceUUID = deviceUUID; // Assign device UUID to the tracker
-          trackers.add(tracker);
+    trackers.add(tracker);
         }
       }
 
@@ -394,6 +402,7 @@ class Shipment {
         deliveryDate: deliveryDate,
         trackers: trackers,
         length: length,
+        isMovable: isMovable
       );
     } catch (e) {
       throw FormatException("Error parsing JSON: $e");
@@ -514,54 +523,80 @@ Map<String, dynamic> trackerToJson(Tracker tracker) {
     'deviceUUID': tracker.deviceUUID,
   };
 }
-
 class ShipmentInfo extends StatelessWidget {
   final Shipment shipment;
+  final String shipmentType; // Corrected line
 
-  ShipmentInfo({required this.shipment});
+  ShipmentInfo({required this.shipment, required this.shipmentType});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(1),
       child: ListTile(
-        leading: Image.asset(
-          'assets/shipment_icon.png',
-          width: 45,
-          height: 45,
-        ),
-
-        // Replace with your custom icon
         title: Row(
           children: [
+ Icon(
+  (() {
+    print("shipmentType----------------------------------------, $shipmentType");
+
+    if (shipmentType == 'Movable') {
+      print("if");
+      // Your logic for shipmentType being 'Movable'
+      return Icons.local_shipping;
+    } else {
+      print("else");
+      // Your logic for shipmentType not being 'Movable'
+      return Icons.location_on;
+    }
+  })(),
+  size: 30,
+),
+
+            SizedBox(width: 8, height: 20),
             Expanded(
-              child: Text(
-                '${shipment.shipmentName}',
-                style: TextStyle(fontSize: 20),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  '${shipment.shipmentName}',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
             Text('${shipment.shipmentType}'),
           ],
         ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Text("DeviceUUID: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(
-                    '${shipment.trackers.isNotEmpty ? shipment.trackers.last.deviceUUID ?? 'N/A' : 'N/A'}'),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text("DeviceUUID:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text(
+                    '${shipment.trackers.isNotEmpty ? shipment.trackers.last.deviceUUID ?? 'N/A' : 'N/A'}',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ),
               ],
             ),
             Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Last Connected: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(
-                  '${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}',
-                  // textAlign: TextAlign.left,
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text("Last Connected:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(width: 3),
+                Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Text(
+                    '${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
               ],
             ),

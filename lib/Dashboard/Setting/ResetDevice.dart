@@ -231,9 +231,8 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
     });
   },
 ),
-
-          ],
-        ),
+ ],
+   ),
         if (isVisible)
           Container(
             decoration: BoxDecoration(
