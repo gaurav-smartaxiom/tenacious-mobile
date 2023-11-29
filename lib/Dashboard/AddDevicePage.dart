@@ -145,8 +145,8 @@ void ResetDeviceInfo(int index, String sensorName, bool isSensorActive, bool isA
 }
 
 
-void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isActive) {
-  print('Update Firmware clicked. Sensor Name: $sensorName, Switch Value: $switchValue, IsActive: $isActive');
+void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool isActive) {
+  print('Update Firmware clicked. Sensor Name: $sensorName, Switch Value: $isSensorActive, IsActive: $isActive');
 
   // Add your logic for updating firmware here
   // You can use the parameters (index, sensorName, switchValue, isActive) to perform the necessary actions
@@ -156,7 +156,10 @@ void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isA
     context,
     MaterialPageRoute(
       builder: (context) => ShipmentDetailsPage(
-      
+       indexToReset: index,
+        sensorName: sensorName,
+        sensorState: isSensorActive,
+        isActive1: isActive,
       ),
     ),
   );
