@@ -8,6 +8,12 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mdi/mdi.dart';
 import 'package:mobileapp/Dashboard/Setting/ResetDevice.dart';
 import 'package:mobileapp/Dashboard/Setting/shipmentss.dart';
+import 'package:mobileapp/api_endPoint/api_endpoints.dart';
+import 'package:mobileapp/Dashboard/WindowPage.dart';
+import 'package:mobileapp/Dashboard/shipmentpage.dart';
+import 'package:mobileapp/Dashboard/NotificationPage.dart';
+import 'package:mobileapp/Dashboard/userprofile.dart';
+import 'package:mobileapp/Dashboard/AddDevicePage.dart';
 
 class AddDevicePage extends StatefulWidget {
   final String deviceUuid;
@@ -64,6 +70,7 @@ Icon getBatteryIcon(int percentage) {
 class _AddDevicePageState extends State<AddDevicePage> {
   int percentage = 20;
    String selectedSensor = '';
+   int _selectedIndex = 0;
   bool isActive = false;
   bool isSensor=false;
   List<String> sensorNames = [];
@@ -82,6 +89,44 @@ class _AddDevicePageState extends State<AddDevicePage> {
     });
   }
   
+
+void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+
+if (index == 0) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
+      } else if (index == 1) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
+      } else if (index == 4) {
+        // Navigate to UserProfilePage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+      } else if (index == 3) {
+        // Navigate to NotificationPage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
+      }
+      else if(index==2)
+      
+      {
+Navigator.of(context).push(MaterialPageRoute(
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+));
+ // Pass the device UUID
+
+
+
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
 Future<String?> loadSessionData() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final email = sharedPreferences.getString('email');
@@ -95,7 +140,11 @@ Future<String?> loadSessionData() async {
 }
 
 Future<void> fetchData(String ?token) async {
-  final String backendUrl = 'http://192.168.29.11:4000/api/v1/sensors';
+  
+  //final String backendUrl = 'http://192.168.29.11:4000/api/v1/sensors';
+  
+  final String backendUrl=Sensor;
+  
   final response = await http.get(
         Uri.parse(backendUrl),
          headers: {
@@ -259,7 +308,10 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
       label: 'User Profile',
     ),
   ],
- // onTap: _onItemTapped,
+
+ currentIndex: _selectedIndex,
+  selectedItemColor: Colors.blue,
+  onTap: _onItemTapped,
 ),
 
 

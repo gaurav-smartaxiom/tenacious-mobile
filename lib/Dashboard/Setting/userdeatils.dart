@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 class UserDetailsPage extends StatefulWidget {
   @override
   _UserDetailsPageState createState() => _UserDetailsPageState();
@@ -27,7 +26,8 @@ Shipment? selectedShipment;
  List<Shipment> allShipments = [];
   List<Shipment> filteredShipments = [];
 List<String> roleOptions = ['Admin', 'User'];
-String selectedUserRole = 'User';
+String selectedRole = '';
+final GlobalKey _dropdownKey = GlobalKey();
   List<String> shipments = []; // Replace this with your shipment data
 List<String> getFilteredShipments(String query) {
   return shipments.where((shipment) {
@@ -43,12 +43,9 @@ List<String> getFilteredShipments(String query) {
 
 Future<void> fetchShipmentsFromAPI() async {
   final String shipmentId = '6232ce73b5b181a9e9d93643';
-  final String backendUrl = 'http://192.168.29.11:4000/api/v1/shipments';
+  final String backendUrl = shipment;
   final sharedPreferences = await SharedPreferences.getInstance();
  final String? token = sharedPreferences.getString('token'); // Use String? instead of String
-
-
-
 
 print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
 
@@ -57,8 +54,8 @@ print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
       final response = await http.get(
         Uri.parse(backendUrl),
         headers: {
-           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoic3VyYWouc3VicmFtb25pYW1AaG9uZXl3ZWxsLmNvbSIsImlkIjoiNjIyNzAyM2IzMDE3NDhmZTk4YTk1NGYwIiwidGVuYW50TmFtZSI6IkhvbmV5d2VsbEludGVybmF0aW9uYWwoSW5kaWEpUHZ0THRkIiwiaWF0IjoxNzAwNDgyMjMxLCJleHAiOjE3MDA1Njg2MzF9.WhcWJuxvTkcx5TOaR9BpgPPbeJKcSEHNKpgAoSRkg_E', // Use the token directly
-        // 'Authorization': 'Bearer $token',
+           //'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoic3VyYWouc3VicmFtb25pYW1AaG9uZXl3ZWxsLmNvbSIsImlkIjoiNjIyNzAyM2IzMDE3NDhmZTk4YTk1NGYwIiwidGVuYW50TmFtZSI6IkhvbmV5d2VsbEludGVybmF0aW9uYWwoSW5kaWEpUHZ0THRkIiwiaWF0IjoxNzAwNDgyMjMxLCJleHAiOjE3MDA1Njg2MzF9.WhcWJuxvTkcx5TOaR9BpgPPbeJKcSEHNKpgAoSRkg_E', // Use the token directly
+        'Authorization': 'Bearer $token',
 
         }
       );
@@ -108,7 +105,7 @@ print('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn: "$token"');
 
 void _registerUser() {
   print("register");
-  final String role = selectedUserRole; // Replace with your logic to get the selected user role
+  final String role = selectedRole; // Replace with your logic to get the selected user role
   final String username = _usernameController.text;
   final String email = _EmailController.text;
   final String password = _passwordController.text;
@@ -229,42 +226,60 @@ void _showConfirmationDialogg() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      centerTitle: true,
-      title: Text('Add new User.'),
-      actions: <Widget>[
-        PopupMenuButton<String>(
-          onSelected: (String choice) {
-            // Handle menu item selection here
-            if (choice == 'Admin') {
-              setState(() {
-                selectedUserRole = 'Admin'; // Update the selected role
-              });
-            } else if (choice == 'User') {
-              setState(() {
-                selectedUserRole = 'User'; // Update the selected role
-              });
-            }
-          },
-          icon: Icon(Icons.person), // Add the user icon as the dropdown trigger
-          itemBuilder: (BuildContext context) {
-            return ['Admin', 'User'].map((String choice) {
-              return PopupMenuItem<String>(
-                value: choice,
-                child: Text(choice),
-              );
-            }).toList();
-          },
-        ),
-      ],
-    ),
+      appBar:  AppBar(
+        centerTitle: true,
+        title: Text('Add New User.'),
+        // actions: <Widget>[
+        //   InkWell(
+        //     onTap: () {
+        //       showMenu(
+        //         context: context,
+        //         position: RelativeRect.fromLTRB(
+        //           MediaQuery.of(context).size.width - 40.0,
+        //           kToolbarHeight,
+        //           0.0,
+        //           0.0,
+        //         ),
+        //         items: [
+        //           PopupMenuItem<String>(
+        //             value: 'Admin',
+        //             child: Text('Admin'),
+        //           ),
+        //           PopupMenuItem<String>(
+        //             value: 'User',
+        //             child: Text('User'),
+        //           ),
+        //         ],
+        //         elevation: 8.0,
+        //       ).then((value) {
+        //         if (value != null) {
+        //           setState(() {
+        //             selectedRole = value;
+        //             print("wwwwwwwwwwwwwwwwwwwwwwwwww");
+        //             print(selectedRole);
+        //           });
+        //         }
+        //       });
+        //     },
+        //     child: Padding(
+        //       padding: EdgeInsets.only(top: 2, right: 10),
+        //       child: Row(
+        //         children: [
+        //           Text('Role: ', style: TextStyle(fontSize: 18)),
+        //           Icon(Icons.arrow_drop_down),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ],
+      ),
 
 
 
       body: Center(
         child: Container(
-          width: 400,
-          height: 700,
+          width: 420,
+          //height: 900,
           padding: EdgeInsets.all(20),
           // decoration: BoxDecoration(
           //   border: Border.all(
@@ -275,6 +290,58 @@ void _showConfirmationDialogg() {
           child: SingleChildScrollView(
             child: Column(
               children: [
+InkWell(
+  onTap: () {
+    final RenderBox renderBox = _dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy + kToolbarHeight-30,
+        5.0,
+      50.0,
+      ),
+      items: [
+        PopupMenuItem<String>(
+          value: 'Admin',
+          child: Text('Admin'),
+        ),
+        PopupMenuItem<String>(
+          value: 'User',
+          child: Text('User'),
+        ),
+      ],
+      elevation: 4.0,
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          selectedRole = value;
+          print("wwwwwwwwwwwwwwwwwwwwwwwwww");
+          print(selectedRole);
+        });
+      }
+    });
+  },
+  child: Padding(
+    key: _dropdownKey,
+    padding: EdgeInsets.only( right:10 ), // Adjust the right padding as needed
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end, // Align to the end (right)
+      children: [
+        Text('Role: ' ,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),), // Display the selected role
+        Icon(Icons.arrow_drop_down),
+      ],
+    ),
+  ),
+),
+
+
+
+
+
+
                 SizedBox(height: 10),
                 Row(
                   children: <Widget>[
@@ -363,8 +430,8 @@ void _showConfirmationDialogg() {
                   width: 400,
                  decoration: BoxDecoration(
     border: Border.all(
-      color: Colors.greenAccent, // Border color
-      width: 1.0, // Border width
+      color: Colors.white, // Border color
+     // width: 1.0, // Border width
     ),
   ),
                   child: Column(
@@ -375,7 +442,7 @@ void _showConfirmationDialogg() {
   padding: EdgeInsets.all(10), // Add padding for the search bar
   child: TextField(
     decoration: InputDecoration(
-      labelText: '',
+     // labelText: 'shipment',
       hintText: "select shipment",
       prefixIcon: Icon(Icons.search),
     ),
