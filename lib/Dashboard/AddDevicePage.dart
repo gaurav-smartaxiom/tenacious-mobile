@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mdi/mdi.dart';
 import 'package:mobileapp/Dashboard/Setting/ResetDevice.dart';
+import 'package:mobileapp/Dashboard/Setting/shipmentss.dart';
 
 class AddDevicePage extends StatefulWidget {
   final String deviceUuid;
@@ -99,7 +100,7 @@ Future<void> fetchData(String ?token) async {
  final response = await http.get(
         Uri.parse(backendUrl),
          headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoiZ2F1cmF2QHNtYXJ0YXhpb20uY29tIiwiaWQiOiI2Mzc0ZDU3YzAyYTMwNmZjNjUwMTM4MGUiLCJ0ZW5hbnROYW1lIjoiSG9uZXl3ZWxsSW50ZXJuYXRpb25hbChJbmRpYSlQdnRMdGQiLCJpYXQiOjE3MDEwNjM0MDgsImV4cCI6MTcwMTE0OTgwOH0.XuQS6VK25Bxjk4tisoP-HtXrF928bcTiuSfsvlRf7Gs', // Use the token directly
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvZmZpY2lhbEVtYWlsIjoic3VyYWouc3VicmFtb25pYW1AaG9uZXl3ZWxsLmNvbSIsImlkIjoiNjIyNzAyM2IzMDE3NDhmZTk4YTk1NGYwIiwidGVuYW50TmFtZSI6IkhvbmV5d2VsbEludGVybmF0aW9uYWwoSW5kaWEpUHZ0THRkIiwiaWF0IjoxNzAxMjM1MzUxLCJleHAiOjE3MDEzMjE3NTF9.-KzimBbrnrqs4saZMbhcI5Bsa2tdYea-bf6MkFWWn2Q', // Use the token directly
        // 'Authorization': 'Bearer $token',
 
          }
@@ -147,24 +148,24 @@ void ResetDeviceInfo(int index, String sensorName, bool isSensorActive, bool isA
 }
 
 
-void UpdateFirmwareInfo(int index, String sensorName, bool switchValue, bool isActive) {
-  print('Update Firmware clicked. Sensor Name: $sensorName, Switch Value: $switchValue, IsActive: $isActive');
+void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool isActive) {
+  print('Update Firmware clicked. Sensor Name: $sensorName, Switch Value: $isSensorActive, IsActive: $isActive');
 
   // Add your logic for updating firmware here
   // You can use the parameters (index, sensorName, switchValue, isActive) to perform the necessary actions
 
   // For example, uncomment and modify the following code when you want to navigate to the UpdateFirmware screen
-  // Navigator.push(
-  //   context,
-  //   MaterialPageRoute(
-  //     builder: (context) => UpdateFirmware(
-  //       indexToUpdate: index,
-  //       sensorName: sensorName,
-  //       switchValue: switchValue,
-  //       isActive: isActive,
-  //     ),
-  //   ),
-  // );
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ShipmentDetailsPage(
+       indexToReset: index,
+        sensorName: sensorName,
+        sensorState: isSensorActive,
+        isActive1: isActive,
+      ),
+    ),
+  );
 }
 
 
