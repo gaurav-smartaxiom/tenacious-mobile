@@ -1,7 +1,7 @@
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:mobileapp/Dashboard/shipmentpage.dart';
 import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,82 +15,108 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   int numberOfItems = 10; // Set the initial number of items
   TextEditingController searchController = TextEditingController();
-  late List<String> itemList =[];
-  late List<String> filteredList=[]; // Declare 'filteredList' as 'late'
+  late List<String> itemList = [];
+  late List<String> filteredList = [];
+  late List<String> filteredList1 = [];
+  late String mydata = ''; // Changed to String type
 
   @override
   void initState() {
     super.initState();
-    
-   // 
-    loadSessionData().then((token) {
+
     // Fetch shipments from the API when the widget is initialized
-   fetchData(token);
- 
-  });
-  searchController.addListener(onSearchChanged);
+    loadSessionData().then((token) {
+      fetchData(token);
+    });
+
+    searchController.addListener(onSearchChanged);
   }
 
-Future<String?> loadSessionData() async {
-  final sharedPreferences = await SharedPreferences.getInstance();
-  final email = sharedPreferences.getString('email');
-  final password = sharedPreferences.getString('password');
-  final token = sharedPreferences.getString('token');
+  Future<String?> loadSessionData() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final email = sharedPreferences.getString('email');
+    final password = sharedPreferences.getString('password');
+    final token = sharedPreferences.getString('token');
 
-  print('Stored Email: $email');
-  print('Stored Password: $password');
-  print("token-------------$token");
-  return token; // Return the token as a Future<String?>
-}
+    print('Stored Email: $email');
+    print('Stored Password: $password');
+    print("token-------------$token");
+    return token; // Return the token as a Future<String?>
+  }
 
-Future<void> fetchData(String ?token) async {
-final String backendUrl=Sensor;
-  
+  Future<void> fetchData(String? token) async {
+  final String backendUrl = shipment;
+
   final response = await http.get(
-        Uri.parse(backendUrl),
-         headers: {
-           'Authorization': 'Bearer $token',
-         }
-      );
+    Uri.parse(backendUrl),
+    headers: {
+      'Authorization': 'Bearer $token',
+    },
+  );
 
-      print('response, $response');
-      print("Response Body: ${response.body}");
-       print(response.statusCode == 200);
+  print('response, $response');
+  print("Response Body: ${response.body}");
+  print(response.statusCode == 200);
 
-if (response.statusCode == 200) {
-  final List<dynamic> data = jsonDecode(response.body);
+  if (response.statusCode == 200) {
+    final List<dynamic> items = jsonDecode(response.body)['items'];
 
-  // Extract sensor names
-  List<String> names = data.map((sensor) => sensor['sensorName']).cast<String>().toList();
-  print("Sensor Names: $names");
+    // Extract deviceuuid values
+    List<String> deviceUUIDs = items.expand<String>((shipment) {
+      print("Shipment Name: ${shipment['shipmentName']}");
 
-  // Extract MAC addresses
-  List<String> macAddresses = data.map((sensor) => sensor['mac_addr']).cast<String>().toList();
-  //print("MAC Addresses: $macAddresses");
+      // Extract trackers data if available
+      if (shipment['trackers'] != null) {
+        List<dynamic> trackers = shipment['trackers'];
+        List<String> shipmentDeviceUUIDs = trackers.map<String>((tracker) {
+          print("trackresssss, $tracker");
+          print("Tracker Index: ${tracker['index']}");
+          print("Tracker Timestamp: ${tracker['timestamp']}");
 
+          // Extract data from tracker
+          Map<String, dynamic> trackerData = tracker['data'];
+          print("dtatata, $trackerData");
 
-setState(() {
-  itemList=macAddresses;
-  onSearchChanged();
-searchController.addListener(onSearchChanged);
+          // Check if 'deviceuuid' is not null before casting
+          if (trackerData['deviceUUID'] != null) {
+            print("Device UUID: ${trackerData['deviceUUID']}");
+            setState(() {
+              mydata = trackerData['deviceUUID'] as String;
+              itemList.add(mydata); // Use add to add elements to the list
+              onSearchChanged();
+            });
+            print("myyyyydataa,$mydata");
+            return trackerData['deviceUUID'] as String;
+          } else {
+            print("Device UUID is null");
+            return ''; // or any default value you want to use
+          }
+        }).toList();
+        return shipmentDeviceUUIDs;
+      } else {
+        print("No trackers available for this shipment.");
+        return [];
+      }
+    }).toList();
   
-});
-print("item list,$itemList");
-} else {
-  print("Error: ${response.statusCode}");
-}
+    print("Device UUIDs: $deviceUUIDs");
+
+    // You can return the deviceUUIDs directly
+    //return deviceUUIDs;
+  } else {
+    print("Error: ${response.statusCode}");
+  }
 }
 
- void onSearchChanged() {
+void onSearchChanged() {
   setState(() {
     filteredList = itemList
-        .where((item) => item.toLowerCase().contains(searchController.text.toLowerCase()))
+        .where((item) =>
+            item.toLowerCase().contains(searchController.text.toLowerCase()))
         .toList();
   });
-print("tttttttttttttttttttttttttttt");
-  print("FilteredList: $filteredList"); // Print the filtered list
+  print("FilteredList: $filteredList");
 }
-
 
 
   @override
@@ -143,59 +169,82 @@ print("tttttttttttttttttttttttttttt");
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    prefixIcon: Icon(Icons.search),
-                    border: InputBorder.none,
+            padding: const EdgeInsets.only(left: 30),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
+                        ),
+                        onChanged: (value) {
+                          // Handle the onChanged event here
+                        },
+                      ),
+                    ),
                   ),
-                  onChanged: (value) {},
                 ),
-              ),  
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.format_list_numbered,
+                  ),
+                ),
+              ],
             ),
           ),
-          // Add your ListView.builder here
-       Expanded(
-  child: ListView.builder(
-    itemCount: filteredList.length,
-    itemBuilder: (context, index) {
-      // You can customize the items in the list
-      print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      print("FilteredList Length: ${filteredList.length}"); // Move the print statement inside the builder
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            title: Text(filteredList[index]),
-            onTap: () {
-              // Add your onTap logic here
-            },
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            title: Text('${filteredList[index]}'),
+                            onTap: () {
+                              // Add your onTap logic here
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 0.0, right: 20.0),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.end,
+                              children: [
+                                Text('Status: Connected'),
+                                Text('Last Connected: 2 mins ago'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 2, // Adjust the height of the divider as needed
+                      color: Colors.grey,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Text('Status: Connected'),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Text('Last Connected: 2 mins ago'),
-          ),
-          Divider(), // Add a Divider between items
-        ],
-      );
-    },
-  ),
-),
-
         ],
       ),
     );

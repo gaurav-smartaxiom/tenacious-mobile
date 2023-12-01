@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:mobileapp/api_endPoint/api_endpoints.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:http/http.dart' as http;
 class ShipmentDetailsPage extends StatefulWidget {
 
   final int indexToReset;
@@ -22,7 +27,7 @@ class ShipmentDetailsPage extends StatefulWidget {
 
 class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   String shipmentName = '';
-  String deviceUUID = '1236547';
+  String deviceUUID = '';
   String lastConnected = '2 mins ago';
   String battery = '40';
   String signal = '30';
@@ -33,11 +38,80 @@ DateTime fromDate = DateTime.now();
   @override
   void initState() {
     super.initState();
-    shipmentName = widget.sensorName;
+    shipmentName=shipmentName;
    // deviceUUID=widget.sensorName; // Access the sensorName using widget
+
+  loadSessionData().then((token) {
+      fetchData(token);
+    });
+
+  }
+ Future<String?> loadSessionData() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final email = sharedPreferences.getString('email');
+    final password = sharedPreferences.getString('password');
+    final token = sharedPreferences.getString('token');
+
+    print('Stored Email: $email');
+    print('Stored Password: $password');
+    print("token-------------$token");
+    return token; // Return the token as a Future<String?>
   }
 
+ Future<void> fetchData(String? token) async {
+  final String backendUrl = shipment;
+  final String shipmentID = '64e464f3eb12d5b4aa42453c'; // Replace with your actual shipment ID
 
+  final response = await http.get(
+    Uri.parse(backendUrl),
+    headers: {
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  print('response, $response');
+  print("Response Body: ${response.body}");
+  print(response.statusCode == 200);
+
+  if (response.statusCode == 200) {
+    final List<dynamic> items = jsonDecode(response.body)['items'];
+
+    // Find the item with the specified shipment ID
+    final Map<String, dynamic>? selectedShipment = items.firstWhere(
+      (shipment) => shipment['id'] == shipmentID,
+      orElse: () => null,
+    );
+
+    print("Selected Shipment: $selectedShipment");
+
+    if (selectedShipment != null) {
+      // Extract shipment name and trackers for the selected shipment
+       shipmentName = selectedShipment['shipmentName'] ?? '';
+      List<dynamic> trackers = selectedShipment['trackers'] ?? [];
+
+      print("Shipment Name: $shipmentName");
+      print("Trackers: $trackers");
+
+      for (var tracker in trackers) {
+        print("Tracker Data: $tracker");
+        deviceUUID = tracker['data']['serial_number'] ?? '';
+        print("Device UUID: $deviceUUID");
+        // Now you can use deviceUUID as needed
+      }
+
+
+     setState(() {
+              shipmentName = shipmentName;
+            deviceUUID=deviceUUID;
+            });
+    } else {
+      print("Shipment ID $shipmentID not found in the response");
+    }
+  } else {
+    print("Error: ${response.statusCode}");
+    // Handle the error case
+  }
+}
 
   Future<void> _selectFromDate(BuildContext context) async {
     final picked = await showDatePicker(
@@ -85,12 +159,12 @@ DateTime fromDate = DateTime.now();
     children: [
       Icon(Icons.local_shipping, size: 24), // Replace with the appropriate icon
       SizedBox(width: 8), // Adjust the spacing between icon and text
-//      Flexible(
+    // Flexible(
 //   child: Text(
 //     shipmentName,
 //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
 //   ),
-// )
+// ),
 Expanded(
   child: Text(
     shipmentName,
@@ -99,7 +173,7 @@ Expanded(
 )
 
 
-,
+
     ],
   ),
 ),
@@ -131,9 +205,9 @@ Expanded(
           border: Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(1.0),
         ),
-        child: Text('Device UUID: $deviceUUID', style: TextStyle(fontSize: 11)),
+        child: Text('Device UUID: $deviceUUID', style: TextStyle(fontSize: 10)),
       ),
-       SizedBox(width: 5,),
+       SizedBox(width: 2,),
       Container(
         padding: EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
@@ -144,7 +218,7 @@ Expanded(
       ),
        SizedBox(width: 1,),
 Container(
-  padding: EdgeInsets.all(3.0),
+  padding: EdgeInsets.all(2.0),
   decoration: BoxDecoration(
     border: Border.all(color: Colors.white),
     borderRadius: BorderRadius.circular(1.0),
@@ -155,14 +229,14 @@ Container(
       SizedBox(width: 3.0), // Adjust the spacing between "Battery:" and icon
       Transform.rotate(
         angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
-        child: Icon(Icons.battery_full, size: 15.0), // Icon after the text
+        child: Icon(Icons.battery_full, size: 10.0), // Icon after the text
       ),
-      SizedBox(width: 3.0), // Adjust the spacing between icon and value
+      SizedBox(width: 1.0), // Adjust the spacing between icon and value
       Text('$battery%', style: TextStyle(fontSize: 10)),
     ],
   ),
 ),
-      SizedBox(width: 5,),
+      SizedBox(width: 2,),
      Container(
   padding: EdgeInsets.all(5.0),
   decoration: BoxDecoration(
