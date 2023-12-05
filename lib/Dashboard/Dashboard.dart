@@ -13,6 +13,10 @@ import 'package:mobileapp/Dashboard/DashboardBox.dart';
 // import 'package:bbbb/Dashboard/DashboardBox.dart';
  import 'package:url_launcher/url_launcher.dart';
  import 'package:shared_preferences/shared_preferences.dart';
+ import 'package:http/http.dart' as http;
+ import 'dart:convert'; 
+import 'UserManagementPage.dart';
+
 class DashboardPage extends StatefulWidget {
  final Map<String, dynamic> decodedToken;
   DashboardPage({required this.decodedToken});
@@ -39,6 +43,10 @@ if (index == 0) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
       }
+      else if (index == 5) {
+        // Navigate to NotificationPage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserManagementPage()));
+      }
       else if(index==2)
       
       {
@@ -55,9 +63,12 @@ Navigator.of(context).push(MaterialPageRoute(
  
 void initState() {
     super.initState();
-    loadSessionData();
+     loadSessionData().then((token) {
+      // Fetch shipments from the API when the widget is initialized
+     
+    });
   }
- void loadSessionData() async {
+ Future<String?> loadSessionData() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final email = sharedPreferences.getString('email');
     final password = sharedPreferences.getString('password');
@@ -66,7 +77,14 @@ void initState() {
     print('Stored Email: $email');
     print('Stored Password: $password');
     print("token-------------$token");
+    return token;
   }
+
+
+
+
+
+
 
 // void _onSearchSubmitted(String query) async {
 //   final googleMapsUrl = 'https://www.google.com/maps?q=${Uri.encodeQueryComponent(query)}';
@@ -156,6 +174,10 @@ return Scaffold(
               child: Text(searchResult), // Display the search result here
             ),
           ),
+
+
+
+
         ],
       ),
    bottomNavigationBar: BottomNavigationBar(
@@ -182,6 +204,10 @@ return Scaffold(
     BottomNavigationBarItem(
       icon: Icon(Icons.person),
       label: 'User Profile',
+    ),
+     BottomNavigationBarItem(
+      icon: Icon(Icons.mail),
+      label: 'UserMangment',
     ),
   ],
   currentIndex: _selectedIndex,

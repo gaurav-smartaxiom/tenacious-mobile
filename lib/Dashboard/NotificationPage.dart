@@ -26,7 +26,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
     // Fetch shipments from the API when the widget is initialized
     loadSessionData().then((token) {
-      fetchData(token);
+      fetchShipmentData(token);
     });
 
     searchController.addListener(onSearchChanged);
@@ -44,7 +44,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return token; // Return the token as a Future<String?>
   }
 
-  Future<void> fetchData(String? token) async {
+  Future<void> fetchShipmentData(String? token) async {
   final String backendUrl = shipment;
 
   final response = await http.get(

@@ -80,14 +80,10 @@ class _AddDevicePageState extends State<AddDevicePage> {
     super.initState();
      loadSessionData().then((token) {
     // Fetch shipments from the API when the widget is initialized
-   fetchData(token);
+   fetchSensorData(token);
   });
 }
- void updatePercentage(int newPercentage) {
-    setState(() {
-      percentage = newPercentage;
-    });
-  }
+
   
 
 void _onItemTapped(int index) {
@@ -120,13 +116,6 @@ Navigator.of(context).push(MaterialPageRoute(
   }
 
 
-
-
-
-
-
-
-
 Future<String?> loadSessionData() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   final email = sharedPreferences.getString('email');
@@ -139,7 +128,7 @@ Future<String?> loadSessionData() async {
   return token; // Return the token as a Future<String?>
 }
 
-Future<void> fetchData(String ?token) async {
+Future<void> fetchSensorData(String ?token) async {
   
   //final String backendUrl = 'http://192.168.29.11:4000/api/v1/sensors';
   
@@ -158,10 +147,7 @@ Future<void> fetchData(String ?token) async {
    
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-     
       List<String> names = data.map((sensor) => sensor['sensorName']).cast<String>().toList();
-
-  
     setState(() {
       //sensorSwitches = List.generate(data.length, (index) => data[index]['assign']);
       sensorNames = names;
@@ -173,7 +159,11 @@ Future<void> fetchData(String ?token) async {
       throw Exception('Failed to load data');
     }
    }
-
+ void updatePercentage(int newPercentage) {
+    setState(() {
+      percentage = newPercentage;
+    });
+  }
 void ResetDeviceInfo(int index, String sensorName, bool isSensorActive, bool isActive) {
   print("Sensor clicked: $sensorName, SensorState: $isSensorActive, State: $isActive");
 

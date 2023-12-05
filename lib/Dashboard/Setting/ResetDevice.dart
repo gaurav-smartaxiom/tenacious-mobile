@@ -179,13 +179,6 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
 ),
 
     );
-
-
-
-
-
-
-
     
   }
 
