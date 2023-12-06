@@ -37,7 +37,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
 if (index == 0) {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
       } else if (index == 1) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage()));
       } else if (index == 4) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
@@ -51,9 +51,7 @@ if (index == 0) {
 Navigator.of(context).push(MaterialPageRoute(
   builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
 ));
- // Pass the device UUID
-
-
+ // Pass the device UUI
 
       }
     });
@@ -573,7 +571,7 @@ class ShipmentInfo extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 2),
-                  child: Text("DeviceUUID:", style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text("DeviceUUID:", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 2),
@@ -588,7 +586,7 @@ class ShipmentInfo extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 2),
-                  child: Text("Last Connected:", style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text("Last Connected:", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10)),
                 ),
                 SizedBox(width: 3),
                 Padding(

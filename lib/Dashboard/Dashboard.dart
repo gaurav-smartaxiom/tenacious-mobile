@@ -16,10 +16,10 @@ import 'package:mobileapp/Dashboard/DashboardBox.dart';
  import 'package:http/http.dart' as http;
  import 'dart:convert'; 
 import 'UserManagementPage.dart';
-
+import 'main.dart';
 class DashboardPage extends StatefulWidget {
- final Map<String, dynamic> decodedToken;
-  DashboardPage({required this.decodedToken});
+ //final Map<String, dynamic> decodedToken;
+  //DashboardPage({required this.decodedToken});
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
@@ -119,7 +119,7 @@ void initState() {
 
   @override
   Widget build(BuildContext context) {
-print("Decoded Token and welcome  to dashboard page----------->: ${widget.decodedToken}");
+//print("Decoded Token and welcome  to dashboard page----------->: ${widget.decodedToken}");
 return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -134,52 +134,61 @@ return Scaffold(
           ),
         ),
       body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 10.0), // Top padding for the search bar
-            child: Container(
-              width: 500.0,
-              height: 50, // Search bar ki width
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white, // Border color
-                  width: 2.0, // Border width
+  children: [
+    Padding(
+      padding: EdgeInsets.only(top: 10.0),
+      child: Container(
+        width: 500.0,
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white,
+            width: 2.0,
+          ),
+        ),
+        padding: EdgeInsets.all(5.0),
+        child: Row(
+          children: [
+            Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  hintText: "Search",
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
                 ),
               ),
-              padding: EdgeInsets.all(5.0), // Padding around the search bar
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.search,
-                    color: Colors.grey, // Icon color
-                  ),
-                  SizedBox(width: 10.0), // Spacing between icon and TextField
-                  Expanded(
-                     child: TextField(
-                      controller: searchController,
-                     // onSubmitted: _onSearchSubmitted, // Call this function when search is submitted
-                      decoration: InputDecoration(
-                        hintText: "Search", // Placeholder text
-                        hintStyle: TextStyle(color: Colors.grey),
-                        border: InputBorder.none, // Text field ka border hide karein
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(searchResult), // Display the search result here
-            ),
-          ),
-
-
-
-
-        ],
+          ],
+        ),
       ),
+    ),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+width: 410,
+          height: 640,
+      child:
+            Main()
+            
+          ),
+        
+      ],
+    ),
+    Expanded(
+      child: Center(
+        child: Text(searchResult),
+      ),
+    ),
+  ],
+),
+
    bottomNavigationBar: BottomNavigationBar(
   type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
   showSelectedLabels: false, // Selected label ko hide karein

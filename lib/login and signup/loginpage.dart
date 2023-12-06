@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => DashboardPage(decodedToken: decodedToken),
+            builder: (context) => DashboardPage(),
           ),
           (route) => false, // This predicate will always return false
         );
