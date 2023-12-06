@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:mobileapp/Dashboard/main.dart';
 import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:mdi/mdi.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:mobileapp/Dashboard/main.dart';
 class ShipmentDetailsPage extends StatefulWidget {
   final int indexToReset;
   final String sensorName;
@@ -276,20 +278,26 @@ print("fileDownload");
             ),
 
             Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Text(
-                'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-              ),
-            ),
-            // Map section (Replace with your map widget)
-            Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                width: double.infinity,
-                height: 200,
-                color: Colors.blue, // Replace with your map widget
-              ),
-            ),
+  padding: const EdgeInsets.all(1.0),
+  child: Container(
+    width: double.infinity,
+    height: 200,
+    
+    color: Colors.blue,
+    child: Row(
+      children: [
+        // Add your widgets inside the Row here
+       Expanded(child: 
+       
+       
+       Main()
+       )
+        // Add more widgets as needed
+      ],
+    ),
+  ),
+),
+
             // Device Information section
             Padding(
               padding: const EdgeInsets.all(1.0),
@@ -306,7 +314,7 @@ print("fileDownload");
                         style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                    width: 2,
+                    width: 1,
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 10),
@@ -329,19 +337,19 @@ print("fileDownload");
                    child: Row(
   children: [
     Text('Battery:', style: TextStyle(fontSize: 9)),
-    SizedBox(width: 3.0), // Adjust the spacing between "Battery:" and icon
+    SizedBox(width: 1.0), // Adjust the spacing between "Battery:" and icon
     Transform.rotate(
       angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
-      child: getBatteryIcon(percentage, iconSize: 13),
+      child: getBatteryIcon(percentage, iconSize: 11),
     ),
-    SizedBox(width: 1.0), // Adjust the spacing between icon and value
-    Text('$percentage%', style: TextStyle(fontSize: 10)),
+    //SizedBox(width: 1.0), // Adjust the spacing between icon and value
+    Text('$percentage%', style: TextStyle(fontSize: 9)),
   ],
 ),
 
                   ),
                   SizedBox(
-                    width: 2,
+                   // width: 1,
                   ),
                   Container(
                     padding: EdgeInsets.all(5.0),
@@ -353,8 +361,8 @@ print("fileDownload");
                       children: [
                         // Assuming you want to use this icon
                         // Adjust the spacing between icon and text
-                        Text('Signal:', style: TextStyle(fontSize: 10)),
-                        Icon(Icons.signal_cellular_4_bar, size: 10.0),
+                        Text('Signal:', style: TextStyle(fontSize: 9)),
+                        Icon(Icons.signal_cellular_4_bar, size: 8.0),
                         Text(' $signal', style: TextStyle(fontSize: 10))
                       ],
                     ),

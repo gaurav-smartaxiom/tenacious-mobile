@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:mobileapp/Dashboard/search_example.dart';
 
 class Main extends StatefulWidget {
   @override
@@ -31,6 +30,8 @@ class _MainState extends State<Main> with OSMMixinObserver {
         longitude: 8.4737324,
       ),
     );
+
+
     controller.addObserver(this);
   }
 
@@ -102,7 +103,7 @@ class _MainState extends State<Main> with OSMMixinObserver {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Map(
+        Map1(
           controller: controller,
         ),
         if (!kReleaseMode || kIsWeb) ...[
@@ -250,7 +251,11 @@ class MainNavigation extends StatelessWidget {
     return FloatingActionButton(
       key: UniqueKey(),
       onPressed: () {
-        Scaffold.of(context).openDrawer();
+       Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LocationAppExample()),
+        );
+        //Scaffold.of(context).openDrawer();
       },
       heroTag: "MainMenuFab",
       mini: true,
@@ -272,7 +277,10 @@ class DrawerMain extends StatelessWidget {
           children: [
             SizedBox(height: MediaQuery.viewPaddingOf(context).top),
             ListTile(
-              onTap: () {},
+              onTap: () {
+
+
+              },
               title: Text("search example"),
             ),
             ListTile(
@@ -293,8 +301,8 @@ class DrawerMain extends StatelessWidget {
   }
 }
 
-class Map extends StatelessWidget {
-  const Map({
+class Map1 extends StatelessWidget {
+  const Map1({
     super.key,
     required this.controller,
   });
@@ -332,7 +340,7 @@ class Map extends StatelessWidget {
                 width: 32,
                 height: 64,
                 child: Image.asset(
-                  "asset/directionIcon.png",
+                  "assets/directionIcon.png",
                   scale: .3,
                 ),
               ),
@@ -352,7 +360,7 @@ class Map extends StatelessWidget {
                 width: 32,
                 height: 64,
                 child: Image.asset(
-                  "asset/directionIcon.png",
+                  "assets/directionIcon.png",
                   scale: .3,
                 ),
               ),

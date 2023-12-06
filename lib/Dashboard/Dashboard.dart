@@ -17,9 +17,11 @@ import 'package:mobileapp/Dashboard/DashboardBox.dart';
  import 'dart:convert'; 
 import 'UserManagementPage.dart';
 import 'main.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
+
 class DashboardPage extends StatefulWidget {
- //final Map<String, dynamic> decodedToken;
-  //DashboardPage({required this.decodedToken});
+ final Map<String, dynamic> decodedToken;
+  DashboardPage({required this.decodedToken});
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
@@ -35,7 +37,7 @@ class _DashboardPageState extends State<DashboardPage> {
 if (index == 0) {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
       } else if (index == 1) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage()));
       } else if (index == 4) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
@@ -133,61 +135,71 @@ return Scaffold(
             ),
           ),
         ),
-      body: Column(
-  children: [
-    Padding(
-      padding: EdgeInsets.only(top: 10.0),
-      child: Container(
-        width: 500.0,
-        height: 50,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.white,
-            width: 2.0,
-          ),
-        ),
-        padding: EdgeInsets.all(5.0),
-        child: Row(
+   body: SingleChildScrollView(
+        child: Column(
           children: [
-            Icon(
-              Icons.search,
-              color: Colors.grey,
-            ),
-            SizedBox(width: 10.0),
-            Expanded(
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
+            Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Container(
+                width: 500.0,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2.0,
+                  ),
+                ),
+                padding: EdgeInsets.all(5.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 410,
+                  height: 620,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Main(),
+                      ),
+                      // Expanded(
+                      //   child: Drawer(
+                      //     child: PointerInterceptor(
+                      //       child: DrawerMain(),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Center(
+              child: Text(searchResult),
             ),
           ],
         ),
       ),
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-width: 410,
-          height: 640,
-      child:
-            Main()
-            
-          ),
-        
-      ],
-    ),
-    Expanded(
-      child: Center(
-        child: Text(searchResult),
-      ),
-    ),
-  ],
-),
 
    bottomNavigationBar: BottomNavigationBar(
   type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar

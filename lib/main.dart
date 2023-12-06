@@ -58,7 +58,7 @@ Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {
       // User is already logged in, navigate to the dashboard page.
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => DashboardPage(), // Replace with your DashboardPage
+          builder: (context) => DashboardPage(decodedToken: decodedToken,), // Replace with your DashboardPage
         ),
       );
     } else {

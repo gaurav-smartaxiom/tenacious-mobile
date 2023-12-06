@@ -86,6 +86,9 @@ flutter:
     - assets/kk.jpg
     - assets/img.jpg
     - assets/shipment_icon.png
+    - assets/compass.png
+    - assets/directionIcon.png
+    - assets/cycling.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
