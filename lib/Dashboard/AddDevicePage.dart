@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobileapp/Dashboard/Dashboard.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -16,8 +17,10 @@ import 'package:mobileapp/Dashboard/userprofile.dart';
 import 'package:mobileapp/Dashboard/AddDevicePage.dart';
 
 class AddDevicePage extends StatefulWidget {
+ final Map<String, dynamic> decodedToken;
+  //AddDevicePage({required this.decodedToken})
   final String deviceUuid;
-  AddDevicePage({required this.deviceUuid});
+  AddDevicePage({required this.deviceUuid,required this.decodedToken});
 
   @override
   _AddDevicePageState createState() => _AddDevicePageState();
@@ -91,21 +94,21 @@ void _onItemTapped(int index) {
       _selectedIndex = index;
 
 if (index == 0) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
       } else if (index == 1) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken)));
       } else if (index == 4) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
       }
       else if(index==2)
       
       {
 Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
 ));
  // Pass the device UUID
 
@@ -191,17 +194,17 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
   // You can use the parameters (index, sensorName, switchValue, isActive) to perform the necessary actions
 
   // For example, uncomment and modify the following code when you want to navigate to the UpdateFirmware screen
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ShipmentDetailsPage(
-       indexToReset: index,
-        sensorName: sensorName,
-        sensorState: isSensorActive,
-        isActive1: isActive,
-      ),
-    ),
-  );
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(
+  //     builder: (context) => ShipmentDetailsPage(
+  //      indexToReset: index,
+  //       sensorName: sensorName,
+  //       sensorState: isSensorActive,
+  //       isActive1: isActive,
+  //     ),
+  //   ),
+  // );
 }
 
 

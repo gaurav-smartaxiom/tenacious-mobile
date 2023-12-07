@@ -9,6 +9,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+
+      appBar: AppBar(
+
+title: Text("FirmawareUpadatePage"),
+
+
+      ),
       body: GetBuilder<BluetoothController>(
         init: BluetoothController(),
         builder: (controller) {

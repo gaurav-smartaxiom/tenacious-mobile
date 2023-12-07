@@ -6,8 +6,20 @@ import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mobileapp/Dashboard/WindowPage.dart';
+import 'package:mobileapp/Dashboard/shipmentpage.dart';
+import 'package:mobileapp/Dashboard/NotificationPage.dart';
+import 'package:mobileapp/Dashboard/userprofile.dart';
+import 'package:mobileapp/Dashboard/AddDevicePage.dart';
+import 'package:mobileapp/Dashboard/DashboardBox.dart';
+import 'package:mobileapp/Dashboard/Dashboard.dart';
+import 'package:mobileapp/Dashboard/NotificationPage.dart';
+import 'package:mobileapp/Dashboard/UserManagementPage.dart';
 
 class NotificationPage extends StatefulWidget {
+
+ final Map<String, dynamic> decodedToken;
+ NotificationPage({required this.decodedToken});
   @override
   _NotificationPageState createState() => _NotificationPageState();
 }
@@ -18,7 +30,41 @@ class _NotificationPageState extends State<NotificationPage> {
   late List<String> itemList = [];
   late List<String> filteredList = [];
   late List<String> filteredList1 = [];
-  late String mydata = ''; // Changed to String type
+  late String mydata = '';
+  int _selectedIndex = 0;
+   // Changed to String type
+   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+
+if (index == 0) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
+      } else if (index == 1) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
+      } else if (index == 4) {
+        // Navigate to UserProfilePage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+      } else if (index == 3) {
+        // Navigate to NotificationPage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
+      }
+      else if (index == 5) {
+        // Navigate to NotificationPage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserManagementPage()));
+      }
+      else if(index==2)
+      
+      {
+Navigator.of(context).push(MaterialPageRoute(
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
+));
+ // Pass the device UUID
+
+
+
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -247,12 +293,47 @@ void onSearchChanged() {
           ),
         ],
       ),
+
+ bottomNavigationBar: BottomNavigationBar(
+  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
+  showSelectedLabels: false, // Selected label ko hide karein
+  showUnselectedLabels: false, // Unselected labels ko hide karein
+  items: const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.window),
+      label: 'Window',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.local_shipping),
+      label: 'Shipment',
+    ),
+     BottomNavigationBarItem(
+      icon: Icon(Icons.devices_other),
+      label: 'Add_Devices',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.notifications),
+      label: 'Notifications',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'User Profile',
+    ),
+     BottomNavigationBarItem(
+      icon: Icon(Icons.mail),
+      label: 'UserMangment',
+    ),
+  ],
+  currentIndex: _selectedIndex,
+  selectedItemColor: Colors.blue,
+  onTap: _onItemTapped,
+),
+
+
+
+
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: NotificationPage(),
-  ));
-}
+

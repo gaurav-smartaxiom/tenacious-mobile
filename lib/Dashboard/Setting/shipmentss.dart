@@ -10,26 +10,37 @@ import 'package:http/http.dart' as http;
 import 'package:mdi/mdi.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mobileapp/Dashboard/main.dart';
+import 'package:mobileapp/Dashboard/WindowPage.dart';
+import 'package:mobileapp/Dashboard/shipmentpage.dart';
+import 'package:mobileapp/Dashboard/NotificationPage.dart';
+import 'package:mobileapp/Dashboard/userprofile.dart';
+import 'package:mobileapp/Dashboard/AddDevicePage.dart';
+import 'package:mobileapp/Dashboard/DashboardBox.dart';
+import 'package:mobileapp/Dashboard/Dashboard.dart';
+import 'package:mobileapp/Dashboard/UserManagementPage.dart';
+
+
 class ShipmentDetailsPage extends StatefulWidget {
-  final int indexToReset;
-  final String sensorName;
-  final bool sensorState;
-  final bool isActive1;
+  // final int indexToReset;
+  // final String sensorName;
+  // final bool sensorState;
+  // final bool isActive1;
+  final String ShipmentName;
+
+  final  Map<String,dynamic> decodedToken;
+
 
   ShipmentDetailsPage({
-    required this.indexToReset,
-    required this.sensorName,
-    required this.sensorState,
-    required this.isActive1,
+    //required this.indexToReset,
+    //required this.sensorName,
+    //required this.sensorState,
+    //required this.isActive1,
+    required this.ShipmentName,
+    required this. decodedToken
   });
 
   @override
   _ShipmentDetailsPageState createState() => _ShipmentDetailsPageState();
-
-
-
-
-
 }
 
 enum BatteryLevel {
@@ -98,11 +109,13 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   String pickupLocation ='';
    String pickupDate ='';
 String dateOnly='';
+int _selectedIndex=0;
 
   @override
   void initState() {
     super.initState();
-    shipmentName = shipmentName;
+   shipmentName=widget.ShipmentName;
+    //shipmentName = shipmentName;
     // deviceUUID=widget.sensorName; // Access the sensorName using widget
 
     loadSessionData().then((token) {
@@ -111,6 +124,51 @@ String dateOnly='';
    
     
 }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+
+if (index == 0) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
+      } else if (index == 1) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
+      } else if (index == 4) {
+        // Navigate to UserProfilePage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+      } else if (index == 3) {
+        // Navigate to NotificationPage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
+      }
+      else if (index == 5) {
+        // Navigate to NotificationPage
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserManagementPage()));
+      }
+      else if(index==2)
+      
+      {
+Navigator.of(context).push(MaterialPageRoute(
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
+));
+ // Pass the device UUID
+
+
+
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  String formatDate(DateTime dateTime) {
   return DateFormat('MMMM d, y').format(dateTime);
@@ -125,6 +183,7 @@ String dateOnly='';
     print('Stored Email: $email');
     print('Stored Password: $password');
     print("token-------------$token");
+    
     return token; // Return the token as a Future<String?>
   }
 
@@ -157,7 +216,7 @@ String dateOnly='';
 
       if (selectedShipment != null) {
         // Extract shipment name and trackers for the selected shipment
-        shipmentName = selectedShipment['shipmentName'] ?? '';
+        //shipmentName = selectedShipment['shipmentName'] ?? '';
         pickupLocation=selectedShipment['pickupLocation']?? '';
         pickupDate=selectedShipment['pickupDate'] ?? '';
          print(pickupLocation);
@@ -252,30 +311,39 @@ print("fileDownload");
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Text section
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Icon(Icons.local_shipping,
-                      size: 24), // Replace with the appropriate icon
-                  SizedBox(
-                      width: 8), // Adjust the spacing between icon and text
-                  // Flexible(
-//   child: Text(
-//     shipmentName,
-//     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-//   ),
-// ),
-                  Expanded(
-                    child: Text(
-                      shipmentName,
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              ),
+   Padding(
+  padding: const EdgeInsets.all(8.0),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          Icon(Icons.local_shipping, size: 24), // Replace with the appropriate icon
+          SizedBox(width: 8), // Adjust the spacing between icon and text
+          Text(
+            shipmentName,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          
+        ],
+      
+      ),
+      Row(
+        children: [
+          SizedBox(width: 32), // Adjust the spacing for indentation
+          Expanded(
+            child: Text(
+              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+              style: TextStyle(fontSize: 12,),
             ),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
+
+ 
 
             Padding(
   padding: const EdgeInsets.all(1.0),
@@ -314,7 +382,7 @@ print("fileDownload");
                         style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                    width: 1,
+                    width: 2,
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 10),
@@ -557,9 +625,9 @@ print("fileDownload");
             label: 'User Profile',
           ),
         ],
-        // currentIndex: _selectedIndex,
-        // selectedItemColor: Colors.blue,
-        // onTap: _onItemTapped,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }

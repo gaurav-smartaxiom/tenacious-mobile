@@ -15,6 +15,8 @@ import 'package:mobileapp/Dashboard/userprofile.dart';
 import 'package:mobileapp/Dashboard/AddDevicePage.dart';
 import 'package:mobileapp/Dashboard/DashboardBox.dart';
 import 'package:mobileapp/Dashboard/WindowPage.dart';
+import 'package:mobileapp/Dashboard/Dashboard.dart';
+import 'package:mobileapp/Dashboard/Setting/shipmentss.dart';
 
 // void main() {
 //   runApp(MaterialApp(home: ShipmentPage()));
@@ -22,6 +24,10 @@ import 'package:mobileapp/Dashboard/WindowPage.dart';
 
 class ShipmentPage extends StatefulWidget {
   @override
+  final Map<String, dynamic> decodedToken;
+
+  ShipmentPage({required this.decodedToken});
+  
   _ShipmentPageState createState() => _ShipmentPageState();
 }
 
@@ -35,21 +41,21 @@ class _ShipmentPageState extends State<ShipmentPage> {
       _selectedIndex = index;
 
 if (index == 0) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
       } else if (index == 1) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage()));
+       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
       } else if (index == 4) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
       }
       else if(index==2)
       
       {
 Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
 ));
  // Pass the device UUI
 
@@ -144,6 +150,20 @@ Navigator.of(context).push(MaterialPageRoute(
     });
   }
 
+
+void ReportShipment(Shipment shipment)
+{
+
+print('Selected Shipment Name: ${shipment.shipmentName}');
+      Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ShipmentDetailsPage(ShipmentName: shipment.shipmentName,decodedToken: widget.decodedToken,),
+    ),
+  );
+
+
+}
   void selectShipment(Shipment shipment) {
     print('Selected Shipment Name: ${shipment.shipmentName}');
       Navigator.push(
@@ -171,8 +191,10 @@ Navigator.of(context).push(MaterialPageRoute(
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                ReportShipment(shipment);
+
               },
-              child: Text('Close'),
+              child: Text('ReportView'),
             ),
             TextButton(
               onPressed: () {
@@ -190,48 +212,58 @@ Navigator.of(context).push(MaterialPageRoute(
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      //appBar: AppBar(),
+     appBar: AppBar(
         title: Text('Shipment Page'),
         centerTitle: true,
-      ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate to the dashboard when the back button is pressed
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
+              ),
+            );
+          },
+        ),
+     ),
       body: CustomScrollView(
         slivers: <Widget>[
-         SliverAppBar(
-  pinned: true,
-  centerTitle: true,
-  floating: false,
-  flexibleSpace: Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-    ),
-    child: Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0), // Adjust the value as needed
-            border: Border.all(color: Colors.white), // Border color
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'SearchShipment..',
-                prefixIcon: Icon(Icons.search),
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                border: InputBorder.none, // Remove the default border
+         SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(color: Colors.white),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'SearchShipment..',
+                      prefixIcon: Icon(Icons.search),
+                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      performSearch(value);
+                    },
+                  ),
+                ),
               ),
-              onChanged: (value) {
-                performSearch(value);
-              },
             ),
           ),
-        ),
+        ],
       ),
     ),
-  ),
-),
 
 
    SliverList(

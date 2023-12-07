@@ -35,15 +35,15 @@ class _DashboardPageState extends State<DashboardPage> {
       _selectedIndex = index;
 
 if (index == 0) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WindowPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
       } else if (index == 1) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
       } else if (index == 4) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
       }
       else if (index == 5) {
         // Navigate to NotificationPage
@@ -53,7 +53,7 @@ if (index == 0) {
       
       {
 Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210'),
+  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
 ));
  // Pass the device UUID
 
