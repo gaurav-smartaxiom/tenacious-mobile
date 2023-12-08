@@ -19,7 +19,6 @@ import 'package:mobileapp/Dashboard/DashboardBox.dart';
 import 'package:mobileapp/Dashboard/Dashboard.dart';
 import 'package:mobileapp/Dashboard/UserManagementPage.dart';
 
-
 class ShipmentDetailsPage extends StatefulWidget {
   // final int indexToReset;
   // final String sensorName;
@@ -27,17 +26,16 @@ class ShipmentDetailsPage extends StatefulWidget {
   // final bool isActive1;
   final String ShipmentName;
 
-  final  Map<String,dynamic> decodedToken;
+  final Map<String, dynamic> decodedToken;
 
-
-  ShipmentDetailsPage({
-    //required this.indexToReset,
-    //required this.sensorName,
-    //required this.sensorState,
-    //required this.isActive1,
-    required this.ShipmentName,
-    required this. decodedToken
-  });
+  ShipmentDetailsPage(
+      {
+      //required this.indexToReset,
+      //required this.sensorName,
+      //required this.sensorState,
+      //required this.isActive1,
+      required this.ShipmentName,
+      required this.decodedToken});
 
   @override
   _ShipmentDetailsPageState createState() => _ShipmentDetailsPageState();
@@ -49,7 +47,6 @@ enum BatteryLevel {
   medium,
   mediumHigh,
   high,
-
 }
 
 BatteryLevel getBatteryLevel(int percentage) {
@@ -59,18 +56,16 @@ BatteryLevel getBatteryLevel(int percentage) {
     return BatteryLevel.mediumLow;
   } else if (percentage <= 50) {
     return BatteryLevel.medium;
-  } else if(percentage<=75){
-
+  } else if (percentage <= 75) {
     return BatteryLevel.mediumHigh;
-  }
-  else if (percentage <= 95) {
+  } else if (percentage <= 95) {
     return BatteryLevel.mediumHigh;
   } else {
     return BatteryLevel.high;
   }
 }
 
-Icon getBatteryIcon(int percentage, {double iconSize =1}) {
+Icon getBatteryIcon(int percentage, {double iconSize = 1}) {
   Color iconColor;
 
   switch (getBatteryLevel(percentage)) {
@@ -81,8 +76,8 @@ Icon getBatteryIcon(int percentage, {double iconSize =1}) {
       iconColor = Colors.green;
       return Icon(MdiIcons.battery20, color: iconColor, size: iconSize);
     case BatteryLevel.medium:
-     // iconColor = Colors.yellow;
-      return Icon(MdiIcons.battery50,  size: iconSize);
+      // iconColor = Colors.yellow;
+      return Icon(MdiIcons.battery50, size: iconSize);
     case BatteryLevel.mediumHigh:
       iconColor = Colors.yellow;
       return Icon(MdiIcons.battery80, color: iconColor, size: iconSize);
@@ -92,86 +87,74 @@ Icon getBatteryIcon(int percentage, {double iconSize =1}) {
   }
 }
 
-
-
-
-
-
 class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   String shipmentName = '';
-    int percentage = 50;
+  int percentage = 50;
   String deviceUUID = '';
-  String lastConnected = '2 mins ago';
- // String battery = '40';
+  String lastConnected = '12 year ago';
+  // String battery = '40';
   String signal = '30';
   DateTime fromDate = DateTime.now();
   DateTime toDate = DateTime.now();
-  String pickupLocation ='';
-   String pickupDate ='';
-String dateOnly='';
-int _selectedIndex=0;
+  String pickupLocation = '';
+  String pickupDate = '';
+  String dateOnly = '';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-   shipmentName=widget.ShipmentName;
+    shipmentName = widget.ShipmentName;
     //shipmentName = shipmentName;
     // deviceUUID=widget.sensorName; // Access the sensorName using widget
 
     loadSessionData().then((token) {
       fetchShipmentData(token);
     });
-   
-    
-}
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-if (index == 0) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
+      if (index == 0) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => DashboardPage(
+                  decodedToken: widget.decodedToken,
+                )));
       } else if (index == 1) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => ShipmentPage(
+                  decodedToken: widget.decodedToken,
+                )));
       } else if (index == 4) {
         // Navigate to UserProfilePage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
-      }
-      else if (index == 5) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NotificationPage(
+                  decodedToken: widget.decodedToken,
+                )));
+      } else if (index == 5) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserManagementPage()));
-      }
-      else if(index==2)
-      
-      {
-Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
-));
- // Pass the device UUID
-
-
-
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => UserManagementPage()));
+      } else if (index == 2) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddDevicePage(
+            deviceUuid: '9876543210',
+            decodedToken: widget.decodedToken,
+          ),
+        ));
+        // Pass the device UUID
       }
     });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
- String formatDate(DateTime dateTime) {
-  return DateFormat('MMMM d, y').format(dateTime);
+  String formatDate(DateTime dateTime) {
+    return DateFormat('MMMM d, y').format(dateTime);
   }
 
   Future<String?> loadSessionData() async {
@@ -183,7 +166,7 @@ Navigator.of(context).push(MaterialPageRoute(
     print('Stored Email: $email');
     print('Stored Password: $password');
     print("token-------------$token");
-    
+
     return token; // Return the token as a Future<String?>
   }
 
@@ -217,16 +200,17 @@ Navigator.of(context).push(MaterialPageRoute(
       if (selectedShipment != null) {
         // Extract shipment name and trackers for the selected shipment
         //shipmentName = selectedShipment['shipmentName'] ?? '';
-        pickupLocation=selectedShipment['pickupLocation']?? '';
-        pickupDate=selectedShipment['pickupDate'] ?? '';
-         print(pickupLocation);
-            try {
-      dateOnly = formatDate(DateTime.parse(pickupDate)); // Format the date here
-    } catch (e) {
-      print('Error parsing date: $pickupDate');
-      print('Exception: $e');
-      // Handle the error, e.g., set a default date or show an error message
-    }
+        pickupLocation = selectedShipment['pickupLocation'] ?? '';
+        pickupDate = selectedShipment['pickupDate'] ?? '';
+        print(pickupLocation);
+        try {
+          dateOnly =
+              formatDate(DateTime.parse(pickupDate)); // Format the date here
+        } catch (e) {
+          print('Error parsing date: $pickupDate');
+          print('Exception: $e');
+          // Handle the error, e.g., set a default date or show an error message
+        }
 
         List<dynamic> trackers = selectedShipment['trackers'] ?? [];
 
@@ -236,18 +220,18 @@ Navigator.of(context).push(MaterialPageRoute(
         for (var tracker in trackers) {
           print("Tracker Data: $tracker");
           deviceUUID = tracker['data']['serial_number'] ?? '';
-        
+
           print("Device UUID: $deviceUUID");
-        
+
           // Now you can use deviceUUID as needed
         }
 
         setState(() {
           shipmentName = shipmentName;
           deviceUUID = deviceUUID;
-          pickupLocation=pickupLocation;
-          pickupDate=pickupDate;
-          dateOnly=dateOnly;
+          pickupLocation = pickupLocation;
+          pickupDate = pickupDate;
+          dateOnly = dateOnly;
         });
       } else {
         print("Shipment ID $shipmentID not found in the response");
@@ -258,16 +242,12 @@ Navigator.of(context).push(MaterialPageRoute(
     }
   }
 
-  Future <void> downloadReport() async{
-
-print("Downloaded Report");
-
+  Future<void> downloadReport() async {
+    print("Downloaded Report");
   }
 
-   Future <void> file_download() async{
-
-print("fileDownload");
-
+  Future<void> file_download() async {
+    print("fileDownload");
   }
 
   Future<void> _selectFromDate(BuildContext context) async {
@@ -311,60 +291,56 @@ print("fileDownload");
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Text section
-   Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        children: [
-          Icon(Icons.local_shipping, size: 24), // Replace with the appropriate icon
-          SizedBox(width: 8), // Adjust the spacing between icon and text
-          Text(
-            shipmentName,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          
-        ],
-      
-      ),
-      Row(
-        children: [
-          SizedBox(width: 32), // Adjust the spacing for indentation
-          Expanded(
-            child: Text(
-              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-              style: TextStyle(fontSize: 12,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.local_shipping,
+                          size: 24), // Replace with the appropriate icon
+                      SizedBox(
+                          width: 8), // Adjust the spacing between icon and text
+                      Text(
+                        shipmentName,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(width: 32), // Adjust the spacing for indentation
+                      Expanded(
+                        child: Text(
+                          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    ],
-  ),
-),
-
- 
 
             Padding(
-  padding: const EdgeInsets.all(1.0),
-  child: Container(
-    width: double.infinity,
-    height: 200,
-    
-    color: Colors.blue,
-    child: Row(
-      children: [
-        // Add your widgets inside the Row here
-       Expanded(child: 
-       
-       
-       Main()
-       )
-        // Add more widgets as needed
-      ],
-    ),
-  ),
-),
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                width: double.infinity,
+                height: 200,
+                color: Colors.blue,
+                child: Row(
+                  children: [
+                    // Add your widgets inside the Row here
+                    Expanded(child: Main())
+                    // Add more widgets as needed
+                  ],
+                ),
+              ),
+            ),
 
             // Device Information section
             Padding(
@@ -385,7 +361,7 @@ print("fileDownload");
                     width: 2,
                   ),
                   Container(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.only(right: 9),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       //  borderRadius: BorderRadius.circular(1.0),
@@ -394,33 +370,32 @@ print("fileDownload");
                         style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                    width: 1,
-                  ),
+                      // width: 1,
+                      ),
                   Container(
-                    padding: EdgeInsets.all(2.0),
+                    padding: const EdgeInsets.only(left: 2),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(1.0),
                     ),
-                   child: Row(
-  children: [
-    Text('Battery:', style: TextStyle(fontSize: 9)),
-    SizedBox(width: 1.0), // Adjust the spacing between "Battery:" and icon
-    Transform.rotate(
-      angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
-      child: getBatteryIcon(percentage, iconSize: 11),
-    ),
-    //SizedBox(width: 1.0), // Adjust the spacing between icon and value
-    Text('$percentage%', style: TextStyle(fontSize: 9)),
-  ],
-),
-
+                    child: Row(
+                      children: [
+                        Text('Battery:', style: TextStyle(fontSize: 9)),
+                        //SizedBox(width: 1.0), // Adjust the spacing between "Battery:" and icon
+                        Transform.rotate(
+                          angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
+                          child: getBatteryIcon(percentage, iconSize: 11),
+                        ),
+                        //SizedBox(width: 1.0), // Adjust the spacing between icon and value
+                        Text('$percentage%', style: TextStyle(fontSize: 9)),
+                      ],
+                    ),
                   ),
                   SizedBox(
-                   // width: 1,
-                  ),
+                      // width: 1,
+                      ),
                   Container(
-                    padding: EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(1.0),
@@ -431,7 +406,7 @@ print("fileDownload");
                         // Adjust the spacing between icon and text
                         Text('Signal:', style: TextStyle(fontSize: 9)),
                         Icon(Icons.signal_cellular_4_bar, size: 8.0),
-                        Text(' $signal', style: TextStyle(fontSize: 10))
+                        Text(' $signal', style: TextStyle(fontSize: 9))
                       ],
                     ),
                   ),
@@ -439,94 +414,96 @@ print("fileDownload");
                 ],
               ),
             ),
-           Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    InkWell(
-      onTap: () {
-        // Add your download logic here
-        downloadReport();
-      },
-      child: Row(
-        children: [
-          Icon(Icons.picture_as_pdf_sharp, size: 15.0),
-          SizedBox(width: 5.0),
-          Text(
-            'Download Calibration',
-            style: TextStyle(fontSize: 10.0),
-          ),
-        ],
-      ),
-    ),
-    InkWell(
-      onTap: () {
-        // Add your second download logic here
-         file_download();
-      },
-      child: Row(
-        children: [
-          Text(
-            'Download Calibration',
-            style: TextStyle(fontSize: 10.0),
-          ),
-          SizedBox(width: 5.0),
-          Icon(Icons.file_download, size: 15.0),
-        ],
-      ),
-    ),
-  ],
-),
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    // Add your download logic here
+                    downloadReport();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.picture_as_pdf_sharp, size: 15.0),
+                      SizedBox(width: 5.0),
+                      Text(
+                        'Download Calibration',
+                        style: TextStyle(fontSize: 10.0),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // Add your second download logic here
+                    file_download();
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'Download Calibration',
+                        style: TextStyle(fontSize: 10.0),
+                      ),
+                      SizedBox(width: 5.0),
+                      Icon(Icons.file_download, size: 15.0),
+                    ],
+                  ),
+                ),
+              ],
+            ),
 
             // Calendar section
-           Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Container(
-    height: 40,
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.white), // Add border styling if needed
-     // borderRadius: BorderRadius.(12.0), // Add border radius if needed
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        InkWell(
-          onTap: () => _selectFromDate(context),
-          child: Row(
-            children: [
-              Text('From: ${DateFormat('dd-MM-yyyy').format(fromDate)}'),
-              Icon(Icons.calendar_today),
-            ],
-          ),
-        ),
-        InkWell(
-          onTap: () => _selectToDate(context),
-          child: Row(
-            children: [
-              Text('To: ${DateFormat('dd-MM-yyyy').format(toDate)}'),
-              Icon(Icons.calendar_today),
-            ],
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            // Handle apply button press
-            print(
-              'From: ${DateFormat('dd-MM-yyyy').format(fromDate)}, To: ${DateFormat('dd-MM-yyyy').format(toDate)}',
-            );
-          },
-          child:Padding(padding: const EdgeInsets.only(bottom: 5),
-          
-       child:    Text('Apply',style: TextStyle(fontSize: 15),),  
-        ) 
-        ),
-      ],
-    ),
-  ),
-),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.white), // Add border styling if needed
+                  // borderRadius: BorderRadius.(12.0), // Add border radius if needed
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () => _selectFromDate(context),
+                      child: Row(
+                        children: [
+                          Text(
+                              'From: ${DateFormat('dd-MM-yyyy').format(fromDate)}'),
+                          Icon(Icons.calendar_today),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => _selectToDate(context),
+                      child: Row(
+                        children: [
+                          Text(
+                              'To: ${DateFormat('dd-MM-yyyy').format(toDate)}'),
+                          Icon(Icons.calendar_today),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          // Handle apply button press
+                          print(
+                            'From: ${DateFormat('dd-MM-yyyy').format(fromDate)}, To: ${DateFormat('dd-MM-yyyy').format(toDate)}',
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            'Apply',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+            ),
 
-
-           
             SizedBox(
               height: 10,
             ),
@@ -538,7 +515,7 @@ print("fileDownload");
                   shrinkWrap: true,
                   physics:
                       NeverScrollableScrollPhysics(), // Disable scrolling for the outer SingleChildScrollView
-                  itemCount:pickupLocation.length, 
+                  itemCount: pickupLocation.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -551,7 +528,11 @@ print("fileDownload");
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(pickupLocation ,style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                Text(pickupLocation,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey)),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -560,15 +541,18 @@ print("fileDownload");
                                     Transform.rotate(
                                       angle: -9.4 /
                                           2, // Rotate by 90 degrees (in radians)
-                                      child: getBatteryIcon(percentage,iconSize: 20), // Rotated battery icon
+                                      child: getBatteryIcon(percentage,
+                                          iconSize: 20), // Rotated battery icon
                                     ),
                                     Text('$percentage%'),
-                                    SizedBox(width: 20,),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
                                     Icon(Icons.signal_cellular_4_bar,
                                         size: 18.0), // Network cell icon
                                     Text('18%   '),
-                                   // Icon(Icons.water,
-                                      //  size: 12.0), // Humidity icon
+                                    // Icon(Icons.water,
+                                    //  size: 12.0), // Humidity icon
                                     // Text('27.95   '),
                                     // Icon(Icons.thermostat, size: 12.0),
                                     // Text('47.00   '),
@@ -584,8 +568,9 @@ print("fileDownload");
                                   top:
                                       55.0), // Adjust the top padding as needed
                               child: Text(
-                               dateOnly,
-                                textAlign: TextAlign.right,style: TextStyle(fontSize: 14),
+                                dateOnly,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 14),
                               ),
                             ),
                           ),

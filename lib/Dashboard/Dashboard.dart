@@ -175,7 +175,7 @@ return Scaffold(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 410,
+                  width: 350,
                   height: 620,
                   child: Column(
                     children: [

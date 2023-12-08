@@ -374,7 +374,7 @@ InkWell(
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  keyboardType: TextInputType.number,
+                  //keyboardType: TextInputType.number,
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
@@ -394,7 +394,7 @@ InkWell(
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  keyboardType: TextInputType.number,
+                 // keyboardType: TextInputType.number,
                   controller: _ConfrompasswordController,
                   obscureText: !_isConfrompasswordVisible,
                   decoration: InputDecoration(
