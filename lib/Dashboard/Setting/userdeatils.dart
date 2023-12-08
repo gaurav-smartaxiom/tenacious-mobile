@@ -224,6 +224,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Add New User.'),
+        backgroundColor: Colors.blue,
         // actions: <Widget>[
         //   InkWell(
         //     onTap: () {

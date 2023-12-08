@@ -17,6 +17,7 @@ import 'package:mobileapp/Dashboard/DashboardBox.dart';
 import 'package:mobileapp/Dashboard/WindowPage.dart';
 import 'package:mobileapp/Dashboard/Dashboard.dart';
 import 'package:mobileapp/Dashboard/Setting/shipmentss.dart';
+import 'package:mobileapp/Dashboard/NoDataShipmentPage.dart';
 
 // void main() {
 //   runApp(MaterialApp(home: ShipmentPage()));
@@ -120,8 +121,22 @@ Navigator.of(context).push(MaterialPageRoute(
             }
 
             setState(() {
-              allShipments = shipments;
+
+              if(shipments.isEmpty)
+              {
+                  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => NoShipmentPage(),
+    ),
+  );
+              }
+              else{
+
+allShipments = shipments;
               filteredShipments = List.from(allShipments);
+              }
+              
             });
           } catch (e) {
             print('Error parsing JSON: $e');
@@ -210,120 +225,153 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      //appBar: AppBar(),
-     appBar: AppBar(
-        title: Text('Shipment Page'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Navigate to the dashboard when the back button is pressed
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
-              ),
-            );
-          },
-        ),
-     ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-         SliverList(
-      delegate: SliverChildListDelegate(
-        [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
+ Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Shipment Page'),
+      backgroundColor: Colors.blue,
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          // Navigate to the dashboard when the back button is pressed
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(color: Colors.white),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'SearchShipment..',
-                      prefixIcon: Icon(Icons.search),
-                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                      border: InputBorder.none,
-                    ),
-                    onChanged: (value) {
-                      performSearch(value);
-                    },
-                  ),
-                ),
+          );
+        },),
+        actions: [
+    IconButton(
+      icon: Icon(Icons.add),
+      onPressed: () {
+       Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) =>AddShipmentPage(shipmentName: shipment)
+        ),
+      );
+      },
+    ),
+  ],
+    ),
+    body: Column(
+      children: [
+        Padding(
+  padding: const EdgeInsets.only(left: 10, right: 1),
+  child: Row(
+    children: [
+      Expanded(
+        child: Container(
+          padding: const EdgeInsets.only(left: 10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: TextField(
+              //controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search),
+                border: InputBorder.none,
               ),
+              onChanged: (value) {
+                performSearch(value);
+              },
             ),
           ),
-        ],
+        ),
       ),
-    ),
-
-
-   SliverList(
-  delegate: SliverChildBuilderDelegate(
-    (BuildContext context, int index) {
-      final shipment = filteredShipments[index];
-      final NewShipmentType = shipment.shipmentType; // Corrected line
-      return GestureDetector(
-        onTap: () {
-          showShipmentDetails(shipment);
-        },
-        child: ShipmentInfo(shipment: shipment, shipmentType: NewShipmentType),
-      );
-    },
-    childCount: filteredShipments.length,
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: PopupMenuButton<String>(
+          icon: Icon(Icons.menu),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'search',
+              child: Text('Search'),
+            ),
+            PopupMenuItem<String>(
+              value: 'lastConnected',
+              child: Text('Last Connected'),
+            ),
+            PopupMenuItem<String>(
+              value: 'status',
+              child: Text('Status'),
+            ),
+          ],
+          onSelected: (String value) {
+            // Handle the selection of the dropdown menu here
+            switch (value) {
+              case 'search':
+                // Handle the "Search" option
+                print("Search");
+                break;
+              case 'lastConnected':
+                // Handle the "Last Connected" option
+                break;
+              case 'status':
+                // Handle the "Status" option
+                break;
+            }
+          },
+          offset: Offset(0, 30), // Adjust the offset values as needed
+        ),
+      ),
+    ],
   ),
 ),
 
-
-
-
-
-
-
-
-          
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-  showSelectedLabels: false, // Selected label ko hide karein
-  showUnselectedLabels: false, // Unselected labels ko hide karein
-  items: const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.window),
-      label: 'Window',
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredShipments.length,
+            itemBuilder: (BuildContext context, int index) {
+              final shipment = filteredShipments[index];
+              final NewShipmentType = shipment.shipmentType;
+              return GestureDetector(
+                onTap: () {
+                  showShipmentDetails(shipment);
+                },
+                child: ShipmentInfo(shipment: shipment, shipmentType: NewShipmentType),
+              );
+            },
+          ),
+        ),
+      ],
     ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.local_shipping),
-      label: 'Shipment',
+    bottomNavigationBar: BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.window),
+          label: 'Window',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.local_shipping),
+          label: 'Shipment',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.devices_other),
+          label: 'Add_Devices',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications),
+          label: 'Notifications',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'User Profile',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.blue,
+      onTap: _onItemTapped,
     ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.devices_other),
-      label: 'Add_Devices',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'User Profile',
-    ),
-  ],
-  currentIndex: _selectedIndex,
-  selectedItemColor: Colors.blue,
-  onTap: _onItemTapped,
-),
-    );
-  }
+  );
+}
 }
 String _formatLastConnected(int timestamp) {
   DateTime lastConnected = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);

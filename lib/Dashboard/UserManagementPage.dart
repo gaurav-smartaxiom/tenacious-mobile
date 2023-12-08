@@ -116,6 +116,7 @@ print(userLevel);
       appBar: AppBar(
         title: Text("User Management Page"),
         centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
       body: Column(
         children: [

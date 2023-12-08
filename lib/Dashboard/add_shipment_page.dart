@@ -19,6 +19,7 @@ TextEditingController _descriptionController = TextEditingController();
       appBar: AppBar(
         centerTitle: true,
         title: Text('Add Shipment'),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Container(

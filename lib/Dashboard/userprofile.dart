@@ -73,6 +73,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(' Setting Page'),
+        backgroundColor: Colors.blue,
       ),
       body: ListView(
         children: [

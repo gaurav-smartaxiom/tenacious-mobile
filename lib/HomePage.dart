@@ -14,6 +14,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
 
 title: Text("FirmawareUpadatePage"),
+backgroundColor: Colors.blue,
 
 
       ),

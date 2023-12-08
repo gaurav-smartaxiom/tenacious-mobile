@@ -214,6 +214,7 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
       appBar: AppBar(
         centerTitle: true,
         title: Text('Device Information'),
+        backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -252,6 +253,7 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
    {
     // Your logic for the "Reset Device" button
     print("Index: $index, SensorName: $sensorName, IsSensorActive: $isSensorActive, IsActive: $isActive");
+ ResetDeviceInfo(index,sensorName,isSensorActive,isActive);
 
     // Call your ResetDeviceInfo function or any other logic with these values
     

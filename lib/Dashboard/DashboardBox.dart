@@ -28,7 +28,8 @@ class DashboardBox extends StatelessWidget {
             "Dashboard Box",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.grey, // Text color white
+              color: Colors.grey,
+              backgroundColor: Colors.blue, // Text color white
               fontSize: 20.0,
             ),
           ),

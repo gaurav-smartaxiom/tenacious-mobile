@@ -171,6 +171,7 @@ void onSearchChanged() {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Notification Page'),
+        backgroundColor: Colors.blue,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -214,41 +215,70 @@ void onSearchChanged() {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 30),
-                      child: TextField(
-                        controller: searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Search...',
-                          prefixIcon: Icon(Icons.search),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          // Handle the onChanged event here
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.format_list_numbered,
-                  ),
-                ),
-              ],
+         Padding(
+  padding: const EdgeInsets.only(left: 30),
+  child: Row(
+    children: [
+      Expanded(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search),
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+               
+              },
             ),
           ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: PopupMenuButton<String>(
+          icon: Icon(Icons.menu),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'search',
+              child: Text('Search'),
+            ),
+            PopupMenuItem<String>(
+              value: 'lastConnected',
+              child: Text('Last Connected'),
+            ),
+            PopupMenuItem<String>(
+              value: 'status',
+              child: Text('Status'),
+            ),
+          ],
+          onSelected: (String value) {
+            // Handle the selection of the dropdown menu here
+            switch (value) {
+              case 'search':
+                // Handle the "Search" option
+                break;
+              case 'lastConnected':
+                // Handle the "Last Connected" option
+                break;
+              case 'status':
+                // Handle the "Status" option
+                break;
+            }
+          },
+        ),
+      ),
+    ],
+  ),
+),
+
           Expanded(
             child: ListView.builder(
               itemCount: filteredList.length,
@@ -328,9 +358,6 @@ void onSearchChanged() {
   selectedItemColor: Colors.blue,
   onTap: _onItemTapped,
 ),
-
-
-
 
     );
   }
