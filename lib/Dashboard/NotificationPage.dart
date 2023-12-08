@@ -176,7 +176,7 @@ void onSearchChanged() {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          /* Container(
             height: 250,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -214,7 +214,7 @@ void onSearchChanged() {
                 ],
               ),
             ),
-          ),
+          ), */
          Padding(
   padding: const EdgeInsets.only(left: 30),
   child: Row(
