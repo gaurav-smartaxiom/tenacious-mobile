@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> Loginuser() async {
     print("login");
 
-     //final String apiUrl = 'http://10.0.2.2:4000/api/v1/login';
+    //final String apiUrl = 'http://10.0.2.2:4000/api/v1/login';
     final String apiUrl = login;
     //print("apiUrl: $apiUrl");
     final Map<String, String> requestBody = {
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => DashboardPage(decodedToken:decodedToken),
+            builder: (context) => DashboardPage(decodedToken: decodedToken),
           ),
           (route) => false, // This predicate will always return false
         );
@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.only(
                             top: 40.0), // Set the top padding here
                         child: Text(
-                          "forgotpassword?",
+                          "Forgot password?",
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),
@@ -261,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                 text: "I Don't have an account? ",
                 children: [
                   TextSpan(
-                    text: 'Sign in',
+                    text: 'Create one',
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,

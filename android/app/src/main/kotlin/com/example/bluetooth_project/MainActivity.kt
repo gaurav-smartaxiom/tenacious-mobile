@@ -1,4 +1,4 @@
-package com.example.bluetooth_project
+package com.example.tenacious
 
 import io.flutter.embedding.android.FlutterActivity
 

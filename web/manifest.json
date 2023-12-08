@@ -1,6 +1,6 @@
 {
-    "name": "bluetooth_project",
-    "short_name": "bluetooth_project",
+    "name": "tenacious",
+    "short_name": "tenacious",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -14,7 +14,7 @@
 
 
     <application
-        android:label="bluetooth_project"
+        android:label="tenacious"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
