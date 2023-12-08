@@ -6,6 +6,7 @@ import 'package:mobileapp/login and signup/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobileapp/Dashboard/Dashboard.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,11 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Tenacious',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // Your app's theme configuration
-      ),
+          // Your app's theme configuration
+          ),
       home: const AppLoader(), // Show the loading screen initially
     );
   }
@@ -36,7 +37,7 @@ class _AppLoaderState extends State<AppLoader> {
   @override
   void initState() {
     super.initState();
-    
+
     // Delay the transition to the home page after 5 seconds
     Future.delayed(const Duration(seconds: 10), () {
       // Navigator.of(context).pushReplacement(
@@ -44,21 +45,24 @@ class _AppLoaderState extends State<AppLoader> {
       // );
       checkLoginStatus();
     });
-    
   }
+
   void checkLoginStatus() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-   // final  token = sharedPreferences.getString('token');
+    // final  token = sharedPreferences.getString('token');
     final email = sharedPreferences.getString('email');
     final password = sharedPreferences.getString('password');
- String? token = sharedPreferences.getString('token');
-Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {};
+    String? token = sharedPreferences.getString('token');
+    Map<String, dynamic> decodedToken =
+        token != null ? JwtDecoder.decode(token) : {};
     print("decodeToken---------->,$decodedToken");
     if (token != null && email != null && password != null) {
       // User is already logged in, navigate to the dashboard page.
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => DashboardPage(decodedToken: decodedToken,), // Replace with your DashboardPage
+          builder: (context) => DashboardPage(
+            decodedToken: decodedToken,
+          ), // Replace with your DashboardPage
         ),
       );
     } else {
@@ -70,8 +74,9 @@ Map<String, dynamic> decodedToken = token != null ? JwtDecoder.decode(token) : {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return  LoadingScreen();
+    return LoadingScreen();
   }
 }
