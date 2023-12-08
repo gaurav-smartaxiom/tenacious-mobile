@@ -247,7 +247,7 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
              Row(
   children: [
   Expanded(
-  child: _buildActionButton("Reset Device", (int index, String sensorName, bool isSensorActive, bool isActive)
+  child: _buildActionButton("Reset Device ", (int index, String sensorName, bool isSensorActive, bool isActive)
   
    {
     // Your logic for the "Reset Device" button
@@ -260,9 +260,9 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
   }),
 ),
 
-    SizedBox(width: 15.0), // Add spacing between buttons
+    SizedBox(width: 11.0), // Add spacing between buttons
     Expanded(
-      child: _buildActionButton("Update Firmware", (int index, String sensorName, bool switchValue ,bool isActive) {
+      child: _buildActionButton("UpdateFrimware",  (int index, String sensorName, bool switchValue ,bool isActive) {
         // Your logic for the "Update Firmware" button
         //printUpdateFirmwareInfo(index, sensorName, switchValue);
       }),
@@ -394,7 +394,7 @@ Widget _buildActionButton(String label, void Function(int, String, bool, bool) o
         UpdateFirmwareInfo(index, sensorName, isSensorActive, isActive);
       }
     },
-    child: Text(label, style: TextStyle(fontSize: 18.0)),
+    child: Text(label, style: TextStyle(fontSize: 15.0)),
   );
 }
 

@@ -355,10 +355,10 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                       borderRadius: BorderRadius.circular(1.0),
                     ),
                     child: Text('Device UUID: $deviceUUID',
-                        style: TextStyle(fontSize: 10)),
+                        style: TextStyle(fontSize: 9)),
                   ),
                   SizedBox(
-                    width: 2,
+                    width: 1,
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 9),
@@ -367,7 +367,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                       //  borderRadius: BorderRadius.circular(1.0),
                     ),
                     child: Text('Last Connected: $lastConnected',
-                        style: TextStyle(fontSize: 10)),
+                        style: TextStyle(fontSize: 9)),
                   ),
                   SizedBox(
                       // width: 1,
@@ -387,7 +387,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                           child: getBatteryIcon(percentage, iconSize: 11),
                         ),
                         //SizedBox(width: 1.0), // Adjust the spacing between icon and value
-                        Text('$percentage%', style: TextStyle(fontSize: 9)),
+                        Text('$percentage%', style: TextStyle(fontSize: 8)),
                       ],
                     ),
                   ),
@@ -395,7 +395,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                       // width: 1,
                       ),
                   Container(
-                    padding: const EdgeInsets.only(left: 5),
+                    padding: const EdgeInsets.only(left: 4),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(1.0),
@@ -406,7 +406,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                         // Adjust the spacing between icon and text
                         Text('Signal:', style: TextStyle(fontSize: 9)),
                         Icon(Icons.signal_cellular_4_bar, size: 8.0),
-                        Text(' $signal', style: TextStyle(fontSize: 9))
+                        Text(' $signal', style: TextStyle(fontSize: 8))
                       ],
                     ),
                   ),

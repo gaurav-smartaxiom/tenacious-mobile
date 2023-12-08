@@ -176,13 +176,10 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-<<<<<<< HEAD
-                  width: 350,
-                  height: 620,
-=======
+
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 130,
->>>>>>> b27b9333899f2302c55f0e20d19f1efc8945b5b7
+
                   child: Column(
                     children: [
                       Expanded(

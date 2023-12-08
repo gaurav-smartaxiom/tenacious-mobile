@@ -368,11 +368,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-<<<<<<< HEAD
+
                   //keyboardType: TextInputType.number,
-=======
-                  // keyboardType: TextInputType.number,
->>>>>>> b27b9333899f2302c55f0e20d19f1efc8945b5b7
+          // keyboardType: TextInputType.number,
+
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
@@ -392,11 +391,11 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-<<<<<<< HEAD
+
                  // keyboardType: TextInputType.number,
-=======
+
                   // keyboardType: TextInputType.number,
->>>>>>> b27b9333899f2302c55f0e20d19f1efc8945b5b7
+
                   controller: _ConfrompasswordController,
                   obscureText: !_isConfrompasswordVisible,
                   decoration: InputDecoration(
