@@ -255,7 +255,7 @@ class MainNavigation extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => LocationAppExample()),
         );
-        //Scaffold.of(context).openDrawer();
+        Scaffold.of(context).openDrawer();
       },
       heroTag: "MainMenuFab",
       mini: true,

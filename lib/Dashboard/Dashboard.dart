@@ -18,6 +18,7 @@ import 'dart:convert';
 import 'UserManagementPage.dart';
 import 'main.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:mobileapp/Dashboard/map/main1.dart';
 
 class DashboardPage extends StatefulWidget {
   final Map<String, dynamic> decodedToken;
@@ -183,7 +184,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: Main(),
+                        child: Main1(),
                       ),
                       // Expanded(
                       //   child: Drawer(
