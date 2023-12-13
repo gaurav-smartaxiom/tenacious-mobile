@@ -5,20 +5,19 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:mobileapp/Dashboard/search_example.dart';
 
-class Main extends StatefulWidget {
+class DirectionMapPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _MainState();
+  State<StatefulWidget> createState() => _DirectionMapPage();
 }
 
-
-class _MainState extends State<Main> with OSMMixinObserver {
+class _DirectionMapPage extends State<DirectionMapPage> with OSMMixinObserver {
   late MapController controller;
   ValueNotifier<bool> trackingNotifier = ValueNotifier(false);
   ValueNotifier<bool> showFab = ValueNotifier(false);
   ValueNotifier<IconData> userLocationIcon = ValueNotifier(Icons.near_me);
   ValueNotifier<GeoPoint?> lastGeoPoint = ValueNotifier(null);
   ValueNotifier<GeoPoint?> userLocationNotifier = ValueNotifier(null);
-  
+
   final mapKey = GlobalKey();
 
   @override
@@ -30,7 +29,6 @@ class _MainState extends State<Main> with OSMMixinObserver {
         longitude: 8.4737324,
       ),
     );
-
 
     controller.addObserver(this);
   }
@@ -55,7 +53,7 @@ class _MainState extends State<Main> with OSMMixinObserver {
           //iconAnchor: IconAnchor(anchor: Anchor.top),
         );
       } else {
-        await controller.addMarker(
+        /* await controller.addMarker(
           position,
           markerIcon: MarkerIcon(
             icon: Icon(
@@ -69,7 +67,7 @@ class _MainState extends State<Main> with OSMMixinObserver {
           //   //offset: (x: 32.5, y: -32),
           // ),
           //angle: -pi / 4,
-        );
+        ); */
       }
       lastGeoPoint.value = position;
     });
@@ -107,24 +105,24 @@ class _MainState extends State<Main> with OSMMixinObserver {
           controller: controller,
         ),
         if (!kReleaseMode || kIsWeb) ...[
-          Positioned(
+          /* Positioned(
             bottom: 23.0,
             left: 15,
             child: ZoomNavigation(
               controller: controller,
             ),
-          )
+          ) */
         ],
         if (!kIsWeb) ...[
-          Positioned(
+          /* Positioned(
             top: 50,
             right: 15,
             child: MapRotation(
               controller: controller,
             ),
-          )
+          ) */
         ],
-        Positioned(
+        /* Positioned(
           top: kIsWeb
               ? 26
               : MediaQuery.maybeOf(context)?.viewPadding.top ?? 26.0,
@@ -142,7 +140,7 @@ class _MainState extends State<Main> with OSMMixinObserver {
             trackingNotifier: trackingNotifier,
             userLocationIcon: userLocationIcon,
           ),
-        )
+        ) */
       ],
     );
   }
@@ -159,7 +157,7 @@ class ZoomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PointerInterceptor(
+        /* PointerInterceptor(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               maximumSize: Size(48, 48),
@@ -180,8 +178,8 @@ class ZoomNavigation extends StatelessWidget {
         ),
         SizedBox(
           height: 16,
-        ),
-        PointerInterceptor(
+        ), */
+        /* PointerInterceptor(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               maximumSize: Size(48, 48),
@@ -199,7 +197,7 @@ class ZoomNavigation extends StatelessWidget {
               controller.zoomOut();
             },
           ),
-        ),
+        ), */
       ],
     );
   }
@@ -251,7 +249,7 @@ class MainNavigation extends StatelessWidget {
     return FloatingActionButton(
       key: UniqueKey(),
       onPressed: () {
-       Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => LocationAppExample()),
         );
@@ -277,10 +275,7 @@ class DrawerMain extends StatelessWidget {
           children: [
             SizedBox(height: MediaQuery.viewPaddingOf(context).top),
             ListTile(
-              onTap: () {
-
-
-              },
+              onTap: () {},
               title: Text("search example"),
             ),
             ListTile(

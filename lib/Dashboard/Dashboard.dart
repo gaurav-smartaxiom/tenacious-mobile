@@ -16,9 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'UserManagementPage.dart';
-import 'main.dart';
+import 'DirectionMapPage.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'package:mobileapp/Dashboard/map/main1.dart';
 
 class DashboardPage extends StatefulWidget {
   final Map<String, dynamic> decodedToken;
@@ -177,14 +176,12 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 130,
-
                   child: Column(
                     children: [
                       Expanded(
-                        child: Main1(),
+                        child: DirectionMapPage(),
                       ),
                       // Expanded(
                       //   child: Drawer(
@@ -229,10 +226,10 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: Icon(Icons.person),
             label: 'User Profile',
           ),
-          BottomNavigationBarItem(
+          /* BottomNavigationBarItem(
             icon: Icon(Icons.mail),
             label: 'UserMangment',
-          ),
+          ), */
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,

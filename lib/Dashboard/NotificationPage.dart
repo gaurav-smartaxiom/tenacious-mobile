@@ -17,9 +17,8 @@ import 'package:mobileapp/Dashboard/NotificationPage.dart';
 import 'package:mobileapp/Dashboard/UserManagementPage.dart';
 
 class NotificationPage extends StatefulWidget {
-
- final Map<String, dynamic> decodedToken;
- NotificationPage({required this.decodedToken});
+  final Map<String, dynamic> decodedToken;
+  NotificationPage({required this.decodedToken});
   @override
   _NotificationPageState createState() => _NotificationPageState();
 }
@@ -32,36 +31,43 @@ class _NotificationPageState extends State<NotificationPage> {
   late List<String> filteredList1 = [];
   late String mydata = '';
   int _selectedIndex = 0;
-   // Changed to String type
-   void _onItemTapped(int index) {
+  // Changed to String type
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-if (index == 0) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
+      if (index == 0) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => DashboardPage(
+                  decodedToken: widget.decodedToken,
+                )));
       } else if (index == 1) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => ShipmentPage(
+                  decodedToken: widget.decodedToken,
+                )));
       } else if (index == 4) {
         // Navigate to UserProfilePage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 3) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
-      }
-      else if (index == 5) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NotificationPage(
+                  decodedToken: widget.decodedToken,
+                )));
+      } else if (index == 5) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserManagementPage()));
-      }
-      else if(index==2)
-      
-      {
-Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
-));
- // Pass the device UUID
-
-
-
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => UserManagementPage()));
+      } else if (index == 2) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddDevicePage(
+            deviceUuid: '9876543210',
+            decodedToken: widget.decodedToken,
+          ),
+        ));
+        // Pass the device UUID
       }
     });
   }
@@ -91,79 +97,78 @@ Navigator.of(context).push(MaterialPageRoute(
   }
 
   Future<void> fetchShipmentData(String? token) async {
-  final String backendUrl = shipment;
+    final String backendUrl = shipment;
 
-  final response = await http.get(
-    Uri.parse(backendUrl),
-    headers: {
-      'Authorization': 'Bearer $token',
-    },
-  );
+    final response = await http.get(
+      Uri.parse(backendUrl),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-  print('response, $response');
-  print("Response Body: ${response.body}");
-  print(response.statusCode == 200);
+    print('response, $response');
+    print("Response Body: ${response.body}");
+    print(response.statusCode == 200);
 
-  if (response.statusCode == 200) {
-    final List<dynamic> items = jsonDecode(response.body)['items'];
+    if (response.statusCode == 200) {
+      final List<dynamic> items = jsonDecode(response.body)['items'];
 
-    // Extract deviceuuid values
-    List<String> deviceUUIDs = items.expand<String>((shipment) {
-      print("Shipment Name: ${shipment['shipmentName']}");
+      // Extract deviceuuid values
+      List<String> deviceUUIDs = items.expand<String>((shipment) {
+        print("Shipment Name: ${shipment['shipmentName']}");
 
-      // Extract trackers data if available
-      if (shipment['trackers'] != null) {
-        List<dynamic> trackers = shipment['trackers'];
-        List<String> shipmentDeviceUUIDs = trackers.map<String>((tracker) {
-          print("trackresssss, $tracker");
-          print("Tracker Index: ${tracker['index']}");
-          print("Tracker Timestamp: ${tracker['timestamp']}");
+        // Extract trackers data if available
+        if (shipment['trackers'] != null) {
+          List<dynamic> trackers = shipment['trackers'];
+          List<String> shipmentDeviceUUIDs = trackers.map<String>((tracker) {
+            print("trackresssss, $tracker");
+            print("Tracker Index: ${tracker['index']}");
+            print("Tracker Timestamp: ${tracker['timestamp']}");
 
-          // Extract data from tracker
-          Map<String, dynamic> trackerData = tracker['data'];
-          print("dtatata, $trackerData");
+            // Extract data from tracker
+            Map<String, dynamic> trackerData = tracker['data'];
+            print("dtatata, $trackerData");
 
-          // Check if 'deviceuuid' is not null before casting
-          if (trackerData['deviceUUID'] != null) {
-            print("Device UUID: ${trackerData['deviceUUID']}");
-            setState(() {
-              mydata = trackerData['deviceUUID'] as String;
-              itemList.add(mydata); // Use add to add elements to the list
-              onSearchChanged();
-            });
-            print("myyyyydataa,$mydata");
-            return trackerData['deviceUUID'] as String;
-          } else {
-            print("Device UUID is null");
-            return ''; // or any default value you want to use
-          }
-        }).toList();
-        return shipmentDeviceUUIDs;
-      } else {
-        print("No trackers available for this shipment.");
-        return [];
-      }
-    }).toList();
-  
-    print("Device UUIDs: $deviceUUIDs");
+            // Check if 'deviceuuid' is not null before casting
+            if (trackerData['deviceUUID'] != null) {
+              print("Device UUID: ${trackerData['deviceUUID']}");
+              setState(() {
+                mydata = trackerData['deviceUUID'] as String;
+                itemList.add(mydata); // Use add to add elements to the list
+                onSearchChanged();
+              });
+              print("myyyyydataa,$mydata");
+              return trackerData['deviceUUID'] as String;
+            } else {
+              print("Device UUID is null");
+              return ''; // or any default value you want to use
+            }
+          }).toList();
+          return shipmentDeviceUUIDs;
+        } else {
+          print("No trackers available for this shipment.");
+          return [];
+        }
+      }).toList();
 
-    // You can return the deviceUUIDs directly
-    //return deviceUUIDs;
-  } else {
-    print("Error: ${response.statusCode}");
+      print("Device UUIDs: $deviceUUIDs");
+
+      // You can return the deviceUUIDs directly
+      //return deviceUUIDs;
+    } else {
+      print("Error: ${response.statusCode}");
+    }
   }
-}
 
-void onSearchChanged() {
-  setState(() {
-    filteredList = itemList
-        .where((item) =>
-            item.toLowerCase().contains(searchController.text.toLowerCase()))
-        .toList();
-  });
-  print("FilteredList: $filteredList");
-}
-
+  void onSearchChanged() {
+    setState(() {
+      filteredList = itemList
+          .where((item) =>
+              item.toLowerCase().contains(searchController.text.toLowerCase()))
+          .toList();
+    });
+    print("FilteredList: $filteredList");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -215,70 +220,68 @@ void onSearchChanged() {
               ),
             ),
           ), */
-         Padding(
-  padding: const EdgeInsets.only(left: 30),
-  child: Row(
-    children: [
-      Expanded(
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
-                border: InputBorder.none,
-              ),
-              onChanged: (value) {
-               
-              },
+          Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
+                        ),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PopupMenuButton<String>(
+                    icon: Icon(Icons.menu),
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                      PopupMenuItem<String>(
+                        value: 'search',
+                        child: Text('Search'),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'lastConnected',
+                        child: Text('Last Connected'),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'status',
+                        child: Text('Status'),
+                      ),
+                    ],
+                    onSelected: (String value) {
+                      // Handle the selection of the dropdown menu here
+                      switch (value) {
+                        case 'search':
+                          // Handle the "Search" option
+                          break;
+                        case 'lastConnected':
+                          // Handle the "Last Connected" option
+                          break;
+                        case 'status':
+                          // Handle the "Status" option
+                          break;
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: PopupMenuButton<String>(
-          icon: Icon(Icons.menu),
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            PopupMenuItem<String>(
-              value: 'search',
-              child: Text('Search'),
-            ),
-            PopupMenuItem<String>(
-              value: 'lastConnected',
-              child: Text('Last Connected'),
-            ),
-            PopupMenuItem<String>(
-              value: 'status',
-              child: Text('Status'),
-            ),
-          ],
-          onSelected: (String value) {
-            // Handle the selection of the dropdown menu here
-            switch (value) {
-              case 'search':
-                // Handle the "Search" option
-                break;
-              case 'lastConnected':
-                // Handle the "Last Connected" option
-                break;
-              case 'status':
-                // Handle the "Status" option
-                break;
-            }
-          },
-        ),
-      ),
-    ],
-  ),
-),
-
           Expanded(
             child: ListView.builder(
               itemCount: filteredList.length,
@@ -296,13 +299,11 @@ void onSearchChanged() {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
-                              top: 0.0, right: 20.0),
+                          padding: EdgeInsets.only(top: 0.0, right: 20.0),
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text('Status: Connected'),
                                 Text('Last Connected: 2 mins ago'),
@@ -323,44 +324,40 @@ void onSearchChanged() {
           ),
         ],
       ),
-
- bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-  showSelectedLabels: false, // Selected label ko hide karein
-  showUnselectedLabels: false, // Unselected labels ko hide karein
-  items: const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.window),
-      label: 'Window',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.local_shipping),
-      label: 'Shipment',
-    ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.devices_other),
-      label: 'Add_Devices',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'User Profile',
-    ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.mail),
-      label: 'UserMangment',
-    ),
-  ],
-  currentIndex: _selectedIndex,
-  selectedItemColor: Colors.blue,
-  onTap: _onItemTapped,
-),
-
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
+        showSelectedLabels: false, // Selected label ko hide karein
+        showUnselectedLabels: false, // Unselected labels ko hide karein
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.window),
+            label: 'Window',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_shipping),
+            label: 'Shipment',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.devices_other),
+            label: 'Add_Devices',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'User Profile',
+          ),
+          /* BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            label: 'UserMangment',
+          ), */
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
-
-

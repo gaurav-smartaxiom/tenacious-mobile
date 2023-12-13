@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:mobileapp/Dashboard/main.dart';
+import 'package:mobileapp/Dashboard/DirectionMapPage.dart';
 import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +9,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:mdi/mdi.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:mobileapp/Dashboard/main.dart';
 import 'package:mobileapp/Dashboard/WindowPage.dart';
 import 'package:mobileapp/Dashboard/shipmentpage.dart';
 import 'package:mobileapp/Dashboard/NotificationPage.dart';
@@ -335,7 +334,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                 child: Row(
                   children: [
                     // Add your widgets inside the Row here
-                    Expanded(child: Main())
+                    Expanded(child: DirectionMapPage())
                     // Add more widgets as needed
                   ],
                 ),
