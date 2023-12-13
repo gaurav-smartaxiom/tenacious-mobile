@@ -14,7 +14,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     return MaterialApp(
       title: 'Tenacious',
       debugShowCheckedModeBanner: false,

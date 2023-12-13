@@ -84,6 +84,9 @@ class _DashboardPageState extends State<DashboardPage> {
     final email = sharedPreferences.getString('email');
     final password = sharedPreferences.getString('password');
     final token = sharedPreferences.getString('token');
+    final storedUserLevel = sharedPreferences.getString('userLevel');
+     print('Stored User Level: $storedUserLevel');
+
 
     print('Stored Email: $email');
     print('Stored Password: $password');

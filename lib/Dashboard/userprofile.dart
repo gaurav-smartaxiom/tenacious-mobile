@@ -10,7 +10,7 @@ import 'package:mobileapp/Dashboard/Setting/SwitchListItem.dart';
 import 'package:mobileapp/Dashboard/Setting/firmware.dart';
 import 'package:mobileapp/Dashboard/Setting/LogoutListItem.dart';
 import 'package:mobileapp/Dashboard/Setting/scan_device.dart';
-
+import 'package:mobileapp/Dashboard/Setting/Access_policoes.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -123,7 +123,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
           //buildListItem("Firmware", "1.0.0"),
           //buildListItemWithArrow("Firmware", "firmware_Update", context),
- buildListItem1("Add Device", "Add a New Device and scan",(){
+ AddScanDevice("Add Device", "Add a New Device and scan",(){
  Navigator.of(context).push(
     MaterialPageRoute(builder: (context) => ScanDevicePage()),
   );
@@ -134,7 +134,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
           
 
-          buildListItem("Access Policy", "Manage Access Policy"),
+          Access_policies("Access Policy", "Manage Access Policy",context),
             Divider(),      
 
           buildListItem("About Us", "Learn About Us"),
@@ -157,13 +157,25 @@ Divider(),
     );
   }
 }
-Widget buildListItem1(String label, String value, void Function() onTap) {
+Widget AddScanDevice(String label, String value, void Function() onTap) {
   return ListTile(
     title: Text(label),
     subtitle: Text(value),
     onTap: onTap,
   );
 }
+ Widget Access_policies(String title, String subtitle, BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(subtitle),
+      onTap: () {
+        // Navigate to Access Policies Page
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => AccessPolicies()),
+        );
+      },
+    );
+  }
 
 
 
