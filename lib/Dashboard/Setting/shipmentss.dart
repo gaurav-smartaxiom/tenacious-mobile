@@ -173,7 +173,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   Future<void> fetchShipmentData(String? token) async {
     final String backendUrl = shipment;
     final String shipmentID =
-        '64e464f3eb12d5b4aa42453c'; // Replace with your actual shipment ID
+        '64e464f3eb12d5b4aa42453c'; 
 
     final response = await http.get(
       Uri.parse(backendUrl),
@@ -198,34 +198,28 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
       print("Selected Shipment: $selectedShipment");
 
       if (selectedShipment != null) {
-        // Extract shipment name and trackers for the selected shipment
         //shipmentName = selectedShipment['shipmentName'] ?? '';
         pickupLocation = selectedShipment['pickupLocation'] ?? '';
         pickupDate = selectedShipment['pickupDate'] ?? '';
         print(pickupLocation);
         try {
           dateOnly =
-              formatDate(DateTime.parse(pickupDate)); // Format the date here
+              formatDate(DateTime.parse(pickupDate)); 
         } catch (e) {
           print('Error parsing date: $pickupDate');
           print('Exception: $e');
-          // Handle the error, e.g., set a default date or show an error message
+          
         }
 
         List<dynamic> trackers = selectedShipment['trackers'] ?? [];
 
         print("Shipment Name: $shipmentName");
         print("Trackers: $trackers");
-
         for (var tracker in trackers) {
           print("Tracker Data: $tracker");
           deviceUUID = tracker['data']['serial_number'] ?? '';
-
           print("Device UUID: $deviceUUID");
-
-          // Now you can use deviceUUID as needed
         }
-
         setState(() {
           shipmentName = shipmentName;
           deviceUUID = deviceUUID;
@@ -238,18 +232,15 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
       }
     } else {
       print("Error: ${response.statusCode}");
-      // Handle the error case
+     
     }
   }
-
   Future<void> downloadReport() async {
     print("Downloaded Report");
   }
-
   Future<void> file_download() async {
     print("fileDownload");
   }
-
   Future<void> _selectFromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -257,14 +248,12 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
       firstDate: DateTime(2023),
       lastDate: DateTime(2101),
     );
-
     if (picked != null && picked != fromDate) {
       setState(() {
         fromDate = picked;
       });
     }
   }
-
   Future<void> _selectToDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -299,9 +288,9 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                   Row(
                     children: [
                       Icon(Icons.local_shipping,
-                          size: 24), // Replace with the appropriate icon
+                          size: 24),
                       SizedBox(
-                          width: 8), // Adjust the spacing between icon and text
+                          width: 8), 
                       Text(
                         shipmentName,
                         style: TextStyle(
@@ -311,7 +300,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                   ),
                   Row(
                     children: [
-                      SizedBox(width: 32), // Adjust the spacing for indentation
+                      SizedBox(width: 32), 
                       Expanded(
                         child: Text(
                           "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
@@ -334,15 +323,11 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                 color: Colors.blue,
                 child: Row(
                   children: [
-                    // Add your widgets inside the Row here
                     Expanded(child: Main())
-                    // Add more widgets as needed
                   ],
                 ),
               ),
             ),
-
-            // Device Information section
             Padding(
               padding: const EdgeInsets.all(1.0),
               child: Row(
@@ -355,10 +340,10 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                       borderRadius: BorderRadius.circular(1.0),
                     ),
                     child: Text('Device UUID: $deviceUUID',
-                        style: TextStyle(fontSize: 9)),
+                        style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                    width: 1,
+                    width: 5,
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 9),
@@ -367,10 +352,10 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                       //  borderRadius: BorderRadius.circular(1.0),
                     ),
                     child: Text('Last Connected: $lastConnected',
-                        style: TextStyle(fontSize: 9)),
+                        style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                      // width: 1,
+                       width: 4,
                       ),
                   Container(
                     padding: const EdgeInsets.only(left: 2),
@@ -380,14 +365,14 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                     ),
                     child: Row(
                       children: [
-                        Text('Battery:', style: TextStyle(fontSize: 9)),
+                        Text('Battery:', style: TextStyle(fontSize: 10)),
                         //SizedBox(width: 1.0), // Adjust the spacing between "Battery:" and icon
                         Transform.rotate(
                           angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
                           child: getBatteryIcon(percentage, iconSize: 11),
                         ),
                         //SizedBox(width: 1.0), // Adjust the spacing between icon and value
-                        Text('$percentage%', style: TextStyle(fontSize: 8)),
+                        Text('$percentage%', style: TextStyle(fontSize: 10)),
                       ],
                     ),
                   ),
@@ -410,7 +395,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                       ],
                     ),
                   ),
-                  // Add more device information as needed
+                 
                 ],
               ),
             ),
@@ -419,7 +404,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
               children: [
                 InkWell(
                   onTap: () {
-                    // Add your download logic here
+                   
                     downloadReport();
                   },
                   child: Row(
@@ -435,7 +420,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    // Add your second download logic here
+                    
                     file_download();
                   },
                   child: Row(
@@ -487,7 +472,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                     ),
                     GestureDetector(
                         onTap: () {
-                          // Handle apply button press
+                         
                           print(
                             'From: ${DateFormat('dd-MM-yyyy').format(fromDate)}, To: ${DateFormat('dd-MM-yyyy').format(toDate)}',
                           );
@@ -514,7 +499,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics:
-                      NeverScrollableScrollPhysics(), // Disable scrolling for the outer SingleChildScrollView
+                      NeverScrollableScrollPhysics(), 
                   itemCount: pickupLocation.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -566,7 +551,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                             child: Padding(
                               padding: EdgeInsets.only(
                                   top:
-                                      55.0), // Adjust the top padding as needed
+                                      55.0), 
                               child: Text(
                                 dateOnly,
                                 textAlign: TextAlign.right,

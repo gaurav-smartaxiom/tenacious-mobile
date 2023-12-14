@@ -8,7 +8,7 @@ class LogoutListItem extends StatelessWidget {
 
    LogoutListItem({
     required this.label,
-    this.value = '', // Provide a default value or make it optional
+    this.value = '', 
   });
 
   Future<void> performLogout(BuildContext context) async {
@@ -17,7 +17,7 @@ class LogoutListItem extends StatelessWidget {
   final String? token = sharedPreferences.getString('token');
 
   if (email != null && token != null) {
-    // User is logged in, perform the logout
+ 
     print("Logout");
     
     // Clear session data
@@ -25,14 +25,14 @@ class LogoutListItem extends StatelessWidget {
     sharedPreferences.remove('password');
     sharedPreferences.remove('token');
 
-    // Show a SnackBar with a message when the logout is successful
+   
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Logged out successfully'),
       ),
     );
 
-    // Navigate to the login page
+    
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }
@@ -44,7 +44,7 @@ class LogoutListItem extends StatelessWidget {
       title: Text(label),
       subtitle: Text(value),
       onTap: () {
-        performLogout(context); // Call the logout logic
+        performLogout(context); 
       },
     );
   }

@@ -8,7 +8,7 @@ import 'package:mobileapp/Dashboard/Dashboard.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp());            
 }
 
 class MyApp extends StatelessWidget {
@@ -37,8 +37,7 @@ class _AppLoaderState extends State<AppLoader> {
   @override
   void initState() {
     super.initState();
-
-    // Delay the transition to the home page after 5 seconds
+// Delay the transition to the home page after 5 seconds
     Future.delayed(const Duration(seconds: 2), () {
       // Navigator.of(context).pushReplacement(
       //   MaterialPageRoute(builder: (context) => LoginPage()),

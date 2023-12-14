@@ -37,73 +37,9 @@ class _LoginPageState extends State<LoginPage> {
   String matchedUserLevel = '';
   late List<String> namelist = [];
   late BuildContext dialogContext; // Added variable to store dialog context
-  // bool isCheckboxChecked = false;
-// user login process------------------
-
-// Future<void>looo()async{
-
-// Navigator.of(context).push(
-//     MaterialPageRoute(builder: (context) => ScanDevicePage()),
-//   );
-
-// }
-// Future<void> showTermsAndConditionsDialog(bool value) async {
-//   print("rrrrrrrrrrrrrr");
-//   return showDialog<void>(
-//     context: context,
-//     builder: (BuildContext context) {
-//       dialogContext = context; // Store dialog context
-//       return AlertDialog(
-//         title: Text('Terms and Conditions'),
-//         content: SingleChildScrollView(
-//           child: Text(
-//             'These are the terms and conditions. Please read them carefully and accept to proceed.',
-//           ),
-//         ),
-//         actions: <Widget>[
-//          TextButton(
-//   onPressed: () {
-//     // Set _isChecked to false
-//     setState(() {
-//       _isChecked = false;
-//     });
-
-//     // Dismiss the dialog
-//     Navigator.of(context).pop();
-//   },
-//   child: Text('Cancel'),
-// ),
-
-//           TextButton(
-//             onPressed: () {
-//               // Perform the login after accepting terms
-
-//               Navigator.of(context).pop(); // Dismiss the dialog
-//               performLogin(); // Pass the response to performLogin
-
-//             },
-//             child: Text('Accept'),
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
-
-//  Future<void> performLogin() async {
-//     print("accpet");
-//   //Loginuser();
-//   }
-
-//   Future<void> loginWithTermsCheck( bool _isChecked) async {
-//     print("wwwwwwwwwwwwww");
-//     // Show the terms and conditions dialog
-//     await showTermsAndConditionsDialog(_isChecked);
-//   }
-
   Future<void> Loginuser() async {
     print("login");
-    //final String apiUrl = 'http://10.0.2.2:4000/api/v1/login';
+    // final String apiUrl = 'http://20.198.123.163:4000/api/v1/login';
     final String apiUrl = login;
     //print("apiUrl: $apiUrl");
     final Map<String, String> requestBody = {
@@ -114,10 +50,8 @@ class _LoginPageState extends State<LoginPage> {
       print("try");
       final response = await http.post(Uri.parse(apiUrl), body: requestBody);
       print("res----------------------,$response");
-      // final responseBody = response.body;
-      // Extract the token value from the parsed JSON
-      final Map<String, dynamic> responseBody = json.decode(response.body);
-      // Parse the JSON response
+     final Map<String, dynamic> responseBody = json.decode(response.body);
+     print("responseBody----------------------120,$responseBody");
       String token = responseBody['token'];
       Map<String, dynamic> decodedToken =
           JwtDecoder.decode("{'token': $token}");
@@ -131,7 +65,6 @@ class _LoginPageState extends State<LoginPage> {
       final Email = 'gaurav@smartaxiom.com';
       final urlWithParams =
           Uri.parse('$UserAccessLevel?email=$Email&userLevel=$NewUser');
-
       final AccessAllUser = await http.get(
         urlWithParams,
         headers: {
@@ -150,18 +83,18 @@ class _LoginPageState extends State<LoginPage> {
           print("checklevelname,$checkUser");
           if (checkUser == NewUser) {
             matchedUserLevel =
-                checkUser; 
-          } 
+                checkUser;
+          }
         }
       } else {
         print("Error: ${AccessAllUser.statusCode}");
         print("Response body: ${AccessAllUser.body}");
       }
-     
+        print(response.statusCode);
       if (response.statusCode == 201) {
         print("user login successfully");
         //apply session-----------
-         print(matchedUserLevel);
+        print(matchedUserLevel);
         final sharedPreferences = await SharedPreferences.getInstance();
         print("session----------,$sharedPreferences");
         sharedPreferences.setString('token', token);
@@ -179,23 +112,19 @@ class _LoginPageState extends State<LoginPage> {
         );
         _usernameController.clear();
         _passwordController.clear();
-
         //  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
         //      Decode the JSON response to get the token
-
-
-        // ...
-
-Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(
-    builder: (context) => matchedUserLevel == 'SUPERADMIN' ? MasterPage(decodedToken: decodedToken) : DashboardPage(decodedToken: decodedToken),
-  ),
-  (route) => false,
-);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => matchedUserLevel == 'SUPERADMIN'
+                ? MasterPage(decodedToken: decodedToken)
+                : DashboardPage(decodedToken: decodedToken),
+          ),
+          (route) => false,
+        );
 
 // ...
-
       } else {
         setState(() {
           errorMessage = "Login failed. Please check your credentials.";
@@ -222,16 +151,13 @@ Navigator.pushAndRemoveUntil(
       print("An error occurred: $error");
     }
   }
-
   void createAccount() {
     print("create");
-    // // Add navigation logic to the screen where users can create an account
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SignupPage()),
     );
   }
-
   Future<void> forgotpassword() async {
     print("forgotpassword");
     Navigator.push(
@@ -254,7 +180,7 @@ Navigator.pushAndRemoveUntil(
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      top: 0.0), // Add padding to the top of the image
+                      top: 0.0), 
                   child: Image.asset(
                     'assets/download.png',
                     width: 800,
@@ -265,7 +191,7 @@ Navigator.pushAndRemoveUntil(
                 Row(
                   children: <Widget>[
                     Expanded(
-                      // Use Expanded to make the TextFormField take up remaining space
+                    
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         controller: _usernameController,
@@ -279,7 +205,7 @@ Navigator.pushAndRemoveUntil(
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  // keyboardType: TextInputType.number,
+                 
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
@@ -358,13 +284,9 @@ Navigator.pushAndRemoveUntil(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     GestureDetector(
-                      // Wrap the forgetpassword? text with GestureDetector
+                      
                       onTap: () {
-                        print("forgatpasswordsssss");
-
                         forgotpassword();
-                        // Handle forget password click action here
-                        // For example, you can show a dialog or navigate to a password reset screen.
                       },
                       child: Padding(
                         padding: EdgeInsets.only(
@@ -393,14 +315,13 @@ Navigator.pushAndRemoveUntil(
                 text: "I Don't have an account? ",
                 children: [
                   TextSpan(
-                    text: 'Create one Plz Signup',
+                    text: 'Signup',
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        // Handle the click on "Create one"
                         createAccount();
                       },
                   ),

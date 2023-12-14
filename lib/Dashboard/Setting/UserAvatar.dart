@@ -32,14 +32,11 @@ class _UserAvatarCardState extends State<UserAvatarCard> {
       });
     }
   }
-
   Future<void> _pickUserImage() async {
     final pickedImage = await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       final imageFile = File(pickedImage.path);
-
-      // Save the selected image path to SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('userImage', imageFile.path);
 
@@ -48,7 +45,6 @@ class _UserAvatarCardState extends State<UserAvatarCard> {
       });
     }
   }
-
   void _showImagePickerDialog() {
     showDialog(
       context: context,
@@ -65,7 +61,6 @@ class _UserAvatarCardState extends State<UserAvatarCard> {
                   _pickUserImage();
                 },
               ),
-              // Add more options for changing the profile picture, e.g., from camera, etc.
             ],
           ),
         );

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 //import 'package:bbbb/Dashboard/Dashboard.dart';
 import 'package:mobileapp/Dashboard/Dashboard.dart';
+
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
 class _SignupPageState extends State<SignupPage> {
- 
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _EmailController=TextEditingController();
+  TextEditingController _EmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _ConfrompasswordController=TextEditingController();
-  TextEditingController _OrgnazationController=TextEditingController();
+  TextEditingController _ConfrompasswordController = TextEditingController();
+  TextEditingController _OrgnazationController = TextEditingController();
   bool _isPasswordVisible = false;
-  bool _isConfrompasswordVisible=false;
+  bool _isConfrompasswordVisible = false;
   bool _isChecked = false;
 
 // Future  Loginuser() async{
@@ -45,56 +45,57 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  
       body: Center(
         child: Container(
-          
           width: 300,
           height: 2000,
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(),
-         child: SingleChildScrollView(
-          child: Column(
-                 children: [
-                   Padding(
-                  padding: EdgeInsets.only(top: 0.0), // Add padding to the top of the image
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 0.0), 
                   child: Image.asset(
                     'assets/download.png',
                     width: 800,
                     height: 150,
                   ),
                 ),
-SizedBox(height: 80),
-       Row(
-      children: <Widget>[
-        Expanded( // Use Expanded to make the TextFormField take up remaining space
-          child: TextFormField(
-            keyboardType:TextInputType.text,
-            controller: _usernameController,
-            decoration: InputDecoration(
-              labelText: "Username",
-              prefixIcon: Icon(Icons.person),
-            ),
-          ),
-        ),
-      ],
-    ),
-    SizedBox(height: 10,),
-    Row(
-      children: <Widget>[
-        Expanded( // Use Expanded to make the TextFormField take up remaining space
-          child: TextFormField(
-            keyboardType:TextInputType.text,
-            controller: _EmailController,
-            decoration: InputDecoration(
-              labelText: "EmailID",
-              prefixIcon: Icon(Icons.email),
-            ),
-          ),
-        ),
-      ],
-    ),
-     SizedBox(height: 10),
+                SizedBox(height: 80),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          labelText: "Username",
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: _EmailController,
+                        decoration: InputDecoration(
+                          labelText: "EmailID",
+                          prefixIcon: Icon(Icons.email),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _passwordController,
@@ -114,7 +115,7 @@ SizedBox(height: 80),
                     ),
                   ),
                 ),
-                   SizedBox(height: 10),
+                SizedBox(height: 10),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _ConfrompasswordController,
@@ -134,93 +135,81 @@ SizedBox(height: 80),
                     ),
                   ),
                 ),
-     SizedBox(height: 10),
+                SizedBox(height: 10),
                 TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _OrgnazationController,
-                 
                   decoration: InputDecoration(
                     labelText: "Orgnazation",
                     prefixIcon: Icon(Icons.business),
-                   
                   ),
                 ),
-
-               Row(
-  children: <Widget>[
-    Padding(
-      padding: const EdgeInsets.only(left: 0.0),
-      child: Checkbox(
-        value: _isChecked,
-        onChanged: (value) {
-          setState(() {
-            _isChecked = value ?? false;
-          });
-        },
-      ),
-    ),
-    Flexible(
-      child: GestureDetector(
-        onTap: () {
-          // Handle click on "Terms and Conditions" here
-          // For example, you can show a dialog with the terms and conditions.
-        },
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'By creating this account you agree to ',
-                style: TextStyle(
-                  color: Colors.black, // Black color for the text
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0.0),
+                      child: Checkbox(
+                        value: _isChecked,
+                        onChanged: (value) {
+                          setState(() {
+                            _isChecked = value ?? false;
+                          });
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'By creating this account you agree to ',
+                                style: TextStyle(
+                                  color:
+                                      Colors.black, 
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Terms and Conditions',
+                                style: TextStyle(
+                                  color: Colors.blue, 
+                                  decoration: TextDecoration
+                                      .underline, 
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              TextSpan(
-                text: 'Terms and Conditions',
-                style: TextStyle(
-                  color: Colors.blue, // Blue color for the link
-                  decoration: TextDecoration.underline, // Underline the text
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  ],
-),
-
-              
-              
-                            Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: 240,
                       child: ElevatedButton(
                         onPressed: () {
-                      print("hello");
-                 // Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
-                   },
-                child: Text('Sign up'), // Change the text to "Sign in"
-),
-
+                          print("hello");
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
+                        },
+                        child: Text('Sign up'), 
+                      ),
                     ),
                   ],
                 ),
-
-
-],
-
+              ],
+            ),
           ),
-         
-         
-         ),
         ),
       ),
       bottomNavigationBar: Container(
         width: double.infinity,
         padding: EdgeInsets.all(3),
-       // color: Colors.yellow, // Set the bottom bar background color
+        // color: Colors.yellow, 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

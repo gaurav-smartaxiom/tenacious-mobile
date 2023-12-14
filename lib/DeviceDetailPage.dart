@@ -72,7 +72,6 @@ void _handleDFUUpdate() {
       ),
     );
   } else {
-    // Handle the case where the device is not connected
     print('Device not connected');
   }
 }
@@ -86,7 +85,6 @@ void _handleDFUUpdate() {
     print(widget.device);
     if (widget.device.isConnected) {
       await BluetoothController.disconnectFromDevice(widget.device);
-      // Update UI immediately after disconnection
       setState(() {
         widget.device.isConnected = false;
       });

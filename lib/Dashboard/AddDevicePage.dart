@@ -110,14 +110,9 @@ if (index == 0) {
 Navigator.of(context).push(MaterialPageRoute(
   builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
 ));
- // Pass the device UUID
-
-
-
       }
     });
   }
-
 
 Future<String?> loadSessionData() async {
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -128,7 +123,7 @@ Future<String?> loadSessionData() async {
   print('Stored Email: $email');
   print('Stored Password: $password');
   print("token-------------$token");
-  return token; // Return the token as a Future<String?>
+  return token; 
 }
 
 Future<void> fetchSensorData(String ?token) async {
@@ -171,8 +166,6 @@ void ResetDeviceInfo(int index, String sensorName, bool isSensorActive, bool isA
   print("Sensor clicked: $sensorName, SensorState: $isSensorActive, State: $isActive");
 
   print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-
-  // Uncomment the Navigator code when you want to navigate to the ResetDevice screen
   Navigator.push(
     context,
     MaterialPageRoute(
@@ -185,7 +178,6 @@ void ResetDeviceInfo(int index, String sensorName, bool isSensorActive, bool isA
     ),
   );
 }
-
 
 void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool isActive) {
   print('Update Firmware clicked. Sensor Name: $sensorName, Switch Value: $isSensorActive, IsActive: $isActive');
@@ -206,8 +198,6 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
   //   ),
   // );
 }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -251,18 +241,13 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
   child: _buildActionButton("Reset Device ", (int index, String sensorName, bool isSensorActive, bool isActive)
   
    {
-    // Your logic for the "Reset Device" button
     print("Index: $index, SensorName: $sensorName, IsSensorActive: $isSensorActive, IsActive: $isActive");
  ResetDeviceInfo(index,sensorName,isSensorActive,isActive);
-
-    // Call your ResetDeviceInfo function or any other logic with these values
-    
-
     print(sensorName);
   }),
 ),
 
-    SizedBox(width: 11.0), // Add spacing between buttons
+    SizedBox(width: 11.0), 
     Expanded(
       child: _buildActionButton("UpdateFrimware",  (int index, String sensorName, bool switchValue ,bool isActive) {
         // Your logic for the "Update Firmware" button
@@ -271,7 +256,7 @@ void UpdateFirmwareInfo(int index, String sensorName, bool isSensorActive, bool 
     ),
   ],
 )
-// Manual section with sensor tags and switches
+
             ],
           ),
         ),
@@ -437,19 +422,19 @@ Widget _buildSwitchSensor(String label, bool value, Function(bool) onChanged) {
 Widget _buildProgressIndicator() {
   return Column(
     children: <Widget>[
-      // Single Row
+      
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Assuming _buildDeviceInfoRow1 is a function you've defined elsewhere
+        
           _buildDeviceInfoRow1('Device UUID: ', widget.deviceUuid),
           Row(
             children: [
               _buildNetworkWidget(),
               SizedBox(width: 5.0),
               Transform.rotate(
-                angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
+                angle: -9.4 / 2, 
                 child: getBatteryIcon(percentage),
               ),
               SizedBox(width: 5.0),
@@ -462,17 +447,11 @@ Widget _buildProgressIndicator() {
   );
 }
 
-
-
-
-
-
-
   Widget _buildDeviceInfoRow1(String label, dynamic trailing) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start, // Align to the start
+        mainAxisAlignment: MainAxisAlignment.start, 
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,7 +462,7 @@ Widget _buildProgressIndicator() {
                     label,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                   ),
-                  SizedBox(width: 1), // Adjust the width according to your needs
+                  SizedBox(width: 1), 
                   Text(
                     ' $trailing',
                   ),
@@ -497,7 +476,6 @@ Widget _buildProgressIndicator() {
   }
 
   Widget _buildNetworkWidget() {
-    // Replace the following line with your custom network widget logic
     return Center(child: Icon(Icons.network_cell));
   }
 
@@ -508,7 +486,7 @@ Widget _buildProgressIndicator() {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(label),
-          trailing is Widget ? trailing : Text(trailing), // Check if trailing is a Widget or String
+          trailing is Widget ? trailing : Text(trailing), 
         ],
       ),
     );
@@ -564,7 +542,7 @@ Widget _buildManualItem(int index, String sensorTag, bool isSensorActive, String
   return GestureDetector(
     onTap: () {
       setState(() {
-        selectedSensor = sensorName; // Set the selected sensor
+        selectedSensor = sensorName; 
       });
     },
     child: Padding(

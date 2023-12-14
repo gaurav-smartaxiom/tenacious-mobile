@@ -33,29 +33,29 @@ class _DFUUpdateScreenState extends State<DFUUpdateScreen> {
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
          Container(
-              width: 300, // Set your desired width
-              height: 300, // Set your desired height
+              width: 300, 
+              height: 300, 
               color: Colors.blue,
               child: LineChart(
                 LineChartData(
                   gridData: FlGridData(show: true),
                   titlesData: FlTitlesData(show: false),
                   borderData: FlBorderData(
-                    show: true, // Show the border
+                    show: true, 
                   ),
                   minX: 0,
                   maxX: 100,
                   minY: 0,
-                  maxY: 1000, // Set the maximum Y value to represent kbps (adjust as needed)
+                  maxY: 1000, 
                   lineBarsData: [
                     LineChartBarData(
                       spots: [
-                        FlSpot(dfuProgress.toDouble(), dfuProgress.toDouble()), // Dynamic spot based on DFU progress
-                        FlSpot(dfuProgress.toDouble(), dfuSpeed*2), // Dynamic spot for speed
+                        FlSpot(dfuProgress.toDouble(), dfuProgress.toDouble()), 
+                        FlSpot(dfuProgress.toDouble(), dfuSpeed*2), 
                       ],
                       isCurved: false,
                       isStrokeCapRound: true,
-                      colors: [Colors.blue, Colors.yellow], // Colors for progress and speed lines
+                      colors: [Colors.blue, Colors.yellow], 
                       belowBarData: BarAreaData(show: false),
                     ),
                   ],

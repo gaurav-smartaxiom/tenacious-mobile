@@ -67,6 +67,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     print('Stored Password: $password');
     print("token: $token");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +79,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
       body: ListView(
         children: [
           UserAvatarCard(userEmail: userEmail),
-         //  buildListItem("Email", ""),
-           //Divider(),
+          //  buildListItem("Email", ""),
+          //Divider(),
           Row(
             children: [
               Padding(
@@ -95,9 +96,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
           //  Divider(),
           DailyReportSwitch(initialValue: dailyReportEnabled),
-         //  Divider(),
+          //  Divider(),
           AlertsSwitch(initialValue: alertsEnabled),
-           Divider(),
+          Divider(),
           SmsSwitchListItem(
             label: "SMS",
             switchValue: smsEnabled,
@@ -109,7 +110,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             },
           ),
           Divider(),
-           FirmwareArrowListItem(
+          FirmwareArrowListItem(
             label: "Firmware",
             subtitle: "firmware_Update",
             onTap: () {
@@ -118,33 +119,30 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 MaterialPageRoute(builder: (context) => HomePage()),
               );
             },
-          ),   
-           Divider(),      
+          ),
+          Divider(),
 
           //buildListItem("Firmware", "1.0.0"),
           //buildListItemWithArrow("Firmware", "firmware_Update", context),
- AddScanDevice("Add Device", "Add a New Device and scan",(){
- Navigator.of(context).push(
-    MaterialPageRoute(builder: (context) => ScanDevicePage()),
-  );
+          AddScanDevice("Add Device", "Add a New Device and scan", () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ScanDevicePage()),
+            );
+          }),
 
- }),
+          Divider(),
 
-            Divider(),      
-
-          
-
-          Access_policies("Access Policy", "Manage Access Policy",context),
-            Divider(),      
+          Access_policies("Access Policy", "Manage Access Policy", context),
+          Divider(),
 
           buildListItem("About Us", "Learn About Us"),
-            Divider(),      
+          Divider(),
 
           buildListItem("Terms and Conditions", "Read Our Terms"),
-            Divider(),      
+          Divider(),
 
           LogoutListItem(label: "Logout", value: "Log Out"),
-Divider(),
+          Divider(),
         ],
       ),
     );
@@ -157,6 +155,7 @@ Divider(),
     );
   }
 }
+
 Widget AddScanDevice(String label, String value, void Function() onTap) {
   return ListTile(
     title: Text(label),
@@ -164,27 +163,22 @@ Widget AddScanDevice(String label, String value, void Function() onTap) {
     onTap: onTap,
   );
 }
- Widget Access_policies(String title, String subtitle, BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      subtitle: Text(subtitle),
-      onTap: () {
-        // Navigate to Access Policies Page
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => AccessPolicies()),
-        );
-      },
-    );
-  }
 
-
-
+Widget Access_policies(String title, String subtitle, BuildContext context) {
+  return ListTile(
+    title: Text(title),
+    subtitle: Text(subtitle),
+    onTap: () {
+      // Navigate to Access Policies Page and replace the current route
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AccessPolicies()),
+      );
+    },
+  );
+}
 
 
 void main() {
   runApp(MaterialApp(home: UserProfilePage()));
 }
-
-
-
-     

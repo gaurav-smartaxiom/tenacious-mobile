@@ -88,7 +88,7 @@ TextEditingController _descriptionController = TextEditingController();
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  controller: _dateController, // Use the TextEditingController
+                  controller: _dateController, 
                   onTap: () async {
                     DateTime? selectedDate = await showDatePicker(
                       context: context,
@@ -98,13 +98,13 @@ TextEditingController _descriptionController = TextEditingController();
                     );
 
                     if (selectedDate != null) {
-                      // Handle the selected date
+                     
                       print('Selected Date: $selectedDate');
                         String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate); 
                          setState(() {
-                          _dateController.text = formattedDate; // Update the text
+                          _dateController.text = formattedDate; 
                         });
-                         // Update the text
+                         
                     }
                   },
                   readOnly: true,
@@ -122,20 +122,13 @@ TextEditingController _descriptionController = TextEditingController();
                       width: 240,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("hello");
-                        
-                       
-                       
-                         
-                          
-                          
+                          print("hello"); 
                         },
                         child: Text('Create'),
                       ),
                     ),
                   ],
-                ),
-
+                )
               ],
             ),
           ),
@@ -148,7 +141,7 @@ TextEditingController _descriptionController = TextEditingController();
   void dispose() {
     _dateController.dispose();
      _descriptionController.dispose();
-    _dateController.dispose(); // Dispose the controller when the widget is disposed
+    _dateController.dispose(); 
     super.dispose();
   }
 }

@@ -62,8 +62,8 @@ class AccessPoliciesState extends State<AccessPolicies> {
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Logout'),
                 onTap: () {
-                  // Handle logout option
-                  Navigator.pop(context); // Close the bottom sheet
+                 
+                  Navigator.pop(context); 
                 },
               ),
             ],
@@ -99,7 +99,9 @@ class AccessPoliciesState extends State<AccessPolicies> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Access Policies Page"),
+        centerTitle: true,
         backgroundColor: Colors.blue,
+         automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Padding(

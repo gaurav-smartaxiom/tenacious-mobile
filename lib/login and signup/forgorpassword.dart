@@ -15,60 +15,38 @@ import 'package:mobileapp/Dashboard/Setting/firmware.dart';
 import 'package:mobileapp/Dashboard/Setting/scan_device.dart';
 import 'package:flutter/gestures.dart';
 import 'OtpFile.dart';
-
 class ForgotPasswordPage extends StatefulWidget {
   @override
   ForgotPasswordPageState createState() => ForgotPasswordPageState();
 }
-
 class ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   //TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _NewpasswordController = TextEditingController();
 
-
   bool _isPasswordVisible = false;
   bool _NewisPasswordVisible = false;
   bool _isChecked = false;
   bool isLoggedIn = false;
-  bool _isCheckedD=false;
-http.Response? response;
+  bool _isCheckedD = false;
+  http.Response? response;
   String successMessage = '';
   String errorMessage = '';
-   late BuildContext dialogContext; // Added variable to store dialog context
- 
-Future<void> EnterOtp() async {
-  // Add your logic to check the old password and navigate to the OTP page
-  // ...
-
-  // If the old password check is successful, navigate to the OTP page
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => OTPPage()), // Replace 'OtpPage' with your actual OTP page
-  );
-}
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
+  late BuildContext dialogContext; 
+  Future<void> EnterOtp() async {
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              OTPPage()), 
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      
       body: Center(
         child: Container(
           width: 300,
@@ -80,7 +58,7 @@ Future<void> EnterOtp() async {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      top: 0.0), // Add padding to the top of the image
+                      top: 0.0), 
                   child: Image.asset(
                     'assets/download.png',
                     width: 800,
@@ -91,23 +69,23 @@ Future<void> EnterOtp() async {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      // Use Expanded to make the TextFormField take up remaining space
+                     
                       child: TextFormField(
-                       // keyboardType: TextInputType.text,
+                        
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: "Old Password",
                           prefixIcon: Icon(Icons.lock),
                           suffixIcon: IconButton(
-                      icon: Icon(_isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
+                            icon: Icon(_isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -133,28 +111,23 @@ Future<void> EnterOtp() async {
                     ),
                   ),
                 ),
-
-
-SizedBox(height: 80,),
-
+                SizedBox(
+                  height: 80,
+                ),
                 Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: <Widget>[
-    Container(
-      width: 240,
-      child: ElevatedButton(
-        onPressed: () {
-         
-         EnterOtp();
-          
-        },
-        child: Text('Sign in'),
-      ),
-    ),
-  ],
-),
-
-                
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 240,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          EnterOtp();
+                        },
+                        child: Text('Sign in'),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -162,11 +135,8 @@ SizedBox(height: 80,),
       ),
 
 //   bottomNavigationBar: Container(
- 
+
 // ),
-
-
-
     );
   }
 }

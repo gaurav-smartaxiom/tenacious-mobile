@@ -5,20 +5,13 @@ import 'dart:convert';
 import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 class UserManagementPage extends StatefulWidget {
   @override
-  _UserManagementPageState createState() => _UserManagementPageState();
-
-
-
-
-
-
-  
+  _UserManagementPageState createState() => _UserManagementPageState(); 
 }
 
 class _UserManagementPageState extends State<UserManagementPage> {
   late List<String> namelist = [];
   final useremail = [];
- final userLevels = ["Level 1", "Superadmin", "Level 3", "Level 4"]; // Add your user levels // Add your user levels
+ final userLevels = ["Level 1", "Superadmin", "Level 3", "Level 4"]; 
 
   List<String> filteredNamelist = [];
 
@@ -62,16 +55,12 @@ class _UserManagementPageState extends State<UserManagementPage> {
 
     if (response.statusCode == 200) {
       print("if");
-      // Parse the JSON response as a Map
       final Map<String, dynamic> responseData = json.decode(response.body);
-
-      // Access the 'data' key which should be a List<dynamic>
       //final Map<String,dynamic> userData = responseData['data'];
       print("rrrrrrrrrrrrrrrrrrrr,$responseData");
 
       final List<dynamic> userDataList = responseData['data'];
       if (userDataList.isNotEmpty) {
-        // Print the full name of each user
           for (var user in userDataList) {
     final String userFullName = user['fullName'] ?? ''; // Use ?? '' to handle null values
  final String UserOfficalEmail = user['officialEmail'] ?? '';
@@ -79,7 +68,6 @@ class _UserManagementPageState extends State<UserManagementPage> {
     print('User Full Name: $userFullName');
     print('User Full Name: $UserOfficalEmail');
 print(userLevel);
-    // Add user name to the namelist
     namelist.add(userFullName);
     useremail.add(UserOfficalEmail);
     userLevels.add(userLevel);
@@ -91,7 +79,6 @@ print(userLevel);
         print('No user data found in the response.');
       }
     } else {
-      // Handle error cases
       print('Failed to fetch user details. Status code: ${response.statusCode}');
     }
   }
@@ -159,7 +146,6 @@ print(userLevel);
           child: ListView.builder(
             itemCount: filteredNamelist.length,
             itemBuilder: (BuildContext context, int index) {
-              // Make sure the index is within the bounds of userLevels
               if (index < userLevels.length) {
                 return Column(
                   children: [
@@ -186,17 +172,16 @@ print(userLevel);
                         ),
                       ),
                       onTap: () {
-                        // Handle item tap
                       },
                     ),
-                    Divider( // Add a Divider after each ListTile
+                    Divider( 
                       color: Colors.white,
                       thickness: 1.0,
                     ),
                   ],
                 );
               } else {
-                return SizedBox.shrink(); // Return an empty widget if index is out of bounds
+                return SizedBox.shrink(); 
               }
             },
           ),

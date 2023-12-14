@@ -119,23 +119,23 @@ Navigator.of(context).push(MaterialPageRoute(
           print("Tracker Index: ${tracker['index']}");
           print("Tracker Timestamp: ${tracker['timestamp']}");
 
-          // Extract data from tracker
+          
           Map<String, dynamic> trackerData = tracker['data'];
           print("dtatata, $trackerData");
 
-          // Check if 'deviceuuid' is not null before casting
+          
           if (trackerData['deviceUUID'] != null) {
             print("Device UUID: ${trackerData['deviceUUID']}");
             setState(() {
               mydata = trackerData['deviceUUID'] as String;
-              itemList.add(mydata); // Use add to add elements to the list
+              itemList.add(mydata); 
               onSearchChanged();
             });
             print("myyyyydataa,$mydata");
             return trackerData['deviceUUID'] as String;
           } else {
             print("Device UUID is null");
-            return ''; // or any default value you want to use
+            return ''; 
           }
         }).toList();
         return shipmentDeviceUUIDs;
@@ -147,7 +147,6 @@ Navigator.of(context).push(MaterialPageRoute(
   
     print("Device UUIDs: $deviceUUIDs");
 
-    // You can return the deviceUUIDs directly
     //return deviceUUIDs;
   } else {
     print("Error: ${response.statusCode}");
@@ -260,16 +259,16 @@ void onSearchChanged() {
             ),
           ],
           onSelected: (String value) {
-            // Handle the selection of the dropdown menu here
+            
             switch (value) {
               case 'search':
-                // Handle the "Search" option
+             
                 break;
               case 'lastConnected':
-                // Handle the "Last Connected" option
+               
                 break;
               case 'status':
-                // Handle the "Status" option
+               
                 break;
             }
           },
@@ -313,7 +312,7 @@ void onSearchChanged() {
                       ],
                     ),
                     Divider(
-                      height: 2, // Adjust the height of the divider as needed
+                      height: 2, 
                       color: Colors.grey,
                     ),
                   ],

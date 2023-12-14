@@ -13,7 +13,7 @@ class _ScanDevicePageState extends State<ScanDevicePage> {
 
   Future<void> scanDevice() async {
     setState(() {
-      isScanning = true; // Set isScanning to true to show a loading indicator
+      isScanning = true; 
     });
 
     try {

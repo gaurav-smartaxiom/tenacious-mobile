@@ -67,7 +67,6 @@ Navigator.of(context).push(MaterialPageRoute(
   void initState() {
     super.initState();
     loadSessionData().then((token) {
-      // Fetch shipments from the API when the widget is initialized
       fetchShipmentsFromAPI(token);
     });
   }
@@ -234,7 +233,6 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
-          // Navigate to the dashboard when the back button is pressed
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
@@ -302,21 +300,21 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
             ),
           ],
           onSelected: (String value) {
-            // Handle the selection of the dropdown menu here
+           
             switch (value) {
               case 'search':
-                // Handle the "Search" option
+               
                 print("Search");
                 break;
               case 'lastConnected':
-                // Handle the "Last Connected" option
+               
                 break;
               case 'status':
-                // Handle the "Status" option
+               
                 break;
             }
           },
-          offset: Offset(0, 30), // Adjust the offset values as needed
+          offset: Offset(0, 30), 
         ),
       ),
     ],
@@ -384,11 +382,9 @@ String _formatLastConnected(int timestamp) {
     int months = difference.inDays ~/ 30;
     return '$months ${months > 1 ? 'months' : 'month'} ago';
   } else {
-    return timeago.format(lastConnected); // Use the timeago package for a human-readable format
+    return timeago.format(lastConnected); 
   }
 }
-
-
 
 class Shipment {
   final String id;
@@ -403,9 +399,6 @@ class Shipment {
   final double length;
   final List<Tracker> trackers;
 final bool isMovable;
-  
-  
-  
   
   Shipment({
     required this.id,
@@ -440,34 +433,26 @@ final bool isMovable;
       if (id.isEmpty || shipmentName.isEmpty || shipmentDesc.isEmpty || shipmentType.isEmpty || status.isEmpty) {
         throw FormatException("Invalid data in JSON");
       }
-
       List<Tracker> trackers = [];
      print("shipmenTyep----------------------------------------,$shipmentType");
-
       if (trackersData != null) {
         List<String> deviceUUIDs = [];
-
         for (Map<String, dynamic> trackerData in trackersData) {
           Tracker tracker = Tracker.fromJson(trackerData);
-
           print('TrackerData: $trackerData');
           print('Tracker object: ${tracker.toJson()}');
-
           String? deviceUUID = tracker.deviceUUID;
-
           print('DeviceUUIDDddddddddddddddddddddd: $deviceUUID');
-
           if (deviceUUID != null) {
             print("iffffffffffffffff");
             deviceUUIDs.add(deviceUUID);
           } else {
             print('DeviceUUID is null for tracker: ${tracker.id}');
           }
-          tracker.deviceUUID = deviceUUID; // Assign device UUID to the tracker
+          tracker.deviceUUID = deviceUUID; 
     trackers.add(tracker);
         }
       }
-
       return Shipment(
         id: id,
         shipmentName: shipmentName,
@@ -620,11 +605,10 @@ class ShipmentInfo extends StatelessWidget {
 
     if (shipmentType == 'Movable') {
       print("if");
-      // Your logic for shipmentType being 'Movable'
+     
       return Icons.local_shipping;
     } else {
       print("else");
-      // Your logic for shipmentType not being 'Movable'
       return Icons.location_on;
     }
   })(),

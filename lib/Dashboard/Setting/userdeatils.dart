@@ -29,7 +29,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   List<String> roleOptions = ['Admin', 'User'];
   String selectedRole = '';
   final GlobalKey _dropdownKey = GlobalKey();
-  List<String> shipments = []; // Replace this with your shipment data
+  List<String> shipments = []; 
   List<String> getFilteredShipments(String query) {
     return shipments.where((shipment) {
       return shipment.toLowerCase().contains(query.toLowerCase());
@@ -39,7 +39,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch shipments from the API when the widget is initialized
     fetchShipmentsFromAPI();
   }
 
@@ -79,20 +78,16 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
             });
             print(",qqqqqqqqqqqqqqqqqqqqqqqqqqqq,$filteredShipments");
           } catch (e) {
-            // Handle any exceptions or errors that occur during JSON parsing
             print('Error parsing JSON: $e');
           }
         } else {
           print("Error");
-          // Handle the case where the server returns an error status code
-          // You can add error handling logic here
+          
         }
       } catch (e) {
-        // Handle any exceptions or errors that occur during the HTTP request
         print('Error fetching shipments: $e');
       }
     } else {
-      // Handle the case where the token is null
       print('Token is null');
     }
   }
@@ -312,7 +307,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                       if (value != null) {
                         setState(() {
                           selectedRole = value;
-                          print("wwwwwwwwwwwwwwwwwwwwwwwwww");
                           print(selectedRole);
                         });
                       }
@@ -369,11 +363,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-
-                  //keyboardType: TextInputType.number,
-          // keyboardType: TextInputType.number,
-
-                  controller: _passwordController,
+                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -392,11 +382,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-
-                 // keyboardType: TextInputType.number,
-
-                  // keyboardType: TextInputType.number,
-
                   controller: _ConfrompasswordController,
                   obscureText: !_isConfrompasswordVisible,
                   decoration: InputDecoration(
@@ -417,7 +402,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  // keyboardType: TextInputType.number,
                   controller: _OrgnazationController,
                   decoration: InputDecoration(
                     labelText: "Orgnazation",
@@ -425,23 +409,23 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                   ),
                 ),
 
-                SizedBox(height: 20), // Add spacing
+                SizedBox(height: 20), 
                 Container(
-                  height: 400, // Adjust the height to accommodate the content
+                  height: 400, 
                   width: 400,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white, // Border color
+                      color: Colors.white, 
                       // width: 1.0, // Border width
                     ),
                   ),
                   child: Column(
                     children: [
                       Container(
-                        height: 50, // Adjust the height as needed
-                        color: Colors.white, // Set the background color
+                        height: 50, 
+                        color: Colors.white, 
                         padding: EdgeInsets.all(
-                            10), // Add padding for the search bar
+                            10), 
                         child: TextField(
                           decoration: InputDecoration(
                             // labelText: 'shipment',
@@ -464,8 +448,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                           itemCount: filteredShipments.length,
                           itemBuilder: (context, index) {
                             final shipment = filteredShipments[index];
-
-                            // Access the properties of Shipment and convert them to lowercase
                             final shipmentName =
                                 shipment.shipmentName.toLowerCase();
                             final shipmentDesc =
@@ -537,7 +519,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                         onPressed: () {
                           print("hello");
                           _registerUser();
-                          // Navigate to another page or perform an action
                         },
                         child: Text('Add'),
                       ),
