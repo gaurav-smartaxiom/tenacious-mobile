@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:mobileapp/Dashboard/main.dart';
+
 import 'package:mobileapp/api_endPoint/api_endpoints.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:mdi/mdi.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:mobileapp/Dashboard/main.dart';
+
 import 'package:mobileapp/Dashboard/WindowPage.dart';
 import 'package:mobileapp/Dashboard/shipmentpage.dart';
 import 'package:mobileapp/Dashboard/NotificationPage.dart';
@@ -101,6 +102,16 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   String dateOnly = '';
   int _selectedIndex = 0;
 
+List<Marker> marker = [];
+  List<Marker> _list = const [
+    Marker(
+        markerId: MarkerId('1'),
+        position: LatLng(37.42796133580664, -122.085749655962),
+        infoWindow: InfoWindow(title: "my location"))
+  ];
+
+
+
   @override
   void initState() {
     super.initState();
@@ -111,6 +122,8 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
     loadSessionData().then((token) {
       fetchShipmentData(token);
     });
+
+    marker.addAll(_list);
   }
 
   void _onItemTapped(int index) {
@@ -127,11 +140,11 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
             builder: (context) => ShipmentPage(
                   decodedToken: widget.decodedToken,
                 )));
-      } else if (index == 4) {
+      } else if (index == 3) {
         // Navigate to UserProfilePage
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-      } else if (index == 3) {
+      } else if (index == 2) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => NotificationPage(
@@ -141,7 +154,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
         // Navigate to NotificationPage
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => UserManagementPage()));
-      } else if (index == 2) {
+      } else if (index == 6) {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddDevicePage(
             deviceUuid: '9876543210',
@@ -172,8 +185,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
 
   Future<void> fetchShipmentData(String? token) async {
     final String backendUrl = shipment;
-    final String shipmentID =
-        '64e464f3eb12d5b4aa42453c'; 
+    final String shipmentID = '64e464f3eb12d5b4aa42453c';
 
     final response = await http.get(
       Uri.parse(backendUrl),
@@ -203,12 +215,10 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
         pickupDate = selectedShipment['pickupDate'] ?? '';
         print(pickupLocation);
         try {
-          dateOnly =
-              formatDate(DateTime.parse(pickupDate)); 
+          dateOnly = formatDate(DateTime.parse(pickupDate));
         } catch (e) {
           print('Error parsing date: $pickupDate');
           print('Exception: $e');
-          
         }
 
         List<dynamic> trackers = selectedShipment['trackers'] ?? [];
@@ -232,15 +242,17 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
       }
     } else {
       print("Error: ${response.statusCode}");
-     
     }
   }
+
   Future<void> downloadReport() async {
     print("Downloaded Report");
   }
+
   Future<void> file_download() async {
     print("fileDownload");
   }
+
   Future<void> _selectFromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -254,6 +266,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
       });
     }
   }
+
   Future<void> _selectToDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -273,7 +286,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shipment Details'),
+        title: Text('Trackres Deatails'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -287,25 +300,33 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.local_shipping,
-                          size: 24),
-                      SizedBox(
-                          width: 8), 
-                      Text(
-                        shipmentName,
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                      Image.asset('assets/new.png', width: 32),
+                      SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            shipmentName,
+                            style: TextStyle(
+                                fontSize: 20, ),
+                          )
+                        ],
                       ),
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .start, // Align the content to the start (left) of the Row
                     children: [
-                      SizedBox(width: 32), 
-                      Expanded(
-                        child: Text(
-                          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-                          style: TextStyle(
-                            fontSize: 12,
+                      Flexible(
+                        // Use Flexible instead of Expanded
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 0,right: 0), // Add left padding
+                          child: Text(
+                            "It is a long established fact that a reader will be distracted by the qqqq readable content of a page when looking at its layout.",
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),
@@ -318,15 +339,24 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
             Padding(
               padding: const EdgeInsets.all(1.0),
               child: Container(
-                width: double.infinity,
-                height: 200,
-                color: Colors.blue,
-                child: Row(
-                  children: [
-                    Expanded(child: Main())
-                  ],
-                ),
-              ),
+                  width: double.infinity,
+                  height: 200,
+                  color: Colors.blue,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                            target:
+                                LatLng(37.42796133580664, -122.085749655962),
+                            zoom: 10,
+                          ),
+mapType: MapType.normal,
+                             markers: Set<Marker>.of(marker),
+                        ),
+                      )
+                    ],
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.all(1.0),
@@ -355,8 +385,8 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                         style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                       width: 4,
-                      ),
+                    width: 2,
+                  ),
                   Container(
                     padding: const EdgeInsets.only(left: 2),
                     decoration: BoxDecoration(
@@ -391,51 +421,48 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                         // Adjust the spacing between icon and text
                         Text('Signal:', style: TextStyle(fontSize: 9)),
                         Icon(Icons.signal_cellular_4_bar, size: 8.0),
-                        Text(' $signal', style: TextStyle(fontSize: 8))
+                        Text(' $signal', style: TextStyle(fontSize: 9))
                       ],
                     ),
                   ),
-                 
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                   
-                    downloadReport();
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.picture_as_pdf_sharp, size: 15.0),
-                      SizedBox(width: 5.0),
-                      Text(
-                        'Download Calibration',
-                        style: TextStyle(fontSize: 10.0),
-                      ),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    
-                    file_download();
-                  },
-                  child: Row(
-                    children: [
-                      Text(
-                        'Download Calibration',
-                        style: TextStyle(fontSize: 10.0),
-                      ),
-                      SizedBox(width: 5.0),
-                      Icon(Icons.file_download, size: 15.0),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     InkWell(
+            //       onTap: () {
+            //         downloadReport();
+            //       },
+            //       child: Row(
+            //         children: [
+            //           Icon(Icons.picture_as_pdf_sharp, size: 15.0),
+            //           SizedBox(width: 5.0),
+            //           Text(
+            //             'Download Calibration',
+            //             style: TextStyle(fontSize: 10.0),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     InkWell(
+            //       onTap: () {
+            //         file_download();
+            //       },
+            //       child: Row(
+            //         children: [
+            //           Text(
+            //             'Download Calibration',
+            //             style: TextStyle(fontSize: 10.0),
+            //           ),
+            //           SizedBox(width: 5.0),
+            //           Icon(Icons.file_download, size: 15.0),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
 
             // Calendar section
             Padding(
@@ -472,7 +499,6 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                     ),
                     GestureDetector(
                         onTap: () {
-                         
                           print(
                             'From: ${DateFormat('dd-MM-yyyy').format(fromDate)}, To: ${DateFormat('dd-MM-yyyy').format(toDate)}',
                           );
@@ -498,8 +524,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
               child: SingleChildScrollView(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  physics:
-                      NeverScrollableScrollPhysics(), 
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: pickupLocation.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -549,9 +574,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  top:
-                                      55.0), 
+                              padding: EdgeInsets.only(top: 55.0),
                               child: Text(
                                 dateOnly,
                                 textAlign: TextAlign.right,
@@ -570,21 +593,21 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-        showSelectedLabels: false, // Selected label ko hide karein
-        showUnselectedLabels: false, // Unselected labels ko hide karein
-        items: const <BottomNavigationBarItem>[
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.window),
             label: 'Window',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_shipping),
+            icon: Image.asset(
+              'assets/bus.png', // Replace with the path to your image asset
+              width: 35, // Adjust the width as needed
+              height: 35, // Adjust the height as needed
+            ),
             label: 'Shipment',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.devices_other),
-            label: 'Add_Devices',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),

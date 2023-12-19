@@ -45,14 +45,14 @@ if (index == 0) {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
       } else if (index == 1) {
        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
-      } else if (index == 4) {
+      } else if (index == 3) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-      } else if (index == 3) {
+      } else if (index == 2) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
       }
-      else if(index==2)
+      else if(index==65)
       
       {
 Navigator.of(context).push(MaterialPageRoute(
@@ -227,7 +227,7 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
  Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text('Shipment Page'),
+      title: Text('Trackres Page'),
       backgroundColor: Colors.blue,
       centerTitle: true,
       leading: IconButton(
@@ -339,35 +339,37 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
       ],
     ),
     bottomNavigationBar: BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.window),
-          label: 'Window',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.local_shipping),
-          label: 'Shipment',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.devices_other),
-          label: 'Add_Devices',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'User Profile',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.blue,
-      onTap: _onItemTapped,
+  type: BottomNavigationBarType.fixed,
+  showSelectedLabels: false,
+  showUnselectedLabels: false,
+  items: <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.window),
+      label: 'Window',
     ),
+    BottomNavigationBarItem(
+      icon: Image.asset(
+        'assets/bus.png', // Replace with the path to your image asset
+        width: 35, // Adjust the width as needed
+        height: 35, // Adjust the height as needed
+      ),
+      label: 'Shipment',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.notifications),
+      label: 'Notifications',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'User Profile',
+    ),
+    // BottomNavigationBarItem(icon: Icon(Icons.device_hub),
+    // label: "Add Device")
+  ],
+  currentIndex: _selectedIndex,
+  selectedItemColor: Colors.blue,
+  onTap: _onItemTapped,
+),
   );
 }
 }

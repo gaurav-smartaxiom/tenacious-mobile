@@ -123,7 +123,10 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         onPressed: () {
                           EnterOtp();
                         },
-                        child: Text('Sign in'),
+                        style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
+                        child: Text('Enter'),
                       ),
                     ),
                   ],

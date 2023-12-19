@@ -275,6 +275,9 @@ class _LoginPageState extends State<LoginPage> {
                           //   loginWithTermsCheck(_isChecked);
                           // }
                         },
+                        style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
                         child: Text('Sign in'),
                       ),
                     ),

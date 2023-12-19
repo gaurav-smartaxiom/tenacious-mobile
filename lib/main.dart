@@ -9,9 +9,9 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 void main() {
   runApp(const MyApp());            
-}
+} 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget { 
   const MyApp({Key? key});
   @override
   Widget build(BuildContext context) {  
@@ -28,11 +28,9 @@ class MyApp extends StatelessWidget {
 
 class AppLoader extends StatefulWidget {
   const AppLoader({Key? key}) : super(key: key);
-
   @override
   _AppLoaderState createState() => _AppLoaderState();
 }
-
 class _AppLoaderState extends State<AppLoader> {
   @override
   void initState() {
@@ -45,7 +43,6 @@ class _AppLoaderState extends State<AppLoader> {
       checkLoginStatus();
     });
   }
-
   void checkLoginStatus() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     // final  token = sharedPreferences.getString('token');
@@ -73,7 +70,6 @@ class _AppLoaderState extends State<AppLoader> {
       );
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return LoadingScreen();

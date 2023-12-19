@@ -18,7 +18,7 @@ TextEditingController _descriptionController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Add Shipment'),
+        title: Text('Add Tracker Page'),
         backgroundColor: Colors.blue,
       ),
       body: Center(
@@ -124,6 +124,9 @@ TextEditingController _descriptionController = TextEditingController();
                         onPressed: () {
                           print("hello"); 
                         },
+                        style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
                         child: Text('Create'),
                       ),
                     ),

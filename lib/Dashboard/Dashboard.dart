@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 //import 'package:bbbb/Dashboard/WindowPage.dart';
 import 'package:mobileapp/Dashboard/WindowPage.dart';
@@ -16,9 +18,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'UserManagementPage.dart';
-import 'main.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:mobileapp/Dashboard/map/main1.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:location/location.dart';
+//import 'package:location/location.dart';
 
 class DashboardPage extends StatefulWidget {
   final Map<String, dynamic> decodedToken;
@@ -28,10 +32,20 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  Completer<GoogleMapController> _Controller = Completer();
   int _selectedIndex = 0;
   String deviceUuid = '';
   TextEditingController searchController = TextEditingController();
   String searchResult = "";
+
+  List<Marker> marker = [];
+  List<Marker> _list = const [
+    Marker(
+        markerId: MarkerId('1'),
+        position: LatLng(37.42796133580664, -122.085749655962),
+        infoWindow: InfoWindow(title: "my location"))
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -46,11 +60,11 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (context) => ShipmentPage(
                   decodedToken: widget.decodedToken,
                 )));
-      } else if (index == 4) {
+      } else if (index == 3) {
         // Navigate to UserProfilePage
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-      } else if (index == 3) {
+      } else if (index == 2) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => NotificationPage(
@@ -60,7 +74,7 @@ class _DashboardPageState extends State<DashboardPage> {
         // Navigate to NotificationPage
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => UserManagementPage()));
-      } else if (index == 2) {
+      } else if (index == 7) {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddDevicePage(
             deviceUuid: '9876543210',
@@ -77,7 +91,50 @@ class _DashboardPageState extends State<DashboardPage> {
     loadSessionData().then((token) {
       // Fetch shipments from the API when the widget is initialized
     });
+    marker.addAll(_list);
+    // double latitude = 22.728860; // replace with your desired latitude
+    // double longitude = 75.758447; // replace with your desired longitude
+    // updateMarker(latitude, longitude);
+    // initializeLocation();
   }
+
+  // void initializeLocation() async {
+  //   print("ttttttttttttttttttttt");
+  //   bool serviceEnabled = await Location().serviceEnabled();
+  //   print("rrrrrrrrrrrrrrrrrrrrrrrr,$serviceEnabled");
+  //   if (!serviceEnabled) {
+  //     serviceEnabled = await Location().requestService();
+  //     if (!serviceEnabled) {
+  //       // Handle if the user doesn't enable location services.
+  //     }
+  //   }
+  // }
+  //   PermissionStatus permissionGranted = await Location().hasPermission();
+  //   print("eeeeeeeeeeeeeeeeeee.$permissionGranted");
+  //   if (permissionGranted == PermissionStatus.denied) {
+  //     permissionGranted = await Location().requestPermission();
+  //     if (permissionGranted != PermissionStatus.granted) {
+  //       // Handle if the user doesn't grant location permissions.
+  //     }
+  //   }
+  //   double latitude = 22.728860; // replace with your desired latitude
+  //   double longitude = 75.758447; // replace with your desired longitude
+  //   updateMarker(latitude, longitude);
+  // }
+
+  // void updateMarker(double latitude, double longitude) {
+  //   if (latitude != null && longitude != null) {
+  //     setState(() {
+  //       marker.add(
+  //         Marker(
+  //           markerId: MarkerId('1'),
+  //           position: LatLng(latitude, longitude),
+  //           infoWindow: InfoWindow(title: 'My Location'),
+  //         ),
+  //       );
+  //     });
+  //   }
+  // }
 
   Future<String?> loadSessionData() async {
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -85,8 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
     final password = sharedPreferences.getString('password');
     final token = sharedPreferences.getString('token');
     final storedUserLevel = sharedPreferences.getString('userLevel');
-     print('Stored User Level: $storedUserLevel');
-
+    print('Stored User Level: $storedUserLevel');
 
     print('Stored Email: $email');
     print('Stored Password: $password');
@@ -180,22 +236,26 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 130,
-
                   child: Column(
                     children: [
                       Expanded(
-                        child: Main1(),
+                        child: GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                            target:
+                                LatLng(37.42796133580664, -122.085749655962),
+                            zoom: 10,
+                          ),
+                          mapType: MapType.normal,
+                          markers: Set<Marker>.of(marker),
+                          compassEnabled: false,
+                          myLocationEnabled: true,
+                          onMapCreated: (GoogleMapController controller) {
+                            _Controller.complete(controller);
+                          },
+                        ),
                       ),
-                      // Expanded(
-                      //   child: Drawer(
-                      //     child: PointerInterceptor(
-                      //       child: DrawerMain(),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -208,21 +268,21 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-        showSelectedLabels: false, // Selected label ko hide karein
-        showUnselectedLabels: false, // Unselected labels ko hide karein
-        items: const <BottomNavigationBarItem>[
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.window),
             label: 'Window',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_shipping),
+            icon: Image.asset(
+              'assets/bus.png', // Replace with the path to your image asset
+              width: 35, // Adjust the width as needed
+              height: 35, // Adjust the height as needed
+            ),
             label: 'Shipment',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.devices_other),
-            label: 'Add_Devices',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
@@ -231,10 +291,6 @@ class _DashboardPageState extends State<DashboardPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'User Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: 'UserMangment',
           ),
         ],
         currentIndex: _selectedIndex,

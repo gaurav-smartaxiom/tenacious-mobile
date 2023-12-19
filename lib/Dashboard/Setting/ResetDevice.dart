@@ -80,13 +80,13 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
     return Scaffold(
       appBar: AppBar(
         title: Text('Reset Device'),
-        centerTitle:  true,
+        centerTitle: true,
       ),
       body: Center(
         child: Container(
           width: 500,
           height: 2000,
-          padding: EdgeInsets.only(top: 150,left: 10),
+          padding: EdgeInsets.only(top: 150, left: 10),
           decoration: BoxDecoration(),
           child: SingleChildScrollView(
             child: Column(
@@ -99,7 +99,7 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
                   _isTrackerIdVisible,
                   _toggleTrackerIdVisibility,
                 ),
-               Divider(),
+                Divider(),
                 _buildExpandableField(
                   "Serial Number",
                   Icons.format_list_numbered,
@@ -107,7 +107,7 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
                   _isSerialNumberVisible,
                   _toggleSerialNumberVisibility,
                 ),
-                   Divider(),
+                Divider(),
                 _buildExpandableField(
                   "Battery Status",
                   Icons.battery_full,
@@ -115,7 +115,7 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
                   _isBatteryStatusVisible,
                   _toggleBatteryStatusVisibility,
                 ),
-                   Divider(),
+                Divider(),
                 _buildExpandableField(
                   "Status",
                   Icons.check_circle,
@@ -123,7 +123,7 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
                   _isStatusVisible,
                   _toggleStatusVisibility,
                 ),
-                   Divider(),
+                Divider(),
                 _buildExpandableField(
                   "Last Connect",
                   Icons.access_time,
@@ -131,55 +131,73 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
                   _isLastConnectVisible,
                   _toggleLastConnectVisibility,
                 ),
-                   Divider(),
+                Divider(),
+                SizedBox(height: 150,),
+          Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+    Container(
+      width: 150, // Set the desired width for Button 1
+      child: ElevatedButton(
+        onPressed: () {
+          // Handle the first button press
+        },
+         style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
+        child: Text('Clear All',style: TextStyle(color: Colors.white),),
+      ),
+    ),
+    SizedBox(width: 5), // SizedBox for spacing between buttons
+    Container(
+     width: 150,
+      child: ElevatedButton(
+        onPressed: () {
+          // Handle the second button press
+        },
+         style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
+        child: Text('Done',style: TextStyle(color: Colors.white)),
+      ),
+    ),
+  ],
+)
+
+
               ],
             ),
           ),
-
-
-
-
-
-          
         ),
-        
       ),
-
-
-
-       bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-  showSelectedLabels: false, // Selected label ko hide karein
-  showUnselectedLabels: false, // Unselected labels ko hide karein
-  items: const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.window),
-      label: 'Window',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.local_shipping),
-      label: 'Shipment',
-    ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.devices_other),
-      label: 'Add_Devices',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'User Profile',
-    ),
-  ],
-  // currentIndex: _selectedIndex,
-  // selectedItemColor: Colors.blue,
-  // onTap: _onItemTapped,
-),
-
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.window),
+            label: 'Window',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_shipping),
+            label: 'Shipment',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.devices_other),
+            label: 'Add_Devices',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'User Profile',
+          ),
+        ],
+      ),
     );
-    
   }
 
   Widget _buildExpandableField(
@@ -196,41 +214,37 @@ class ResetDeviceState extends State<ResetDevice> with SingleTickerProviderState
             Expanded(
               child: Row(
                 children: [
-                  //Icon(icon),
                   SizedBox(width: 8),
-                 Text(
-  labelText,
-  style: TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 20,
-    //color: Colors.grey, // Set the color to white
-    // Alternatively, you can use grey color
-     color: Colors.grey,
-  ),
-),
-
+                  Text(
+                    labelText,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ],
               ),
             ),
-          IconButton(
-  icon: Icon(
-    Icons.keyboard_arrow_down,
-    size: 30,
-    color: Colors.grey, // Set the color to white
-  ),
-  onPressed: () {
-    setState(() {
-      toggleVisibility();
-    });
-  },
-),
- ],
-   ),
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                size: 30,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  toggleVisibility();
+                });
+              },
+            ),
+          ],
+        ),
         if (isVisible)
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-             border: Border.all(color: Colors.white),
+              border: Border.all(color: Colors.white),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),

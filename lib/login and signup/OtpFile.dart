@@ -88,6 +88,9 @@ SizedBox(height: 80,),
         onPressed: () {
          
         },
+        style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
         child: Text('Enter')
       ),
     ),

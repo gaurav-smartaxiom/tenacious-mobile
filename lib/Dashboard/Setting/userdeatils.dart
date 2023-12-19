@@ -520,6 +520,9 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                           print("hello");
                           _registerUser();
                         },
+                        style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
                         child: Text('Add'),
                       ),
                     ),

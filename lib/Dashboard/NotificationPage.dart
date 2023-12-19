@@ -41,10 +41,10 @@ if (index == 0) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
       } else if (index == 1) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
-      } else if (index == 4) {
+      } else if (index == 3) {
         // Navigate to UserProfilePage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
-      } else if (index == 3) {
+      } else if (index == 2) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
       }
@@ -52,7 +52,7 @@ if (index == 0) {
         // Navigate to NotificationPage
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserManagementPage()));
       }
-      else if(index==2)
+      else if(index==6)
       
       {
 Navigator.of(context).push(MaterialPageRoute(
@@ -324,21 +324,21 @@ void onSearchChanged() {
       ),
 
  bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed, // Fixed type bottom navigation bar
-  showSelectedLabels: false, // Selected label ko hide karein
-  showUnselectedLabels: false, // Unselected labels ko hide karein
-  items: const <BottomNavigationBarItem>[
+  type: BottomNavigationBarType.fixed,
+  showSelectedLabels: false,
+  showUnselectedLabels: false,
+  items: <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: Icon(Icons.window),
       label: 'Window',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.local_shipping),
+      icon: Image.asset(
+        'assets/bus.png', // Replace with the path to your image asset
+        width: 35, // Adjust the width as needed
+        height: 35, // Adjust the height as needed
+      ),
       label: 'Shipment',
-    ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.devices_other),
-      label: 'Add_Devices',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications),
@@ -347,10 +347,6 @@ void onSearchChanged() {
     BottomNavigationBarItem(
       icon: Icon(Icons.person),
       label: 'User Profile',
-    ),
-     BottomNavigationBarItem(
-      icon: Icon(Icons.mail),
-      label: 'UserMangment',
     ),
   ],
   currentIndex: _selectedIndex,
