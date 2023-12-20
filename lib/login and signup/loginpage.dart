@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobileapp/Dashboard/PiChartPgae.dart';
 import 'package:mobileapp/HomePage.dart';
 //import 'package:bbbb/login and signup/signup.dart';
 import 'dart:convert';
@@ -16,6 +17,7 @@ import 'package:mobileapp/Dashboard/Setting/scan_device.dart';
 import 'package:flutter/gestures.dart';
 import 'forgorpassword.dart';
 import 'package:mobileapp/Dashboard/MasterPage.dart';
+import 'package:mobileapp/Dashboard/PiChartPgae.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -155,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
     print("create");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignupPage()),
+      MaterialPageRoute(builder: (context) => PIcharPage()),
     );
   }
   Future<void> forgotpassword() async {
@@ -323,8 +325,8 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
                     ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
+                   recognizer: TapGestureRecognizer()
+                       ..onTap = () {
                         createAccount();
                       },
                   ),
