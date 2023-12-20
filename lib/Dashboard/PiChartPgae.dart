@@ -13,7 +13,7 @@ class PIcharPage extends StatefulWidget {
 }
 
 class PIcharPageState extends State<PIcharPage> {
-  double networkPercentage = 50;
+  double networkPercentage = 70;
   final double batteryPercentage = 50;
   final double temperaturePercentage = 30;
   final double accelerationPercentage = 80;
@@ -31,8 +31,8 @@ class PIcharPageState extends State<PIcharPage> {
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       setState(() {
-        _connectivityResult = result;
-        updateNetworkPercentage();
+        //_connectivityResult = result;
+        //updateNetworkPercentage();
       });
     });
   }
@@ -43,21 +43,21 @@ class PIcharPageState extends State<PIcharPage> {
     super.dispose();
   }
 
-  void updateNetworkPercentage() {
-    switch (_connectivityResult) {
-      case ConnectivityResult.none:
-        networkPercentage = 0;
-        break;
-      case ConnectivityResult.mobile:
-        networkPercentage = 50;
-        break;
-      case ConnectivityResult.wifi:
-        networkPercentage = 100;
-        break;
-      default:
-        networkPercentage = 0;
-    }
-  }
+  // void updateNetworkPercentage() {
+  //   switch (_connectivityResult) {
+  //     case ConnectivityResult.none:
+  //       networkPercentage = 0;
+  //       break;
+  //     case ConnectivityResult.mobile:
+  //       networkPercentage = 50;
+  //       break;
+  //     case ConnectivityResult.wifi:
+  //       networkPercentage = 100;
+  //       break;
+  //     default:
+  //       networkPercentage = 0;
+  //   }
+  // }
 
   void _onItemTapped(int index) {
     setState(() {
