@@ -10,10 +10,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("FirmawareUpadatePage"),
-        backgroundColor: Colors.blue,
-      ),
+      // appBar: AppBar(
+      //   title: Text("FirmawareUpadatePage"),
+      //   backgroundColor: Colors.blue,
+      // ),
       body: GetBuilder<BluetoothController>(
         init: BluetoothController(),
         builder: (controller) {
@@ -79,7 +79,8 @@ class HomePage extends StatelessWidget {
                                         id: data.device.id.id,
                                         rssi: data.rssi,
                                         isConnected:
-                                            false, // You might initialize this based on your actual state
+                                            false,
+                                        macAddress: 'some_mac_address',
                                       ),
                                     ),
                                   ),

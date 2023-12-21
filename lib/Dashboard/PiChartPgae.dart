@@ -19,7 +19,7 @@ class PIcharPageState extends State<PIcharPage> {
   final double accelerationPercentage = 80;
   final double humidityPercentage = 60;
   final double geofencePercentage = 70;
-
+bool isTapped = false;
   int _selectedIndex = 0;
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -100,7 +100,7 @@ class PIcharPageState extends State<PIcharPage> {
         value: networkPercentage,
         title: 'Network',
         color: Colors.blue,
-        radius: 50,
+        radius: 70,
       ),
     ];
   }
@@ -111,7 +111,7 @@ class PIcharPageState extends State<PIcharPage> {
         value: batteryPercentage,
         title: 'Battery',
         color: Colors.green,
-        radius: 50,
+        radius: 70,
       ),
     ];
   }
@@ -122,7 +122,7 @@ class PIcharPageState extends State<PIcharPage> {
         value: temperaturePercentage,
         title: 'Temperature',
         color: Colors.red,
-        radius: 50,
+        radius: 70,
       ),
     ];
   }
@@ -133,7 +133,7 @@ class PIcharPageState extends State<PIcharPage> {
         value: humidityPercentage,
         title: 'Humidity',
         color: Colors.purple,
-        radius: 50,
+        radius: 70,
       ),
     ];
   }
@@ -144,7 +144,7 @@ class PIcharPageState extends State<PIcharPage> {
         value: geofencePercentage,
         title: 'Geofence',
         color: Colors.teal,
-        radius: 50,
+        radius: 70,
       ),
     ];
   }
@@ -155,10 +155,11 @@ class PIcharPageState extends State<PIcharPage> {
         value: accelerationPercentage,
         title: 'Acceleration',
         color: Colors.orange,
-        radius: 50,
+        radius: 70,
       ),
     ];
   }
+
   @override
   Widget build(BuildContext context) {
     List<PieChartSectionData> networkData = _generateNetworkData();
@@ -184,7 +185,7 @@ class PIcharPageState extends State<PIcharPage> {
         child: Column(
           children: [
             Container(
-              width: 380,
+              width: MediaQuery.of(context).size.width,
               height: 400,
               child: PieChart(
                 PieChartData(
@@ -206,23 +207,22 @@ class PIcharPageState extends State<PIcharPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                MobileNetwork(Icons.signal_cellular_alt,  'mobile', Colors.blue, 40),
-                Battery(getBatteryIcon(batteryPercentage.toInt()),'Battery', Colors.green,
-                    40),
-              Temprature(MdiIcons.thermometer, 'Temperature', Colors.red, 40),
+                Geofence(MdiIcons.mapMarkerRadius, 'Geofence', Colors.teal, 40),
+                MobileNetwork(
+                    Icons.signal_cellular_alt, 'mobile', Colors.blue, 40),
+                Temprature(MdiIcons.thermometer, 'Temperature', Colors.red, 40),
               ],
             ),
             SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Humidity(MdiIcons.targetVariant,'Acceleration', Colors.orange, 40),
-                Acceleration(MdiIcons.waterPercent,'Humniduty', Colors.purple, 40),
-                Geofence(MdiIcons.mapMarkerRadius,'Geofence', Colors.teal, 40),
-              ],
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              Humidity(MdiIcons.targetVariant, 'Humidity', Colors.orange, 40),
+              Battery(getBatteryIcon(batteryPercentage.toInt()), 'Battery',
+                  Colors.green, 40),
+              Acceleration(
+                  MdiIcons.waterPercent, 'Acceleration', Colors.purple, 40),
+            ]),
           ],
         ),
       ),
@@ -259,137 +259,237 @@ class PIcharPageState extends State<PIcharPage> {
     );
   }
 
-  Widget MobileNetwork(IconData icon, String label, Color color, double iconSize) {
-  return Column(
+  Widget MobileNetwork(
+      IconData icon, String label, Color color, double iconSize) {
+         return Column(
     children: [
-      Container(
-        width: 50,
-        height: 50,
-        color: Colors.red[200],
-        child: Center(
-          child: Icon(
-            icon,
-            color: color,
-            size: iconSize,
-          ),
-        ),
-      ),
-      const SizedBox(height: 8),
-      Text('$label'),
-         Text('${_getValueByIcon(icon)}%'), // Display the label (e.g., 'mobile') here
-    ],
-  );
-}
-  Widget Battery(IconData icon,String label, Color color, double iconSize) {
-    return Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          color: Colors.red[200],
-          child: Center(
-            child: Icon(
-              icon,
-              color: color,
-              size: iconSize,
+      InkWell(
+        onTap: () {
+          // Toggle the tapped state
+          isTapped = !isTapped;
+          // Add your logic here for what should happen when the container is tapped
+          print('Container tapped for $label');
+        },
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            
+            width: 50,
+            height: 50,
+            color:  Colors.yellow[200],
+            child: Center(
+              child: Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 8),
-         Text('$label'),
-        Text('${_getValueByIcon(icon)}%'),
-      ],
-    );
+      ),
+      if (isTapped) // Display the label and percentage text only if the container is not tapped
+        Column(
+          children: [
+            Text('$label'),
+            Text('${_getValueByIcon(icon)}%'),
+          ],
+        ),
+    ],
+  );
+  }
+
+  Widget Battery(IconData icon, String label, Color color, double iconSize) {
+    return Column(
+    children: [
+      InkWell(
+        onTap: () {
+          // Toggle the tapped state
+          isTapped = !isTapped;
+          // Add your logic here for what should happen when the container is tapped
+          print('Container tapped for $label');
+        },
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            
+            width: 50,
+            height: 50,
+            color:  Colors.red,
+            child: Center(
+              child: Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
+            ),
+          ),
+        ),
+      ),
+      if (isTapped) // Display the label and percentage text only if the container is not tapped
+        Column(
+          children: [
+            Text('$label'),
+            Text('${_getValueByIcon(icon)}%'),
+          ],
+        ),
+    ],
+  );
   }
 
   Widget Temprature(IconData icon, String label, Color color, double iconSize) {
-  return Column(
+    return Column(
     children: [
-      Container(
-        width: 50,
-        height: 50,
-        color: const Color.fromARGB(255, 128, 255, 145),
-        child: Center(
-          child: Icon(
-            icon,
-            color: color,
-            size: iconSize,
+      InkWell(
+        onTap: () {
+          // Toggle the tapped state
+          isTapped = !isTapped;
+          // Add your logic here for what should happen when the container is tapped
+          print('Container tapped for $label');
+        },
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            
+            width: 50,
+            height: 50,
+            color:  Colors.blue,
+            child: Center(
+              child: Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
+            ),
           ),
         ),
       ),
-      const SizedBox(height: 8),
-      Text('$label'),
-      Text('${_getValueByIcon(icon)}%'), // Display the label (e.g., 'Temperature') here
+      if (isTapped) // Display the label and percentage text only if the container is not tapped
+        Column(
+          children: [
+            Text('$label'),
+            Text('${_getValueByIcon(icon)}%'),
+          ],
+        ),
     ],
   );
-}
+  }
 
 // Usage
 
-  Widget Humidity(IconData icon, String label,Color color, double iconSize) {
-    return Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          color: Colors.green[200],
-          child: Center(
-            child: Icon(
-              icon,
-              color: color,
-              size: iconSize,
+  Widget Acceleration(
+      IconData icon, String label, Color color, double iconSize) {
+   return Column(
+    children: [
+      InkWell(
+        onTap: () {
+          // Toggle the tapped state
+          isTapped = !isTapped;
+          // Add your logic here for what should happen when the container is tapped
+          print('Container tapped for $label');
+        },
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            
+            width: 50,
+            height: 50,
+            color:  Colors.green,
+            child: Center(
+              child: Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 8),
-           Text('$label'),
-        Text('${_getValueByIcon(icon)}%'),
-      ],
-    );
+      ),
+      if (isTapped) // Display the label and percentage text only if the container is not tapped
+        Column(
+          children: [
+            Text('$label'),
+            Text('${_getValueByIcon(icon)}%'),
+          ],
+        ),
+    ],
+  );
   }
 
-  Widget Acceleration(IconData icon, String label, Color color, double iconSize) {
-    return Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          color: Colors.blue[200],
-          child: Center(
-            child: Icon(
-              icon,
-              color: color,
-              size: iconSize,
+//
+  Widget Humidity(IconData icon, String label, Color color, double iconSize) {
+   return Column(
+    children: [
+      InkWell(
+        onTap: () {
+          // Toggle the tapped state
+          isTapped = !isTapped;
+          // Add your logic here for what should happen when the container is tapped
+          print('Container tapped for $label');
+        },
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+           
+            width: 50,
+            height: 50,
+            color:  Colors.yellowAccent,
+            child: Center(
+              child: Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 8),
-           Text('$label'),
-        Text('${_getValueByIcon(icon)}%'),
-      ],
-    );
+      ),
+      if (isTapped) // Display the label and percentage text only if the container is not tapped
+        Column(
+          children: [
+            Text('$label'),
+            Text('${_getValueByIcon(icon)}%'),
+          ],
+        ),
+    ],
+  );
   }
 
-  Widget Geofence(IconData icon, String label,Color color, double iconSize) {
+  Widget Geofence(IconData icon, String label, Color color, double iconSize) {
     return Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          color: Colors.greenAccent[200],
-          child: Center(
-            child: Icon(
-              icon,
-              color: color,
-              size: iconSize,
+    children: [
+      InkWell(
+        onTap: () {
+          // Toggle the tapped state
+          isTapped = !isTapped;
+          // Add your logic here for what should happen when the container is tapped
+          print('Container tapped for $label');
+        },
+        child: Align(
+            alignment: Alignment.center,
+          child: Container(
+           
+            width: 50,
+            height: 50,
+            color:  Colors.orange,
+            child: Center(
+              child: Icon(
+                icon,
+                color: color,
+                size: iconSize,
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 8),
-           Text('$label'),
-        Text('${_getValueByIcon(icon)}%'),
-      ],
-    );
+      ),
+      if (isTapped) // Display the label and percentage text only if the container is not tapped
+        Column(
+          children: [
+            Text('$label'),
+            Text('${_getValueByIcon(icon)}%'),
+          ],
+        ),
+    ],
+  );
   }
 
   Widget _buildTotalItem(String label, double value) {

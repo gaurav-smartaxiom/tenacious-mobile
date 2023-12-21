@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/services.dart';
+import 'package:mobileapp/DeviceDetailPage.dart';
+import 'package:mobileapp/DeviceDetailPage.dart';
+import 'package:mobileapp/BluetoothDeviceModel.dart';
+import 'ScanDetailPage.dart';
 
 class ScanDevicePage extends StatefulWidget {
   @override
@@ -8,12 +12,13 @@ class ScanDevicePage extends StatefulWidget {
 }
 
 class _ScanDevicePageState extends State<ScanDevicePage> {
+  BluetoothDeviceModel? data;
   String scannedData = 'Scan a device';
   bool isScanning = false;
-
+  String macAddress = '';
   Future<void> scanDevice() async {
     setState(() {
-      isScanning = true; 
+      isScanning = true;
     });
 
     try {
@@ -21,8 +26,16 @@ class _ScanDevicePageState extends State<ScanDevicePage> {
       if (result.type == ResultType.Barcode) {
         setState(() {
           scannedData = result.rawContent;
-          isScanning = false; // Set isScanning to false to hide the loading indicator
+          isScanning =
+              false; // Set isScanning to false to hide the loading indicator
         });
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        print("Scanned Data: $scannedData");
+
+        RegExp macAddressRegex = RegExp(r'MAC: (\S+)');
+        RegExpMatch? match = macAddressRegex.firstMatch(scannedData);
+        macAddress = match?.group(1) ?? 'Not found';
+        print("MAC Address: $macAddress");
       } else {
         setState(() {
           scannedData = 'Scan failed: No barcode data found';
@@ -42,6 +55,18 @@ class _ScanDevicePageState extends State<ScanDevicePage> {
         });
       }
     }
+  }
+  void connectToDevice() {
+    print("sssssssssssssssssssssssssssssssssss, ${macAddress}");
+
+    final deviceId = macAddress;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DeviceDetailPage1(deviceId: deviceId),
+      ),
+    );
   }
 
   @override
@@ -84,6 +109,11 @@ class _ScanDevicePageState extends State<ScanDevicePage> {
                   ],
                 ),
               ),
+            SizedBox(height: 20), // Add spacing
+            ElevatedButton(
+              onPressed: connectToDevice,
+              child: Text("Connect to Device"),
+            ),
           ],
         ),
       ),

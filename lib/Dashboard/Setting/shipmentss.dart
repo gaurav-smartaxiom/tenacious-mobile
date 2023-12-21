@@ -373,7 +373,7 @@ mapType: MapType.normal,
                         style: TextStyle(fontSize: 10)),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 2,
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 9),
@@ -382,10 +382,10 @@ mapType: MapType.normal,
                       //  borderRadius: BorderRadius.circular(1.0),
                     ),
                     child: Text('Last Connected: $lastConnected',
-                        style: TextStyle(fontSize: 10)),
+                        style: TextStyle(fontSize: 9)),
                   ),
                   SizedBox(
-                    width: 2,
+                   // width: 1,
                   ),
                   Container(
                     padding: const EdgeInsets.only(left: 2),
@@ -395,14 +395,14 @@ mapType: MapType.normal,
                     ),
                     child: Row(
                       children: [
-                        Text('Battery:', style: TextStyle(fontSize: 10)),
+                        Text('Battery:', style: TextStyle(fontSize: 9)),
                         //SizedBox(width: 1.0), // Adjust the spacing between "Battery:" and icon
                         Transform.rotate(
                           angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
-                          child: getBatteryIcon(percentage, iconSize: 11),
+                          child: getBatteryIcon(percentage, iconSize: 10),
                         ),
                         //SizedBox(width: 1.0), // Adjust the spacing between icon and value
-                        Text('$percentage%', style: TextStyle(fontSize: 10)),
+                        Text('$percentage%', style: TextStyle(fontSize: 9)),
                       ],
                     ),
                   ),
@@ -419,7 +419,7 @@ mapType: MapType.normal,
                       children: [
                         // Assuming you want to use this icon
                         // Adjust the spacing between icon and text
-                        Text('Signal:', style: TextStyle(fontSize: 9)),
+                        Text('Signal:', style: TextStyle(fontSize: 8)),
                         Icon(Icons.signal_cellular_4_bar, size: 8.0),
                         Text(' $signal', style: TextStyle(fontSize: 9))
                       ],

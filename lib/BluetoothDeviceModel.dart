@@ -5,13 +5,17 @@ class BluetoothDeviceModel {
   final String name;
   final String id;
   final int rssi;
-  bool isConnected; // Remove 'final'
-
+  bool isConnected;
+  String macAddress;
+   // Remove 'final'
+ 
   BluetoothDeviceModel({
     required this.device,
     required this.name,
     required this.id,
     required this.rssi,
+    required this.macAddress,
     this.isConnected = false,
+    
   });
 }
