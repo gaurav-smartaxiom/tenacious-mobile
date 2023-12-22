@@ -260,8 +260,8 @@ bool isTapped = false;
   }
 
   Widget MobileNetwork(
-      IconData icon, String label, Color color, double iconSize) {
-         return Column(
+  IconData icon, String label, Color color, double iconSize) {
+  return Column(
     children: [
       InkWell(
         onTap: () {
@@ -273,10 +273,9 @@ bool isTapped = false;
         child: Align(
           alignment: Alignment.center,
           child: Container(
-            
             width: 50,
             height: 50,
-            color:  Colors.yellow[200],
+            color: Colors.yellow[200],
             child: Center(
               child: Icon(
                 icon,
@@ -287,7 +286,7 @@ bool isTapped = false;
           ),
         ),
       ),
-      if (isTapped) // Display the label and percentage text only if the container is not tapped
+       if (isTapped) // Display the label and percentage text only if the container is not tapped
         Column(
           children: [
             Text('$label'),
@@ -296,7 +295,7 @@ bool isTapped = false;
         ),
     ],
   );
-  }
+}
 
   Widget Battery(IconData icon, String label, Color color, double iconSize) {
     return Column(
