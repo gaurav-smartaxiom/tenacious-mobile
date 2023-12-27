@@ -25,18 +25,18 @@ class ShipmentDetailsPage extends StatefulWidget {
   // final String sensorName;
   // final bool sensorState;
   // final bool isActive1;
-  final String ShipmentName;
-
+ final String ShipmentName;
   final Map<String, dynamic> decodedToken;
-
-  ShipmentDetailsPage(
-      {
-      //required this.indexToReset,
-      //required this.sensorName,
-      //required this.sensorState,
-      //required this.isActive1,
-      required this.ShipmentName,
-      required this.decodedToken});
+  final String shipmentID;
+  final String PickupAddress;
+  final String LastConnected;
+ShipmentDetailsPage({
+    required this.ShipmentName,
+    required this.decodedToken,
+    required this.shipmentID,
+    required this.PickupAddress,
+    required this.LastConnected, // Add this line
+  });
 
   @override
   _ShipmentDetailsPageState createState() => _ShipmentDetailsPageState();
@@ -92,7 +92,7 @@ class _ShipmentDetailsPageState extends State<ShipmentDetailsPage> {
   String shipmentName = '';
   int percentage = 50;
   String deviceUUID = '';
-  String lastConnected = '12 year ago';
+  String lastConnected ='';
   // String battery = '40';
   String signal = '30';
   DateTime fromDate = DateTime.now();
@@ -185,7 +185,7 @@ List<Marker> marker = [];
 
   Future<void> fetchShipmentData(String? token) async {
     final String backendUrl = shipment;
-    final String shipmentID = '64e464f3eb12d5b4aa42453c';
+    final String shipmentID = widget.shipmentID;
 
     final response = await http.get(
       Uri.parse(backendUrl),
@@ -233,9 +233,10 @@ List<Marker> marker = [];
         setState(() {
           shipmentName = shipmentName;
           deviceUUID = deviceUUID;
-          pickupLocation = pickupLocation;
+          pickupLocation = widget.PickupAddress;
           pickupDate = pickupDate;
           dateOnly = dateOnly;
+          lastConnected=widget.LastConnected;
         });
       } else {
         print("Shipment ID $shipmentID not found in the response");
@@ -287,6 +288,8 @@ List<Marker> marker = [];
     return Scaffold(
       appBar: AppBar(
         title: Text('Trackres Deatails'),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -376,19 +379,19 @@ mapType: MapType.normal,
                     width: 2,
                   ),
                   Container(
-                    padding: EdgeInsets.only(right: 9),
+                    padding: EdgeInsets.only(right:5),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       //  borderRadius: BorderRadius.circular(1.0),
                     ),
                     child: Text('Last Connected: $lastConnected',
-                        style: TextStyle(fontSize: 9)),
+                        style: TextStyle(fontSize: 10)),
                   ),
-                  SizedBox(
-                   // width: 1,
-                  ),
+                  // SizedBox(
+                  //   width: 1,
+                  // ),
                   Container(
-                    padding: const EdgeInsets.only(left: 2),
+                    padding: const EdgeInsets.only(left: 1),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(1.0),
@@ -399,31 +402,31 @@ mapType: MapType.normal,
                         //SizedBox(width: 1.0), // Adjust the spacing between "Battery:" and icon
                         Transform.rotate(
                           angle: -9.4 / 2, // Rotate by 90 degrees (in radians)
-                          child: getBatteryIcon(percentage, iconSize: 10),
+                          child: getBatteryIcon(percentage, iconSize: 11),
                         ),
                         //SizedBox(width: 1.0), // Adjust the spacing between icon and value
-                        Text('$percentage%', style: TextStyle(fontSize: 9)),
+                        Text('$percentage%', style: TextStyle(fontSize: 10)),
                       ],
                     ),
                   ),
-                  SizedBox(
-                      // width: 1,
-                      ),
+                  // SizedBox(
+                  //      width: 1,
+                  //     ),
                   Container(
                     padding: const EdgeInsets.only(left: 4),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(1.0),
                     ),
-                    child: Row(
+                    child: Expanded(child: Row(
                       children: [
                         // Assuming you want to use this icon
                         // Adjust the spacing between icon and text
-                        Text('Signal:', style: TextStyle(fontSize: 8)),
-                        Icon(Icons.signal_cellular_4_bar, size: 8.0),
+                        Text('Signal:', style: TextStyle(fontSize: 10)),
+                        Icon(Icons.signal_cellular_4_bar, size: 9.0),
                         Text(' $signal', style: TextStyle(fontSize: 9))
                       ],
-                    ),
+                    ),)
                   ),
                 ],
               ),
@@ -525,7 +528,7 @@ mapType: MapType.normal,
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: pickupLocation.length,
+                  itemCount: 4,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -542,7 +545,7 @@ mapType: MapType.normal,
                                     style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.grey)),
+                                        color: Colors.black)),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -574,7 +577,7 @@ mapType: MapType.normal,
                           ),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(top: 55.0),
+                              padding: EdgeInsets.only(top: 75.0),
                               child: Text(
                                 dateOnly,
                                 textAlign: TextAlign.right,

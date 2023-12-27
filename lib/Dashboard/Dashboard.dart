@@ -74,7 +74,7 @@ class _DashboardPageState extends State<DashboardPage> {
         // Navigate to NotificationPage
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => UserManagementPage()));
-      } else if (index == 4) {
+      } else if (index == 8) {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddDevicePage(
             deviceUuid: '9876543210',
@@ -292,10 +292,10 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: Icon(Icons.person),
             label: 'User Profile',
           ),
-           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'User Profile',
-          ),
+          //  BottomNavigationBarItem(
+          //   icon: Icon(Icons.message),
+          //   label: 'User Profile',
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,

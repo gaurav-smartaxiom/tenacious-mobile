@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,41 +27,51 @@ class ShipmentPage extends StatefulWidget {
   final Map<String, dynamic> decodedToken;
 
   ShipmentPage({required this.decodedToken});
-  
+
   _ShipmentPageState createState() => _ShipmentPageState();
 }
 
 class _ShipmentPageState extends State<ShipmentPage> {
   List<Shipment> allShipments = [];
   List<Shipment> filteredShipments = [];
-   int _selectedIndex = 0;
-  
- void _onItemTapped(int index) {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-if (index == 0) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashboardPage(decodedToken: widget.decodedToken,)));
+      if (index == 0) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DashboardPage(
+                  decodedToken: widget.decodedToken,
+                )));
       } else if (index == 1) {
-       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShipmentPage(decodedToken: widget.decodedToken,)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShipmentPage(
+                  decodedToken: widget.decodedToken,
+                )));
       } else if (index == 3) {
         // Navigate to UserProfilePage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfilePage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => UserProfilePage()));
       } else if (index == 2) {
         // Navigate to NotificationPage
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationPage(decodedToken: widget.decodedToken,)));
-      }
-      else if(index==65)
-      
-      {
-Navigator.of(context).push(MaterialPageRoute(
-  builder: (context) => AddDevicePage(deviceUuid: '9876543210',decodedToken: widget.decodedToken,),
-));
- // Pass the device UUI
-
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NotificationPage(
+                  decodedToken: widget.decodedToken,
+                )));
+      } else if (index == 65) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AddDevicePage(
+            deviceUuid: '9876543210',
+            decodedToken: widget.decodedToken,
+          ),
+        ));
+        // Pass the device UUI
       }
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -95,7 +104,8 @@ Navigator.of(context).push(MaterialPageRoute(
 
         if (response.statusCode == 200) {
           try {
-            final Map<String, dynamic> responseBody = json.decode(response.body);
+            final Map<String, dynamic> responseBody =
+                json.decode(response.body);
             final List<dynamic> apiShipments = responseBody['items'];
 
             final List<Shipment> shipments = apiShipments
@@ -120,22 +130,17 @@ Navigator.of(context).push(MaterialPageRoute(
             }
 
             setState(() {
-
-              if(shipments.isEmpty)
-              {
-                  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => NoShipmentPage(),
-    ),
-  );
+              if (shipments.isEmpty) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NoShipmentPage(),
+                  ),
+                );
+              } else {
+                allShipments = shipments;
+                filteredShipments = List.from(allShipments);
               }
-              else{
-
-allShipments = shipments;
-              filteredShipments = List.from(allShipments);
-              }
-              
             });
           } catch (e) {
             print('Error parsing JSON: $e');
@@ -157,35 +162,45 @@ allShipments = shipments;
         filteredShipments = List.from(allShipments);
       } else {
         filteredShipments = allShipments
-            .where((shipment) =>
-                shipment.shipmentName.toLowerCase().contains(query.toLowerCase()))
+            .where((shipment) => shipment.shipmentName
+                .toLowerCase()
+                .contains(query.toLowerCase()))
             .toList();
       }
     });
   }
 
+  void ReportShipment(Shipment shipment) {
+    print('Selected Shipment ID: ${shipment.id}');
+    print('Selected Shipment Name: ${shipment.shipmentName}');
+    print('Pickup Address: ${shipment.pickupLocation}');
+    print(
+        'Last Connected: ${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ShipmentDetailsPage(
+          ShipmentName: shipment.shipmentName,
+          decodedToken: widget.decodedToken,
+          shipmentID: shipment.id,
+          PickupAddress: shipment.pickupLocation,
+          LastConnected: shipment.trackers.isNotEmpty
+              ? _formatLastConnected(shipment.trackers.last.timestamp)
+              : 'N/A',
+        ),
+      ),
+    );
+  }
 
-void ReportShipment(Shipment shipment)
-{
-
-print('Selected Shipment Name: ${shipment.shipmentName}');
-      Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ShipmentDetailsPage(ShipmentName: shipment.shipmentName,decodedToken: widget.decodedToken,),
-    ),
-  );
-
-
-}
   void selectShipment(Shipment shipment) {
     print('Selected Shipment Name: ${shipment.shipmentName}');
-      Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AddShipmentPage(shipmentName: shipment.shipmentName),
-    ),
-  );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AddShipmentPage(shipmentName: shipment.shipmentName),
+      ),
+    );
   }
 
   void showShipmentDetails(Shipment shipment) {
@@ -198,7 +213,11 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text('Shipment ID: ${shipment.id}'),
               Text('Shipment Name: ${shipment.shipmentName}'),
+              Text('Pickup Address: ${shipment.pickupLocation}'),
+              Text(
+                  'Last Connected: ${shipment.trackers.isNotEmpty ? _formatLastConnected(shipment.trackers.last.timestamp) : 'N/A'}'),
             ],
           ),
           actions: <Widget>[
@@ -206,7 +225,6 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
               onPressed: () {
                 Navigator.of(context).pop();
                 ReportShipment(shipment);
-
               },
               child: Text('ReportView'),
             ),
@@ -224,157 +242,162 @@ print('Selected Shipment Name: ${shipment.shipmentName}');
   }
 
   @override
- Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Trackres Page'),
-      backgroundColor: Colors.blue,
-      centerTitle: true,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
-            ),
-          );
-        },),
-        actions: [
-    IconButton(
-      icon: Icon(Icons.add),
-      onPressed: () {
-       Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) =>AddShipmentPage(shipmentName: shipment)
-        ),
-      );
-      },
-    ),
-  ],
-    ),
-    body: Column(
-      children: [
-        Padding(
-  padding: const EdgeInsets.only(left: 10, right: 1),
-  child: Row(
-    children: [
-      Expanded(
-        child: Container(
-          padding: const EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: TextField(
-              //controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
-                border: InputBorder.none,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Trackres Page'),
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) =>
+                    DashboardPage(decodedToken: widget.decodedToken),
               ),
-              onChanged: (value) {
-                performSearch(value);
-              },
+            );
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) =>
+                        AddShipmentPage(shipmentName: shipment)),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 1),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: TextField(
+                        //controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
+                        ),
+                        onChanged: (value) {
+                          performSearch(value);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PopupMenuButton<String>(
+                    icon: Icon(Icons.menu),
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                      PopupMenuItem<String>(
+                        value: 'search',
+                        child: Text('Search'),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'lastConnected',
+                        child: Text('Last Connected'),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'status',
+                        child: Text('Status'),
+                      ),
+                    ],
+                    onSelected: (String value) {
+                      switch (value) {
+                        case 'search':
+                          print("Search");
+                          break;
+                        case 'lastConnected':
+                          break;
+                        case 'status':
+                          break;
+                      }
+                    },
+                    offset: Offset(0, 30),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: PopupMenuButton<String>(
-          icon: Icon(Icons.menu),
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            PopupMenuItem<String>(
-              value: 'search',
-              child: Text('Search'),
-            ),
-            PopupMenuItem<String>(
-              value: 'lastConnected',
-              child: Text('Last Connected'),
-            ),
-            PopupMenuItem<String>(
-              value: 'status',
-              child: Text('Status'),
-            ),
-          ],
-          onSelected: (String value) {
-           
-            switch (value) {
-              case 'search':
-               
-                print("Search");
-                break;
-              case 'lastConnected':
-               
-                break;
-              case 'status':
-               
-                break;
-            }
-          },
-          offset: Offset(0, 30), 
-        ),
-      ),
-    ],
-  ),
-),
-
-        Expanded(
-          child: ListView.builder(
+          Expanded(
+              child: ListView.builder(
             itemCount: filteredShipments.length,
             itemBuilder: (BuildContext context, int index) {
+             
               final shipment = filteredShipments[index];
+              print("eeeeeeettttttttttttttttttttttttttttttttttt");
+               print(shipment);
               final NewShipmentType = shipment.shipmentType;
               return GestureDetector(
                 onTap: () {
                   showShipmentDetails(shipment);
                 },
-                child: ShipmentInfo(shipment: shipment, shipmentType: NewShipmentType),
+                child: ShipmentInfo(
+                  shipment: shipment,
+                  shipmentType: NewShipmentType,
+                ),
               );
             },
-          ),
-        ),
-      ],
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed,
-  showSelectedLabels: false,
-  showUnselectedLabels: false,
-  items: <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.window),
-      label: 'Window',
-    ),
-    BottomNavigationBarItem(
-      icon: Image.asset(
-        'assets/bus.png', // Replace with the path to your image asset
-        width: 35, // Adjust the width as needed
-        height: 35, // Adjust the height as needed
+          ))
+        ],
       ),
-      label: 'Shipment',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'User Profile',
-    ),
-    // BottomNavigationBarItem(icon: Icon(Icons.device_hub),
-    // label: "Add Device")
-  ],
-  currentIndex: _selectedIndex,
-  selectedItemColor: Colors.blue,
-  onTap: _onItemTapped,
-),
-  );
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.window),
+            label: 'Window',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              'assets/bus.png', // Replace with the path to your image asset
+              width: 35, // Adjust the width as needed
+              height: 35, // Adjust the height as needed
+            ),
+            label: 'Shipment',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'User Profile',
+          ),
+          // BottomNavigationBarItem(icon: Icon(Icons.device_hub),
+          // label: "Add Device")
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
 }
-}
+
 String _formatLastConnected(int timestamp) {
-  DateTime lastConnected = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  DateTime lastConnected =
+      DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
   Duration difference = DateTime.now().difference(lastConnected);
 
   if (difference.inDays > 365) {
@@ -384,7 +407,7 @@ String _formatLastConnected(int timestamp) {
     int months = difference.inDays ~/ 30;
     return '$months ${months > 1 ? 'months' : 'month'} ago';
   } else {
-    return timeago.format(lastConnected); 
+    return timeago.format(lastConnected);
   }
 }
 
@@ -400,8 +423,8 @@ class Shipment {
   final String deliveryDate;
   final double length;
   final List<Tracker> trackers;
-final bool isMovable;
-  
+  final bool isMovable;
+
   Shipment({
     required this.id,
     required this.shipmentName,
@@ -426,17 +449,23 @@ final bool isMovable;
       final String status = json['status'] as String? ?? '';
       final String pickupLocation = json['pickupLocation'] as String? ?? '';
       final String pickupDate = json['pickupDate'] as String? ?? '';
-      final String destinationLocation = json['destinationLocation'] as String? ?? '';
+      final String destinationLocation =
+          json['destinationLocation'] as String? ?? '';
       final String deliveryDate = json['deliveryDate'] as String? ?? '';
       final double length = (json['length'] as num?)?.toDouble() ?? 0;
-       final bool isMovable = json['isMovable'] as bool? ?? false; 
+      final bool isMovable = json['isMovable'] as bool? ?? false;
       final List<dynamic>? trackersData = json['trackers'] as List<dynamic>?;
 
-      if (id.isEmpty || shipmentName.isEmpty || shipmentDesc.isEmpty || shipmentType.isEmpty || status.isEmpty) {
+      if (id.isEmpty ||
+          shipmentName.isEmpty ||
+          shipmentDesc.isEmpty ||
+          shipmentType.isEmpty ||
+          status.isEmpty) {
         throw FormatException("Invalid data in JSON");
       }
       List<Tracker> trackers = [];
-     print("shipmenTyep----------------------------------------,$shipmentType");
+      print(
+          "shipmenTyep----------------------------------------,$shipmentType");
       if (trackersData != null) {
         List<String> deviceUUIDs = [];
         for (Map<String, dynamic> trackerData in trackersData) {
@@ -451,24 +480,23 @@ final bool isMovable;
           } else {
             print('DeviceUUID is null for tracker: ${tracker.id}');
           }
-          tracker.deviceUUID = deviceUUID; 
-    trackers.add(tracker);
+          tracker.deviceUUID = deviceUUID;
+          trackers.add(tracker);
         }
       }
       return Shipment(
-        id: id,
-        shipmentName: shipmentName,
-        shipmentDesc: shipmentDesc,
-        shipmentType: shipmentType,
-        status: status,
-        pickupLocation: pickupLocation,
-        pickupDate: pickupDate,
-        destinationLocation: destinationLocation,
-        deliveryDate: deliveryDate,
-        trackers: trackers,
-        length: length,
-        isMovable: isMovable
-      );
+          id: id,
+          shipmentName: shipmentName,
+          shipmentDesc: shipmentDesc,
+          shipmentType: shipmentType,
+          status: status,
+          pickupLocation: pickupLocation,
+          pickupDate: pickupDate,
+          destinationLocation: destinationLocation,
+          deliveryDate: deliveryDate,
+          trackers: trackers,
+          length: length,
+          isMovable: isMovable);
     } catch (e) {
       throw FormatException("Error parsing JSON: $e");
     }
@@ -588,6 +616,7 @@ Map<String, dynamic> trackerToJson(Tracker tracker) {
     'deviceUUID': tracker.deviceUUID,
   };
 }
+
 class ShipmentInfo extends StatelessWidget {
   final Shipment shipment;
   final String shipmentType; // Corrected line
@@ -601,22 +630,22 @@ class ShipmentInfo extends StatelessWidget {
       child: ListTile(
         title: Row(
           children: [
- Icon(
-  (() {
-    print("shipmentType----------------------------------------, $shipmentType");
+            Icon(
+              (() {
+                print(
+                    "shipmentType----------------------------------------, $shipmentType");
 
-    if (shipmentType == 'Movable') {
-      print("if");
-     
-      return Icons.local_shipping;
-    } else {
-      print("else");
-      return Icons.location_on;
-    }
-  })(),
-  size: 30,
-),
+                if (shipmentType == 'Movable') {
+                  print("if");
 
+                  return Icons.local_shipping;
+                } else {
+                  print("else");
+                  return Icons.location_on;
+                }
+              })(),
+              size: 30,
+            ),
             SizedBox(width: 8, height: 20),
             Expanded(
               child: Padding(
@@ -637,7 +666,9 @@ class ShipmentInfo extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 2),
-                  child: Text("DeviceUUID:", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10)),
+                  child: Text("DeviceUUID:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 2),
@@ -652,7 +683,9 @@ class ShipmentInfo extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 2),
-                  child: Text("Last Connected:", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10)),
+                  child: Text("Last Connected:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
                 ),
                 SizedBox(width: 3),
                 Padding(
