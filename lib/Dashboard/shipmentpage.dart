@@ -341,10 +341,7 @@ class _ShipmentPageState extends State<ShipmentPage> {
               child: ListView.builder(
             itemCount: filteredShipments.length,
             itemBuilder: (BuildContext context, int index) {
-             
               final shipment = filteredShipments[index];
-              print("eeeeeeettttttttttttttttttttttttttttttttttt");
-               print(shipment);
               final NewShipmentType = shipment.shipmentType;
               return GestureDetector(
                 onTap: () {
