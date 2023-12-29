@@ -6,6 +6,7 @@ class WindowPage extends StatefulWidget {
 }
 
 class _TrackerPageState extends State<WindowPage> {
+  String?selectedValue;
   TextEditingController trackerController = TextEditingController();
   TextEditingController tempMinController = TextEditingController();
   TextEditingController tempMaxController = TextEditingController();
@@ -34,13 +35,32 @@ class _TrackerPageState extends State<WindowPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Tracker' ,style: TextStyle(  fontWeight: FontWeight.bold,),),
-             TextField(
-  controller: trackerController,
-  decoration: InputDecoration(
-    labelText: 'Enter Tracker',
-    suffixIcon: Icon(Icons.arrow_drop_down),
-  ),
-),
+            Padding(
+            padding: const EdgeInsets.only(left: 50, right: 50),
+            child: DropdownButtonFormField<String>(
+              value: selectedValue,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedValue = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: "Assign EndPoint",
+              ),
+              items: [
+                DropdownMenuItem<String>(
+                  value: 'movable',
+                  child: Text('Movable'),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'fixed',
+                  child: Text('Fixed'),
+                ),
+              ],
+              iconSize: 45,
+              focusColor: Colors.grey,
+            ),
+          ),
 SizedBox(height: 16.0),
               Text('Temperature',style: TextStyle(  fontWeight: FontWeight.bold,)),
               Row(
@@ -104,26 +124,53 @@ SizedBox(height: 16.0),
                 controller: geofenceController,
                 decoration: InputDecoration(labelText: 'Enter Geofence'),
               ),
-                  SizedBox(height: 80),
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 300,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          print("hello");
-                        },
-                        child: Text('Assign'),
-                      ),
-                    ),
-                  ],
-                ),
+                //   SizedBox(height: 80),
+                //   Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     Container(
+                //       width: 300,
+                //       child: ElevatedButton(
+                //         onPressed: () {
+                //           print("hello");
+                //         },
+                //         child: Text('Assign'),
+                //       ),
+                //     ),
+                //   ],
+                // ),
             ],
           ),
           )
         ),
       ),
+
+
+
+bottomNavigationBar: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () => {print("Try Again")},
+              child: Container(
+                width: 300,
+                height: 45, // Added height
+                color: Colors.blue,
+                child: Center(
+                  child: Text(
+                    "Assign",
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+)
+
     );
   }
 }

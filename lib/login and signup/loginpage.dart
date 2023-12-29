@@ -20,6 +20,10 @@ import 'package:mobileapp/Dashboard/MasterPage.dart';
 import 'package:mobileapp/Dashboard/PiChartPgae.dart';
 import 'package:mobileapp/Dashboard/MasterDataPage.dart';
 import 'package:mobileapp/Dashboard/Success.dart';
+import 'package:mobileapp/Dashboard/ErrorPage.dart';
+import 'package:mobileapp/Dashboard/TrackresEndPoint.dart';
+import 'package:mobileapp/Dashboard/AssignEndPoint.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -53,8 +57,8 @@ class _LoginPageState extends State<LoginPage> {
       print("try");
       final response = await http.post(Uri.parse(apiUrl), body: requestBody);
       print("res----------------------,$response");
-     final Map<String, dynamic> responseBody = json.decode(response.body);
-     print("responseBody----------------------120,$responseBody");
+      final Map<String, dynamic> responseBody = json.decode(response.body);
+      print("responseBody----------------------120,$responseBody");
       String token = responseBody['token'];
       Map<String, dynamic> decodedToken =
           JwtDecoder.decode("{'token': $token}");
@@ -85,15 +89,14 @@ class _LoginPageState extends State<LoginPage> {
           final checkUser = permission['levelname'];
           print("checklevelname,$checkUser");
           if (checkUser == NewUser) {
-            matchedUserLevel =
-                checkUser;
+            matchedUserLevel = checkUser;
           }
         }
       } else {
         print("Error: ${AccessAllUser.statusCode}");
         print("Response body: ${AccessAllUser.body}");
       }
-        print(response.statusCode);
+      print(response.statusCode);
       if (response.statusCode == 201) {
         print("user login successfully");
         //apply session-----------
@@ -154,13 +157,15 @@ class _LoginPageState extends State<LoginPage> {
       print("An error occurred: $error");
     }
   }
+
   void createAccount() {
     print("create");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SuccessPage()),
+      MaterialPageRoute(builder: (context) => TrackerEndPointPage()),
     );
   }
+
   Future<void> forgotpassword() async {
     print("forgotpassword");
     Navigator.push(
@@ -182,8 +187,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: 0.0), 
+                  padding: EdgeInsets.only(top: 0.0),
                   child: Image.asset(
                     'assets/download.png',
                     width: 800,
@@ -194,7 +198,6 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                    
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         controller: _usernameController,
@@ -208,7 +211,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                 
                   controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
@@ -279,8 +281,9 @@ class _LoginPageState extends State<LoginPage> {
                           // }
                         },
                         style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                      ),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
+                        ),
                         child: Text('Sign in'),
                       ),
                     ),
@@ -290,7 +293,6 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     GestureDetector(
-                      
                       onTap: () {
                         forgotpassword();
                       },
@@ -326,8 +328,8 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
                     ),
-                   recognizer: TapGestureRecognizer()
-                       ..onTap = () {
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
                         createAccount();
                       },
                   ),

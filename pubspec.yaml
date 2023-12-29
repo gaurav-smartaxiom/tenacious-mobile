@@ -97,6 +97,8 @@ flutter:
     - assets/directionIcon.png
     - assets/cycling.png
     - assets/success.png
+    - assets/err.png
+    - assets/Error.png 
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

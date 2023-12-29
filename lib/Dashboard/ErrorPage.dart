@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SuccessPage extends StatelessWidget {
-  const SuccessPage({super.key});
+class ErrorPage extends StatelessWidget {
+  const ErrorPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class SuccessPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                "assets/success.png",
+                "assets/Error.png",
                 width: 150,
               ),
               SizedBox(
@@ -19,10 +19,10 @@ class SuccessPage extends StatelessWidget {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  "SUCCESS",
+                  "ERROR",
                   style: TextStyle(
                       fontSize: 45,
-                      color: Colors.green,
+                      color: Colors.red,
                       fontWeight: FontWeight.bold),
                 ),
               ]),
@@ -31,8 +31,8 @@ class SuccessPage extends StatelessWidget {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  "USER HAS BEEN CREATED SUCCESSFULLY !",
-                  style: TextStyle(fontSize: 18),
+                  "SOMETHING WENT WRONG PLEASE TRY AGAIN !",
+                  style: TextStyle(fontSize: 16),
                 ),
               ]),
               SizedBox(
@@ -43,15 +43,15 @@ class SuccessPage extends StatelessWidget {
   children: [
     InkWell(
       onTap:()=>{
-print("continue")
+print("Try Again")
       },child:Container(
       
       width: 300,
       height: 60,  // Added height
-      color: Colors.green,
+      color: Colors.red,
       child: Center(
         child: Text(
-          "CONTINUE",
+          "TRY AGAIN",
           style: TextStyle(color: Colors.white,fontSize: 25),
         ),
       ),
