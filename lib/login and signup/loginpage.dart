@@ -18,7 +18,8 @@ import 'package:flutter/gestures.dart';
 import 'forgorpassword.dart';
 import 'package:mobileapp/Dashboard/MasterPage.dart';
 import 'package:mobileapp/Dashboard/PiChartPgae.dart';
-
+import 'package:mobileapp/Dashboard/MasterDataPage.dart';
+import 'package:mobileapp/Dashboard/Success.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -157,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
     print("create");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PIcharPage()),
+      MaterialPageRoute(builder: (context) => SuccessPage()),
     );
   }
   Future<void> forgotpassword() async {
