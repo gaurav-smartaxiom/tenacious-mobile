@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobileapp/Dashboard/TrackresAPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AddShipmentPage extends StatefulWidget {
   final String shipmentName;
 
-  const AddShipmentPage({Key? key, required this.shipmentName}) : super(key: key);
+  const AddShipmentPage({Key? key, required this.shipmentName})
+      : super(key: key);
 
   @override
   _AddShipmentPageState createState() => _AddShipmentPageState();
@@ -11,8 +15,8 @@ class AddShipmentPage extends StatefulWidget {
 
 class _AddShipmentPageState extends State<AddShipmentPage> {
   TextEditingController _dateController = TextEditingController();
-TextEditingController _descriptionController = TextEditingController();
-  
+  TextEditingController _descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +64,7 @@ TextEditingController _descriptionController = TextEditingController();
                     ),
                   ],
                 ),
-                  SizedBox(height: 10),
+                SizedBox(height: 10),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -88,7 +92,7 @@ TextEditingController _descriptionController = TextEditingController();
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  controller: _dateController, 
+                  controller: _dateController,
                   onTap: () async {
                     DateTime? selectedDate = await showDatePicker(
                       context: context,
@@ -98,13 +102,12 @@ TextEditingController _descriptionController = TextEditingController();
                     );
 
                     if (selectedDate != null) {
-                     
                       print('Selected Date: $selectedDate');
-                        String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate); 
-                         setState(() {
-                          _dateController.text = formattedDate; 
-                        });
-                         
+                      String formattedDate =
+                          DateFormat('yyyy-MM-dd').format(selectedDate);
+                      setState(() {
+                        _dateController.text = formattedDate;
+                      });
                     }
                   },
                   readOnly: true,
@@ -113,25 +116,59 @@ TextEditingController _descriptionController = TextEditingController();
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
                 ),
-                 SizedBox(height: 50),
-
-  Row(
+                SizedBox(height: 50),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: 240,
                       child: ElevatedButton(
-                        onPressed: () {
-                          print("hello"); 
+                        onPressed: () async {
+                          var check = await SharedPreferences.getInstance();
+                          final email = check.getString('email');
+                          print("check email: $email");
+
+                          // Always show the pop-up
+
+                          // Only navigate to TrackresAPage if the condition is true
+                          if (email != null &&
+                              email == 'suraj.subramoniam@honeywell.com') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TrackresAPage()),
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Unauthorized User'),
+                                  content:
+                                      Text('You are not authorized to create.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the pop-up
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
                         style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                      ),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
+                        ),
                         child: Text('Create'),
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -143,8 +180,8 @@ TextEditingController _descriptionController = TextEditingController();
   @override
   void dispose() {
     _dateController.dispose();
-     _descriptionController.dispose();
-    _dateController.dispose(); 
+    _descriptionController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 }

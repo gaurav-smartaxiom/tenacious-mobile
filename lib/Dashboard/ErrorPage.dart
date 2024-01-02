@@ -35,32 +35,31 @@ class ErrorPage extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ]),
-              SizedBox(
-                height: 150,
-              ),
-              Row(
-   mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    InkWell(
-      onTap:()=>{
-print("Try Again")
-      },child:Container(
-      
-      width: 300,
-      height: 60,  // Added height
-      color: Colors.red,
-      child: Center(
-        child: Text(
-          "TRY AGAIN",
-          style: TextStyle(color: Colors.white,fontSize: 25),
-        ),
-      ),
-    ),),
-   
-  ],
-),
-
             ]),
+      ),
+      bottomNavigationBar: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () => {print("Try Again")},
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 50),
+                child: Container(
+                  width: 300,
+                  height: 60, // Added height
+                  color: Colors.red,
+                  child: Center(
+                    child: Text(
+                      "TRY AGAIN",
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

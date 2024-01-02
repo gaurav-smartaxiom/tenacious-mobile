@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
     print("create");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TrackerEndPointPage()),
+      MaterialPageRoute(builder: (context) => MasterDataPage()),
     );
   }
 
@@ -323,7 +323,7 @@ class _LoginPageState extends State<LoginPage> {
                 text: "I Don't have an account? ",
                 children: [
                   TextSpan(
-                    text: 'Signup',
+                    text: 'CreateOne',
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,

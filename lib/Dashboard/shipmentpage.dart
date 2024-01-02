@@ -13,7 +13,7 @@ import 'package:mobileapp/Dashboard/NotificationPage.dart';
 import 'package:mobileapp/Dashboard/userprofile.dart';
 import 'package:mobileapp/Dashboard/AddDevicePage.dart';
 import 'package:mobileapp/Dashboard/DashboardBox.dart';
-import 'package:mobileapp/Dashboard/WindowPage.dart';
+import 'package:mobileapp/Dashboard/TrackresAPage.dart';
 import 'package:mobileapp/Dashboard/Dashboard.dart';
 import 'package:mobileapp/Dashboard/Setting/shipmentss.dart';
 import 'package:mobileapp/Dashboard/NoDataShipmentPage.dart';
@@ -245,33 +245,35 @@ class _ShipmentPageState extends State<ShipmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Trackres Page'),
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) =>
-                    DashboardPage(decodedToken: widget.decodedToken),
-              ),
-            );
-          },
+  title: Text('Trackers Page',),
+  backgroundColor: Colors.blue,
+  centerTitle: true,
+  leading: IconButton(
+    icon: Icon(Icons.arrow_back),
+    onPressed: () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        AddShipmentPage(shipmentName: shipment)),
-              );
-            },
-          ),
-        ],
+      );
+    },
+  ),
+  actions: [
+    if (widget.decodedToken != null &&
+        widget.decodedToken['officialEmail'] == 'suraj.subramoniam@honeywell.com')
+      IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddShipmentPage(shipmentName: shipment),
+            ),
+          );
+        },
       ),
+  ],
+)
+,
       body: Column(
         children: [
           Padding(

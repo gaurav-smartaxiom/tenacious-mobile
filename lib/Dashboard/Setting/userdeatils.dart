@@ -29,7 +29,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   List<String> roleOptions = ['Admin', 'User'];
   String selectedRole = '';
   final GlobalKey _dropdownKey = GlobalKey();
-  List<String> shipments = []; 
+  List<String> shipments = [];
   List<String> getFilteredShipments(String query) {
     return shipments.where((shipment) {
       return shipment.toLowerCase().contains(query.toLowerCase());
@@ -82,7 +82,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
           }
         } else {
           print("Error");
-          
         }
       } catch (e) {
         print('Error fetching shipments: $e');
@@ -330,7 +329,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 10),
                 Row(
                   children: <Widget>[
@@ -363,7 +361,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                   controller: _passwordController,
+                  controller: _passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -408,24 +406,22 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                     prefixIcon: Icon(Icons.business),
                   ),
                 ),
-
-                SizedBox(height: 20), 
+                SizedBox(height: 20),
                 Container(
-                  height: 400, 
+                  height: 400,
                   width: 400,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white, 
+                      color: Colors.white,
                       // width: 1.0, // Border width
                     ),
                   ),
                   child: Column(
                     children: [
                       Container(
-                        height: 50, 
-                        color: Colors.white, 
-                        padding: EdgeInsets.all(
-                            10), 
+                        height: 50,
+                        color: Colors.white,
+                        padding: EdgeInsets.all(10),
                         child: TextField(
                           decoration: InputDecoration(
                             // labelText: 'shipment',
@@ -443,6 +439,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                         ),
                       ),
                       Expanded(
+                          child: Card(
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: filteredShipments.length,
@@ -475,11 +472,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                             }
                           },
                         ),
-                      ),
+                      )),
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.only(right: 1.0),
                   child: Row(
@@ -521,8 +517,9 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                           _registerUser();
                         },
                         style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                      ),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
+                        ),
                         child: Text('Add'),
                       ),
                     ),

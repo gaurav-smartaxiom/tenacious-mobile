@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobileapp/Dashboard/TrackresEndPoint.dart';
 
-class WindowPage extends StatefulWidget {
+class TrackresAPage extends StatefulWidget {
   @override
   _TrackerPageState createState() => _TrackerPageState();
 }
 
-class _TrackerPageState extends State<WindowPage> {
+class _TrackerPageState extends State<TrackresAPage> {
   String?selectedValue;
   TextEditingController trackerController = TextEditingController();
   TextEditingController tempMinController = TextEditingController();
@@ -16,12 +17,23 @@ class _TrackerPageState extends State<WindowPage> {
   TextEditingController accelerationMaxController = TextEditingController();
   TextEditingController geofenceController = TextEditingController();
 
+
+
+void CreateTrackresPoint() async{
+
+print(selectedValue.toString());
+print(accelerationMaxController.text);
+Navigator.push(context,MaterialPageRoute(builder: (context)=>TrackerEndPointPage()));
+
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(' Assign Tracker'),
+        backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(       
          child: Center(
@@ -36,7 +48,7 @@ class _TrackerPageState extends State<WindowPage> {
             children: [
               Text('Tracker' ,style: TextStyle(  fontWeight: FontWeight.bold,),),
             Padding(
-            padding: const EdgeInsets.only(left: 50, right: 50),
+            padding: const EdgeInsets.only(left: 0, right: 0),
             child: DropdownButtonFormField<String>(
               value: selectedValue,
               onChanged: (String? value) {
@@ -147,6 +159,8 @@ SizedBox(height: 16.0),
 
 
 
+
+
 bottomNavigationBar: Container(
         width: double.infinity,
         padding: EdgeInsets.all(3),
@@ -154,7 +168,12 @@ bottomNavigationBar: Container(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
-              onTap: () => {print("Try Again")},
+              onTap: () => {
+                CreateTrackresPoint()
+
+
+
+              },
               child: Container(
                 width: 300,
                 height: 45, // Added height

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobileapp/Dashboard/ErrorPage.dart';
+import 'package:mobileapp/Dashboard/Success.dart';
 
 class AssignEndPoint extends StatefulWidget {
   const AssignEndPoint({Key? key}) : super(key: key);
@@ -58,6 +60,16 @@ class _AssignEndPointState extends State<AssignEndPoint> {
             InkWell(
               onTap: () {
                 print("Try Again with selected value: $selectedValue");
+                if(selectedValue=='movable')
+                {
+                  print("if");
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=> SuccessPage()));
+                }
+                else
+                {
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=> ErrorPage())); 
+                }
+                
               },
               child: Container(
                 width: 300,

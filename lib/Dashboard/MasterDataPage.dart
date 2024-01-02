@@ -73,7 +73,7 @@ class _MasterDataPageState extends State<MasterDataPage> {
         centerTitle: true,
       ),
       body: Container(
-          color: Colors.grey[400],
+          color: Colors.white,
           child: Column(
             children: [
               Row(
@@ -84,7 +84,7 @@ class _MasterDataPageState extends State<MasterDataPage> {
                       height: 42,
                       //width: 200,
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: Colors.grey[200],
                         //border: Border.all(color: Colors.grey), // Set the color of the border
                         borderRadius: BorderRadius.circular(1.0),
                       ),
@@ -144,46 +144,121 @@ class _MasterDataPageState extends State<MasterDataPage> {
                 ],
               ),
               SizedBox(height: 1),
-              Expanded(
-                child: Container(
-                  color: Colors.white,
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.all(10),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: DataTable(
-                      columns: [
-                        DataColumn(
-                          label: Container(
-                            child: Text('DeviceUUID',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Container(
-                            padding: EdgeInsets.only(
-                                left: 2), 
-                            child: Text('firstname',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Container(
-                            padding: EdgeInsets.only(
-                                left: 10), 
-                            child: Text('Email',
-                                style: TextStyle(
-                                    fontSize:15, fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                      ],
-                      rows: filteredRows,
-                    ),
-                  ),
-                ),
+
+Expanded(
+  child: Container(
+    width: MediaQuery.of(context).size.width,
+    margin: EdgeInsets.all(10),
+    child: SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white, // Set the background color using 'color'
+          border: Border.all(color: Colors.white),
+        ),
+        child: DataTable(
+          columns: [
+            DataColumn(
+              label: Container(
+               // width: 20,
+                color: Colors.white,
+                child: Text('DeviceUUID',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               ),
+            ),
+            DataColumn(
+              label: Container(
+                color: Colors.white,
+                padding: EdgeInsets.only(left: 2),
+                child: Text('firstname',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              ),
+            ),
+            DataColumn(
+              label: Container(
+                color: Colors.white,
+                padding: EdgeInsets.only(left: 10),
+                child: Text('Email',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+          rows: filteredRows,
+        ),
+      ),
+    ),
+  ),
+),
+
+              // Expanded(
+              //   child: SingleChildScrollView(
+              //     scrollDirection: Axis.vertical,
+              //     child: Container(
+              //       height: 50,
+              //       width: MediaQuery.of(context).size.width,
+              //       color: Colors.red[300],
+              //       child: DataTable(
+              //         columns: [
+              //           DataColumn(
+              //             label: Container(
+              //               child: Text('DeviceUUID',
+              //                   style: TextStyle(
+              //                       fontSize: 15, fontWeight: FontWeight.bold)),
+              //             ),
+              //           ),
+              //           DataColumn(
+              //             label: Container(
+              //               padding: EdgeInsets.only(left: 2),
+              //               child: Text('firstname',
+              //                   style: TextStyle(
+              //                       fontSize: 15, fontWeight: FontWeight.bold)),
+              //             ),
+              //           ),
+              //           DataColumn(
+              //             label: Container(
+              //               padding: EdgeInsets.only(left: 10),
+              //               child: Text('Email',
+              //                   style: TextStyle(
+              //                       fontSize: 15, fontWeight: FontWeight.bold)),
+              //             ),
+              //           ),
+              //         ],
+              //         rows: filteredRows,
+              //       ),
+              //     ),
+              //     //       // child: DataTable(
+              //     //       //   columns: [
+              //     //       //     DataColumn(
+              //     //       //       label: Container(
+              //     //       //         child: Text('DeviceUUID',
+              //     //       //             style: TextStyle(
+              //     //       //                 fontSize: 15, fontWeight: FontWeight.bold)),
+              //     //       //       ),
+              //     //       //     ),
+              //     //       //     DataColumn(
+              //     //       //       label: Container(
+              //     //       //         padding: EdgeInsets.only(
+              //     //       //             left: 2),
+              //     //       //         child: Text('firstname',
+              //     //       //             style: TextStyle(
+              //     //       //                 fontSize: 15, fontWeight: FontWeight.bold)),
+              //     //       //       ),
+              //     //       //     ),
+              //     //       //     DataColumn(
+              //     //       //       label: Container(
+              //     //       //         padding: EdgeInsets.only(
+              //     //       //             left: 10),
+              //     //       //         child: Text('Email',
+              //     //       //             style: TextStyle(
+              //     //       //                 fontSize:15, fontWeight: FontWeight.bold)),
+              //     //       //       ),
+              //     //       //     ),
+              //     //       //   ],
+              //     //       //   rows: filteredRows,
+              //     // ),
+              //   ),
+              // )
             ],
           )),
       bottomNavigationBar: BottomNavigationBar(
@@ -227,8 +302,7 @@ class _MasterDataPageState extends State<MasterDataPage> {
             )),
             DataCell(
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 50), 
+                padding: const EdgeInsets.only(left: 50),
                 child: Text(
                   item['username'].toString(),
                   //textAlign: TextAlign.start,
@@ -237,8 +311,7 @@ class _MasterDataPageState extends State<MasterDataPage> {
             ),
             DataCell(
               Padding(
-                padding: const EdgeInsets.only(
-                    right: 70), 
+                padding: const EdgeInsets.only(right: 70),
                 child: Text(
                   item['email'].toString(),
                   // textAlign: TextAlign.start,
@@ -267,8 +340,7 @@ class _MasterDataPageState extends State<MasterDataPage> {
             )),
             DataCell(
               Padding(
-                padding: const EdgeInsets.only(
-                    right: 10),
+                padding: const EdgeInsets.only(right: 10),
                 child: Text(
                   item['email'].toString(),
                   //textAlign: TextAlign.start,

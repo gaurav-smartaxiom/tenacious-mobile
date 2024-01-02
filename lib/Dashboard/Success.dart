@@ -35,32 +35,33 @@ class SuccessPage extends StatelessWidget {
                   style: TextStyle(fontSize: 18),
                 ),
               ]),
-              SizedBox(
-                height: 150,
-              ),
-              Row(
-   mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    InkWell(
-      onTap:()=>{
-print("continue")
-      },child:Container(
-      
-      width: 300,
-      height: 60,  // Added height
-      color: Colors.green,
-      child: Center(
-        child: Text(
-          "CONTINUE",
-          style: TextStyle(color: Colors.white,fontSize: 25),
-        ),
-      ),
-    ),),
-   
-  ],
-),
-
             ]),
+      ),
+      bottomNavigationBar: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                print("Try Again");
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 50),
+                child: Container(
+                  width: 300,
+                  height: 60,
+                  color: Colors.green,
+                  child: Center(
+                    child: Text(
+                      "Success",
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
