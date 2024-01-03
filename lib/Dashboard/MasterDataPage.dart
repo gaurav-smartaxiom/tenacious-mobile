@@ -79,31 +79,35 @@ class _MasterDataPageState extends State<MasterDataPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Container(
-                      height: 42,
-                      //width: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        //border: Border.all(color: Colors.grey), // Set the color of the border
-                        borderRadius: BorderRadius.circular(1.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: TextField(
-                          controller: searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Search...',
-                            prefixIcon: Icon(Icons.search),
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) {
-                            filterRows(value);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+                 Expanded(
+  child: Container(
+    margin: EdgeInsets.only(left: 15),
+    height: 42,
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(1.0),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.only(left: 5),
+      child: TextField(
+        controller: searchController,
+        decoration: InputDecoration(
+          // focusedBorder: OutlineInputBorder(
+          //   borderSide: BorderSide(color: Colors.white),
+          // ),
+          hintText: 'Search...',
+          prefixIcon: Icon(Icons.search),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10), // Adjust padding as needed
+        ),
+        onChanged: (value) {
+          filterRows(value);
+        },
+      ),
+    ),
+  ),
+),
+
                   Padding(
                     padding: const EdgeInsets.only(left: 0),
                     child: PopupMenuButton<String>(
@@ -144,52 +148,56 @@ class _MasterDataPageState extends State<MasterDataPage> {
                 ],
               ),
               SizedBox(height: 1),
-
-Expanded(
-  child: Container(
-    width: MediaQuery.of(context).size.width,
-    margin: EdgeInsets.all(10),
-    child: SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white, // Set the background color using 'color'
-          border: Border.all(color: Colors.white),
-        ),
-        child: DataTable(
-          columns: [
-            DataColumn(
-              label: Container(
-               // width: 20,
-                color: Colors.white,
-                child: Text('DeviceUUID',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              Expanded(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.all(10),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: DataTable(
+                      columns: [
+                        DataColumn(
+                          label: Container(
+                            // margin: EdgeInsets.only(right: 2), // Add margin here
+                            child: Text(
+                              'DeviceUUID',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Container(
+                            // margin: EdgeInsets.only(right: 2),
+                            child: Text(
+                              'firstname',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Container(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'Email',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                      rows: filteredRows,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            DataColumn(
-              label: Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(left: 2),
-                child: Text('firstname',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-              ),
-            ),
-            DataColumn(
-              label: Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(left: 10),
-                child: Text('Email',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ],
-          rows: filteredRows,
-        ),
-      ),
-    ),
-  ),
-),
 
               // Expanded(
               //   child: SingleChildScrollView(
@@ -302,7 +310,7 @@ Expanded(
             )),
             DataCell(
               Padding(
-                padding: const EdgeInsets.only(left: 50),
+                padding: const EdgeInsets.only(left: 0),
                 child: Text(
                   item['username'].toString(),
                   //textAlign: TextAlign.start,
@@ -311,7 +319,8 @@ Expanded(
             ),
             DataCell(
               Padding(
-                padding: const EdgeInsets.only(right: 70),
+                padding:
+                    const EdgeInsets.only(left: 10), // Add left margin here
                 child: Text(
                   item['email'].toString(),
                   // textAlign: TextAlign.start,
