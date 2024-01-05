@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobileapp/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -84,23 +85,41 @@ class _UserProfilePageState extends State<UserProfilePage> {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 11.0),
+                padding: EdgeInsets.only(left: 12),
                 child: Text(
                   "Email",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                 ),
               ),
             ],
           ),
+          SizedBox(
+            height: 0,
+          ),
           //  Divider(),
           DailyReportSwitch(initialValue: dailyReportEnabled),
           //  Divider(),
+          SizedBox(
+            height: 5,
+          ),
           AlertsSwitch(initialValue: alertsEnabled),
-          Divider(),
+          //Divider(),
+          SizedBox(
+            height: 5,
+          ),
+          Padding(padding: const EdgeInsets.only(left: 12),
+          child:  Text(
+             "SMS",
+             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+           ),
+          ),
+          SizedBox(
+            height: 4,
+          ),
           SmsSwitchListItem(
-            label: "SMS",
+            //label: "SMS",
             switchValue: smsEnabled,
             onChanged: (newValue) {
               // Handle onChanged logic here
@@ -109,10 +128,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
               });
             },
           ),
-          Divider(),
+          // Divider(),
+          SizedBox(
+            height: 5,
+          ),
+
+
+          Padding(padding: const EdgeInsets.only(left: 12),
+          child:  Text(
+             "FIRMWARE",
+             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+           ),
+          )
+          ,
+          SizedBox(
+            height: 5,
+          ),
           FirmwareArrowListItem(
-            label: "Firmware",
-            subtitle: "firmware_Update",
+            //label: "Firmware",
+
             onTap: () {
               // Execute your navigation logic here, for example:
               Navigator.of(context).push(
@@ -120,29 +154,62 @@ class _UserProfilePageState extends State<UserProfilePage> {
               );
             },
           ),
-          Divider(),
+          //Divider(),
 
           //buildListItem("Firmware", "1.0.0"),
           //buildListItemWithArrow("Firmware", "firmware_Update", context),
-          AddScanDevice("Add Device", "Add a New Device and scan", () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ScanDevicePage()),
-            );
-          }),
+          SizedBox(
+            height: 5,
+          ),
+        Padding(padding: const EdgeInsets.only(left: 12),
+          child:  Text(
+             "Device",
+             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+           ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          // AddScanDevice( () {
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(builder: (context) => ScanDevicePage()),
+          //   );
+          // });AddScanDevice(
+          AddScanDevice(
+            onTap: () {
+              // Your onTap logic here
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ScanDevicePage()),
+              );
+            },
+          ),
+          SizedBox(
+            height: 80,
+          ),
 
-          Divider(),
+          Access_policies("Access Policy", "", context),
+         
+SizedBox(
+            height: 10,
+          ),
+         AboutUs( "about us", "",context),
+          SizedBox(
+            height: 10,
+          ),
 
-          Access_policies("Access Policy", "Manage Access Policy", context),
-          Divider(),
+          TermsandConditions("Terms and Conditions", "Read Our Terms",context),
 
-          buildListItem("About Us", "Learn About Us"),
-          Divider(),
-
-          buildListItem("Terms and Conditions", "Read Our Terms"),
-          Divider(),
-
-          LogoutListItem(label: "Logout", value: "Log Out"),
-          Divider(),
+          SizedBox(
+            height: 10,
+          ),
+          // Text(
+          //   "Logout",
+          //   style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+          //),
+          LogoutListItem(value: "Log Out"),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
@@ -156,28 +223,178 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 }
 
-Widget AddScanDevice(String label, String value, void Function() onTap) {
-  return ListTile(
-    title: Text(label),
-    subtitle: Text(value),
-    onTap: onTap,
+
+
+
+
+
+Widget TermsandConditions(String title, String subtitle, BuildContext context){
+
+   return Container(
+    margin: EdgeInsets.only(right: 8,left: 8),
+    height: 40,
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 25),
+          child: Text(
+            "Terms and conditions",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        Expanded(
+            child: ListTile(
+          // title: Text(title),
+          // subtitle: Text(subtitle),
+          // onTap: () {
+          //   // Navigate to Access Policies Page and replace the current route
+          //   Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AccessPolicies()),
+          //   );
+          // },
+        )),
+        GestureDetector(
+          onTap: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AccessPolicies()),
+            ),
+          },
+          child: Icon(Icons.arrow_forward_ios, size: 27, color: Colors.white),
+        )
+      ],
+    ),
   );
 }
+
+
+
+
+Widget AboutUs(String title, String subtitle, BuildContext context){
+
+   return Container(
+    margin: EdgeInsets.only(right: 8,left: 8),
+    height: 40,
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 25),
+          child: Text(
+            "About us",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        Expanded(
+            child: ListTile(
+          // title: Text(title),
+          // subtitle: Text(subtitle),
+          // onTap: () {
+          //   // Navigate to Access Policies Page and replace the current route
+          //   Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AccessPolicies()),
+          //   );
+          // },
+        )),
+        GestureDetector(
+          onTap: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AccessPolicies()),
+            ),
+          },
+          child: Icon(Icons.arrow_forward_ios, size: 27, color: Colors.white),
+        )
+      ],
+    ),
+  );
+}
+
+
+Widget AddScanDevice({String? value, required void Function() onTap}) {
+  return Container(
+    margin: EdgeInsets.only(right: 8,left: 8),
+    height: 40,
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 18),
+          child: Text(
+            value != null ? "Add Device: $value" : "Add Device",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        Expanded(
+          child: ListTile(
+            onTap: onTap,
+          ),
+        ),
+        GestureDetector(
+          onTap: onTap,
+          child: Icon(Icons.arrow_forward_ios, size: 27, color: Colors.white),
+        ),
+      ],
+    ),
+  );
+}
+
+// Example usage:
 
 Widget Access_policies(String title, String subtitle, BuildContext context) {
-  return ListTile(
-    title: Text(title),
-    subtitle: Text(subtitle),
-    onTap: () {
-      // Navigate to Access Policies Page and replace the current route
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => AccessPolicies()),
-      );
-    },
+  return Container(
+    margin: EdgeInsets.only(right: 8,left: 8),
+    height: 40,
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 25),
+          child: Text(
+            "Access_policies",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        Expanded(
+            child: ListTile(
+          // title: Text(title),
+          // subtitle: Text(subtitle),
+          // onTap: () {
+          //   // Navigate to Access Policies Page and replace the current route
+          //   Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AccessPolicies()),
+          //   );
+          // },
+        )),
+        GestureDetector(
+          onTap: () => {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AccessPolicies()),
+            ),
+          },
+          child: Icon(Icons.arrow_forward_ios, size: 27, color: Colors.white),
+        )
+      ],
+    ),
   );
 }
-
 
 void main() {
   runApp(MaterialApp(home: UserProfilePage()));

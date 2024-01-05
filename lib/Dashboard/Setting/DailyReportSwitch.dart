@@ -20,7 +20,13 @@ class _DailyReportSwitchState extends State<DailyReportSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return Container(
+      margin: EdgeInsets.only(right: 8,left: 8),
+      height: 55,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8)),
+      child: ListTile(
       title: Text("Enable Daily Report"),
       //tileColor: Colors.grey,
       trailing: Switch(
@@ -56,6 +62,7 @@ class _DailyReportSwitchState extends State<DailyReportSwitch> {
           );
         },
       ),
+      )
     );
   }
 }

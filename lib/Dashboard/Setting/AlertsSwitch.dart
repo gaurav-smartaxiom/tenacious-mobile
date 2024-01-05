@@ -18,7 +18,14 @@ class _AlertsSwitchState extends State<AlertsSwitch> {
   }
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return Container(
+      //width: 280,
+      height: 55,
+       margin: EdgeInsets.only(right: 8,left: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8)),
+      child: ListTile(
       title: Text("Enable alerts"),
       tileColor: Colors.white,
       trailing: Switch(
@@ -52,6 +59,7 @@ class _AlertsSwitchState extends State<AlertsSwitch> {
           );
         },
       ),
+      )
     );
   }
 }

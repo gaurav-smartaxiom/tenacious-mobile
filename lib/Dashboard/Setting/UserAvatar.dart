@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobileapp/Dashboard/Setting/userdeatils.dart';
 
-
 class UserAvatarCard extends StatefulWidget {
   final String? userEmail;
   UserAvatarCard({this.userEmail});
@@ -32,8 +31,10 @@ class _UserAvatarCardState extends State<UserAvatarCard> {
       });
     }
   }
+
   Future<void> _pickUserImage() async {
-    final pickedImage = await ImagePicker().getImage(source: ImageSource.gallery);
+    final pickedImage =
+        await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       final imageFile = File(pickedImage.path);
@@ -45,6 +46,7 @@ class _UserAvatarCardState extends State<UserAvatarCard> {
       });
     }
   }
+
   void _showImagePickerDialog() {
     showDialog(
       context: context,
@@ -70,40 +72,76 @@ class _UserAvatarCardState extends State<UserAvatarCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      margin: EdgeInsets.only(right: 8,top: 5,left: 8),
+      //width: ,
+      height: 75,
+
+      decoration: BoxDecoration(
+          color: Colors.grey[200], borderRadius: BorderRadius.circular(1)),
       child: InkWell(
         onTap: () {
           _showImagePickerDialog();
         },
         child: ListTile(
-          contentPadding: EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Colors.white,
-              width: 1.0,
-            ),
-            borderRadius: BorderRadius.circular(40),
-          ),
+          // contentPadding: EdgeInsets.all(10),
+          // shape: RoundedRectangleBorder(
+          //   side: BorderSide(
+          //     color: Colors.white,
+          //     width: 1.0,
+          //   ),
+          //   borderRadius: BorderRadius.circular(10),
+          // ),
           leading: CircleAvatar(
-            backgroundImage: _userImage != null
-                ? FileImage(_userImage!)
-                : null,
+            backgroundImage: _userImage != null ? FileImage(_userImage!) : null,
             radius: 35,
           ),
+
           title: InkWell(
             onTap: () {
               Navigator.of(context).push(
-  MaterialPageRoute(
-    builder: (context) => UserDetailsPage(
-     //userEmail: widget.userEmail,
-     // userImage: _userImage,
-      //subtitle: "Admin", // Pass the user's profile picture here
-    ),
-  ),
-);
-
+                MaterialPageRoute(
+                  builder: (context) => UserDetailsPage(
+                      //  userEmail: widget.userEmail,
+                      //  userImage: _userImage,
+                      //   subtitle: "Admin", // Pass the user's profile picture here
+                      ),
+                ),
+              );
             },
-            child: Text(widget.userEmail ?? 'User Email'),
+            child: Row(
+             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.userEmail ?? 'User Email'),
+
+                // Padding(padding: const EdgeInsets.only(left: 67,top: 20),
+
+                // child: Icon(Icons.arrow_forward_ios),
+
+                // )
+
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10, left: 40),
+                //   child: GestureDetector(
+                //       onTap: () => {
+                //             Navigator.of(context).push(
+                //               MaterialPageRoute(
+                //                 builder: (context) => UserDetailsPage(
+                //                     //  userEmail: widget.userEmail,
+                //                     //  userImage: _userImage,
+                //                     //   subtitle: "Admin", // Pass the user's profile picture here
+                //                     ),
+                //               ),
+                //             )
+                //           },
+                //       child: Icon(
+                //         Icons.arrow_forward_ios,
+                //         color: Colors.white,
+                //         size: 35,
+                //       )),
+                // )
+              ],
+            ),
           ),
           subtitle: Text("Admin"),
         ),

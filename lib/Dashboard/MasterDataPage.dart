@@ -79,35 +79,38 @@ class _MasterDataPageState extends State<MasterDataPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                 Expanded(
-  child: Container(
-    margin: EdgeInsets.only(left: 15),
-    height: 42,
-    decoration: BoxDecoration(
-      color: Colors.grey[200],
-      borderRadius: BorderRadius.circular(1.0),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.only(left: 5),
-      child: TextField(
-        controller: searchController,
-        decoration: InputDecoration(
-          // focusedBorder: OutlineInputBorder(
-          //   borderSide: BorderSide(color: Colors.white),
-          // ),
-          hintText: 'Search...',
-          prefixIcon: Icon(Icons.search),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10), // Adjust padding as needed
-        ),
-        onChanged: (value) {
-          filterRows(value);
-        },
-      ),
-    ),
-  ),
-),
-
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 15),
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(1.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            // focusedBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.white),
+                            // ),
+                            hintText: 'Search...',
+                            prefixIcon: Icon(Icons.search),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10), // Adjust padding as needed
+                          ),
+                          onChanged: (value) {
+                            filterRows(value);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 0),
                     child: PopupMenuButton<String>(
