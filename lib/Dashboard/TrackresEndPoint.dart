@@ -100,30 +100,33 @@ class _TrackerEndPointState extends State<TrackerEndPointPage> {
 
                 var check = await SharedPreferences.getInstance();
                 var email = check.getString('email');
-                if (email != null &&
-                    email == 'suraj.subramoniam@honeywell.com') {
-                  print("Superadmin");
+
 Navigator.push(context,MaterialPageRoute(builder: (context)=> AssignEndPoint()));
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Authorized Superadmin'),
-                        content:
-                            Text('only Superadmin is authorized to create.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close the pop-up
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
+
+//                 if (email != null &&
+//                     email == 'suraj.subramoniam@honeywell.com') {
+//                   print("Superadmin");
+// Navigator.push(context,MaterialPageRoute(builder: (context)=> AssignEndPoint()));
+//                 } else {
+//                   showDialog(
+//                     context: context,
+//                     builder: (BuildContext context) {
+//                       return AlertDialog(
+//                         title: Text('Authorized Superadmin'),
+//                         content:
+//                             Text('only Superadmin is authorized to create.'),
+//                         actions: [
+//                           TextButton(
+//                             onPressed: () {
+//                               Navigator.of(context).pop(); // Close the pop-up
+//                             },
+//                             child: Text('OK'),
+//                           ),
+//                         ],
+//                       );
+//                     },
+//                   );
+//                 }
               },
               child: Container(
                 width: 300,

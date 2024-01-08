@@ -245,35 +245,52 @@ class _ShipmentPageState extends State<ShipmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  title: Text('Trackers Page',),
-  backgroundColor: Colors.blue,
-  centerTitle: true,
-  leading: IconButton(
-    icon: Icon(Icons.arrow_back),
-    onPressed: () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => DashboardPage(decodedToken: widget.decodedToken),
+        title: Text(
+          'Trackers Page',
         ),
-      );
-    },
-  ),
-  actions: [
-    if (widget.decodedToken != null &&
-        widget.decodedToken['officialEmail'] == 'suraj.subramoniam@honeywell.com')
-      IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AddShipmentPage(shipmentName: shipment),
-            ),
-          );
-        },
-      ),
-  ],
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) =>
+                    DashboardPage(decodedToken: widget.decodedToken),
+              ),
+            );
+          },
+        ),
+        actions: [
+
+IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AddShipmentPage(shipmentName: shipment),
+                  ),
+                );
+              },
 )
-,
+
+         // if (widget.decodedToken != null &&
+            //   widget.decodedToken['officialEmail'] ==
+            //       'suraj.subramoniam@honeywell.com')
+            // IconButton(
+            //   icon: Icon(Icons.add),
+            //   onPressed: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (context) =>
+            //             AddShipmentPage(shipmentName: shipment),
+            //       ),
+            //     );
+            //   },
+            // ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(

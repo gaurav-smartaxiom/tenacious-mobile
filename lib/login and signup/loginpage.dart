@@ -64,10 +64,12 @@ class _LoginPageState extends State<LoginPage> {
           JwtDecoder.decode("{'token': $token}");
       print("decodeToken---------->,$decodedToken");
       String Userid = decodedToken['id'];
-      print("userid,$Userid");
-      //print("responseBody-----------------,$responseBody");
+      Map<String, dynamic> shipmentss = {};
+ 
+      //print("userid,$Userid");
+      print("responseBody-----------------,$responseBody");
       final UserAccessLevel = AccessUserLevel;
-      print("userrrr,$UserAccessLevel");
+      //print("userrrr,$UserAccessLevel");
       final NewUser = 'ADMIN';
       final Email = 'gaurav@smartaxiom.com';
       final urlWithParams =
@@ -79,23 +81,40 @@ class _LoginPageState extends State<LoginPage> {
           'Content-Type': 'application/json',
         },
       );
-      print("AccessAllUser,$AccessAllUser");
-      print(": ${AccessAllUser.body}");
+      //print("AccessAllUser,$AccessAllUser");
+      //print(": ${AccessAllUser.body}");
       if (AccessAllUser.statusCode == 200) {
         final decodedBody = jsonDecode(AccessAllUser.body);
         final List<dynamic> permissionList = jsonDecode(AccessAllUser.body);
         for (var permission in permissionList) {
           final permissions = permission['permissions'];
+          // print("permissions------------------------>89,$permissions");
           final checkUser = permission['levelname'];
+
           print("checklevelname,$checkUser");
+          print(checkUser == NewUser);
           if (checkUser == NewUser) {
             matchedUserLevel = checkUser;
+
+            print("permissions----------------98,$permission");
+            final Checkshipmets = permission['permissions']['dashboard'];
+            final Repots = permission['permissions']['reports'];
+            shipmentss = permission['permissions']['shipments'];
+            final shipmentssJson = jsonEncode(shipmentss);
+            print("shipmentss------------------104,$shipmentss");
+              final sharedPreferences = await SharedPreferences.getInstance();
+              sharedPreferences.setString('shipmentss', shipmentssJson);
+            // print("shipments-----------------101,$shipmentss");
+            print("DashBoard-----------------------100,$Checkshipmets");
+            print("reports-----------------102,$Repots");
           }
         }
       } else {
         print("Error: ${AccessAllUser.statusCode}");
         print("Response body: ${AccessAllUser.body}");
       }
+
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       print(response.statusCode);
       if (response.statusCode == 201) {
         print("user login successfully");
@@ -107,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
         sharedPreferences.setString('email', _usernameController.text);
         sharedPreferences.setString('password', _passwordController.text);
         sharedPreferences.setString('userLevel', matchedUserLevel);
+      
         setState(() {
           successMessage = "User login successful";
           errorMessage = '';
@@ -129,8 +149,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
           (route) => false,
         );
-
-// ...
       } else {
         setState(() {
           errorMessage = "Login failed. Please check your credentials.";

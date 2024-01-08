@@ -109,11 +109,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
           SizedBox(
             height: 5,
           ),
-          Padding(padding: const EdgeInsets.only(left: 12),
-          child:  Text(
-             "SMS",
-             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
-           ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text(
+              "SMS",
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
           ),
           SizedBox(
             height: 4,
@@ -133,14 +134,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
             height: 5,
           ),
 
-
-          Padding(padding: const EdgeInsets.only(left: 12),
-          child:  Text(
-             "FIRMWARE",
-             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
-           ),
-          )
-          ,
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text(
+              "FIRMWARE",
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
+          ),
           SizedBox(
             height: 5,
           ),
@@ -161,11 +161,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
           SizedBox(
             height: 5,
           ),
-        Padding(padding: const EdgeInsets.only(left: 12),
-          child:  Text(
-             "Device",
-             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
-           ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text(
+              "Device",
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
           ),
           SizedBox(
             height: 5,
@@ -188,16 +189,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
 
           Access_policies("Access Policy", "", context),
-         
-SizedBox(
+
+          SizedBox(
             height: 10,
           ),
-         AboutUs( "about us", "",context),
+          AboutUs("about us", "", context),
           SizedBox(
             height: 10,
           ),
 
-          TermsandConditions("Terms and Conditions", "Read Our Terms",context),
+          TermsandConditions("Terms and Conditions", "Read Our Terms", context),
 
           SizedBox(
             height: 10,
@@ -223,15 +224,9 @@ SizedBox(
   }
 }
 
-
-
-
-
-
-Widget TermsandConditions(String title, String subtitle, BuildContext context){
-
-   return Container(
-    margin: EdgeInsets.only(right: 8,left: 8),
+Widget TermsandConditions(String title, String subtitle, BuildContext context) {
+  return Container(
+    margin: EdgeInsets.only(right: 8, left: 8),
     height: 40,
     decoration: BoxDecoration(
       color: Colors.grey[200],
@@ -248,16 +243,16 @@ Widget TermsandConditions(String title, String subtitle, BuildContext context){
         ),
         Expanded(
             child: ListTile(
-          // title: Text(title),
-          // subtitle: Text(subtitle),
-          // onTap: () {
-          //   // Navigate to Access Policies Page and replace the current route
-          //   Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => AccessPolicies()),
-          //   );
-          // },
-        )),
+                // title: Text(title),
+                // subtitle: Text(subtitle),
+                // onTap: () {
+                //   // Navigate to Access Policies Page and replace the current route
+                //   Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => AccessPolicies()),
+                //   );
+                // },
+                )),
         GestureDetector(
           onTap: () => {
             Navigator.push(
@@ -272,13 +267,9 @@ Widget TermsandConditions(String title, String subtitle, BuildContext context){
   );
 }
 
-
-
-
-Widget AboutUs(String title, String subtitle, BuildContext context){
-
-   return Container(
-    margin: EdgeInsets.only(right: 8,left: 8),
+Widget AboutUs(String title, String subtitle, BuildContext context) {
+  return Container(
+    margin: EdgeInsets.only(right: 8, left: 8),
     height: 40,
     decoration: BoxDecoration(
       color: Colors.grey[200],
@@ -295,16 +286,16 @@ Widget AboutUs(String title, String subtitle, BuildContext context){
         ),
         Expanded(
             child: ListTile(
-          // title: Text(title),
-          // subtitle: Text(subtitle),
-          // onTap: () {
-          //   // Navigate to Access Policies Page and replace the current route
-          //   Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => AccessPolicies()),
-          //   );
-          // },
-        )),
+                // title: Text(title),
+                // subtitle: Text(subtitle),
+                // onTap: () {
+                //   // Navigate to Access Policies Page and replace the current route
+                //   Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => AccessPolicies()),
+                //   );
+                // },
+                )),
         GestureDetector(
           onTap: () => {
             Navigator.push(
@@ -319,10 +310,9 @@ Widget AboutUs(String title, String subtitle, BuildContext context){
   );
 }
 
-
 Widget AddScanDevice({String? value, required void Function() onTap}) {
   return Container(
-    margin: EdgeInsets.only(right: 8,left: 8),
+    margin: EdgeInsets.only(right: 8, left: 8),
     height: 40,
     decoration: BoxDecoration(
       color: Colors.grey[200],
@@ -355,7 +345,7 @@ Widget AddScanDevice({String? value, required void Function() onTap}) {
 
 Widget Access_policies(String title, String subtitle, BuildContext context) {
   return Container(
-    margin: EdgeInsets.only(right: 8,left: 8),
+    margin: EdgeInsets.only(right: 8, left: 8),
     height: 40,
     decoration: BoxDecoration(
       color: Colors.grey[200],
@@ -372,16 +362,16 @@ Widget Access_policies(String title, String subtitle, BuildContext context) {
         ),
         Expanded(
             child: ListTile(
-          // title: Text(title),
-          // subtitle: Text(subtitle),
-          // onTap: () {
-          //   // Navigate to Access Policies Page and replace the current route
-          //   Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => AccessPolicies()),
-          //   );
-          // },
-        )),
+                // title: Text(title),
+                // subtitle: Text(subtitle),
+                // onTap: () {
+                //   // Navigate to Access Policies Page and replace the current route
+                //   Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => AccessPolicies()),
+                //   );
+                // },
+                )),
         GestureDetector(
           onTap: () => {
             Navigator.pushReplacement(

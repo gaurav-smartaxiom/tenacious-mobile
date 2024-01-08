@@ -36,7 +36,7 @@ class LogoutListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 8,left: 8),
+      margin: EdgeInsets.only(right: 8, left: 8),
       height: 40,
       decoration: BoxDecoration(
         color: Colors.grey[200],
@@ -44,34 +44,24 @@ class LogoutListItem extends StatelessWidget {
       ),
 
       child: Row(children: [
-
-  Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Text(
-                "Logout",
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-
-        Expanded(child: 
-        
-        ListTile(
-          // subtitle: Text(value),
-          // onTap: () {
-          //   performLogout(context);
-          // },
-        )
-        
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Text(
+            "Logout",
+            style: TextStyle(fontSize: 16),
+          ),
         ),
-
-
-GestureDetector(onTap: ()=>{
-
-performLogout(context)
-
-},child: Icon(Icons.arrow_forward_ios, size: 27, color: Colors.white),)
-
-
+        Expanded(
+            child: ListTile(
+                // subtitle: Text(value),
+                // onTap: () {
+                //   performLogout(context);
+                // },
+                )),
+        GestureDetector(
+          onTap: () => {performLogout(context)},
+          child: Icon(Icons.arrow_forward_ios, size: 27, color: Colors.white),
+        )
       ]),
 
       //title: Text(label),

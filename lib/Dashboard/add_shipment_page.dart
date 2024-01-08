@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobileapp/Dashboard/TrackresAPage.dart';
@@ -17,6 +19,7 @@ class _AddShipmentPageState extends State<AddShipmentPage> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
+  String successMessage = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,39 +129,98 @@ class _AddShipmentPageState extends State<AddShipmentPage> {
                         onPressed: () async {
                           var check = await SharedPreferences.getInstance();
                           final email = check.getString('email');
+                          final getshipments = check.getString(
+                              'shipmentss'); // Use the correct key here
+                          print("getshipment------------,$getshipments");
                           print("check email: $email");
+
+                          if (getshipments != null) {
+                            final Map<String, dynamic> checkShip =
+                                jsonDecode(getshipments);
+                            print(
+                                "checkshipment------------------------------------142,$checkShip");
+
+                            bool createValue = checkShip['create'];
+                            print(
+                                "Createvalue------------------------145,$createValue");
+                            print(createValue == true);
+                            if (createValue == true) {
+                              print("if");
+
+                              setState(() {
+                                successMessage = "Create ----- shipments---- successfully";
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(successMessage),
+                                ),
+                              );
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TrackresAPage()),
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Unauthorized User'),
+                                    content: Text(
+                                        'You are not authorized to create.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Close the pop-up
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          }
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => TrackresAPage()),
+                          // );
 
                           // Always show the pop-up
 
                           // Only navigate to TrackresAPage if the condition is true
-                          if (email != null &&
-                              email == 'suraj.subramoniam@honeywell.com') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TrackresAPage()),
-                            );
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Unauthorized User'),
-                                  content:
-                                      Text('You are not authorized to create.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Close the pop-up
-                                      },
-                                      child: Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
+                          //if (email != null &&
+                          //     email == 'suraj.subramoniam@honeywell.com') {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => TrackresAPage()),
+                          //   );
+                          // } else {
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (BuildContext context) {
+                          //       return AlertDialog(
+                          //         title: Text('Unauthorized User'),
+                          //         content:
+                          //             Text('You are not authorized to create.'),
+                          //         actions: [
+                          //           TextButton(
+                          //             onPressed: () {
+                          //               Navigator.of(context)
+                          //                   .pop(); // Close the pop-up
+                          //             },
+                          //             child: Text('OK'),
+                          //           ),
+                          //         ],
+                          //       );
+                          //     },
+                          //   );
+                          // }
                         },
                         style: ButtonStyle(
                           backgroundColor:
